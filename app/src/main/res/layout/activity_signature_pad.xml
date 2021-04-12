@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.SignaturePadActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:id="@+id/back"
+                android:src="@drawable/ic_action_back"
+                app:tint="@color/black"
+                android:contentDescription="TODO" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_toEndOf="@+id/back"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="Write Your Signature"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="@dimen/_25ssp"
+                android:layout_height="@dimen/_25ssp"
+                android:src="@drawable/ic_action_location_address"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:id="@+id/show_maps_address"
+                android:layout_marginEnd="@dimen/_18ssp"
+                app:tint="@color/black" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dcdcdc"
+                android:layout_alignParentBottom="true"
+                />
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.github.gcacace.signaturepad.views.SignaturePad
+        android:id="@+id/signature_pad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:penColor="@color/red_900"
+        android:layout_above="@+id/parent_of_button"
+        app:penMinWidth="1dp"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/parent_of_button"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_12ssp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:id="@+id/clear_text"
+            android:text="Clear"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/save"
+            android:layout_marginStart="@dimen/_12ssp"
+            android:textAllCaps="false"
+            android:text="Save And Submit"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

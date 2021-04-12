@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        tools:context=".Fragment.SettingFragment">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:orientation="vertical"
+                  android:layout_height="match_parent">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginStart="@dimen/_20ssp"
+                      android:layout_marginTop="@dimen/_20ssp"
+                      android:layout_marginRight="@dimen/_20ssp"
+                      android:layout_marginBottom="@dimen/_10ssp"
+                      android:clickable="true"
+                      android:orientation="horizontal">
+
+                      <de.hdodenhof.circleimageview.CircleImageView
+                          android:layout_width="80dp"
+                          android:layout_height="80dp"
+                          android:layout_gravity="center_vertical"
+                          android:scaleType="centerCrop"
+                          android:src="@drawable/profile_image"
+                          android:visibility="visible" />
+
+                      <LinearLayout
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="@dimen/_5ssp"
+                          android:layout_marginEnd="@dimen/_10ssp"
+                          android:clickable="true"
+                          android:layout_marginTop="-5dp"
+                          android:layout_gravity="center_vertical"
+                          android:orientation="vertical"
+                          android:paddingStart="@dimen/_10ssp"
+                          android:paddingEnd="@dimen/_10ssp">
+
+                          <TextView
+                              android:id="@+id/name_user"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:fontFamily="@font/poppinsbold"
+                              android:text="John Deo"
+                              android:maxLines="1"
+                              android:ellipsize="end"
+                              android:textAllCaps="true"
+                              android:textColor="@color/black"
+                              android:textSize="20sp" />
+
+                          <RelativeLayout
+                              android:layout_width="match_parent"
+                              android:layout_marginTop="@dimen/_3ssp"
+                              android:layout_height="wrap_content">
+
+
+                              <LinearLayout
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginEnd="@dimen/_4ssp"
+                                  android:orientation="vertical">
+
+                                  <TextView
+                                      android:id="@+id/email_user"
+                                      android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:alpha="0.7"
+                                      android:maxLines="1"
+                                      android:ellipsize="end"
+                                      android:layout_gravity="center_vertical"
+                                      android:fontFamily="@font/poppins"
+                                      android:text="Shanipratap6615@gmail.com"
+                                      android:textColor="@color/black"
+                                      android:textSize="13sp" />
+
+                              </LinearLayout>
+
+                          </RelativeLayout>
+
+                      </LinearLayout>
+
+                  </LinearLayout>
+
+                  <include layout="@layout/single_line" />
+
+                  <RelativeLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="@dimen/_75ssp"
+                      android:id="@+id/team_support"
+                      android:orientation="vertical">
+
+                      <ImageView
+                          android:id="@+id/image1"
+                          android:layout_width="@dimen/_38ssp"
+                          android:layout_height="@dimen/_38ssp"
+                          android:layout_centerVertical="true"
+                          android:layout_marginStart="@dimen/_16ssp"
+                          android:src="@drawable/ic_team_support" />
+
+                      <LinearLayout
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_centerVertical="true"
+                          android:layout_marginStart="@dimen/_16ssp"
+                          android:layout_toEndOf="@id/image1"
+                          android:orientation="vertical">
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:alpha="0.9"
+                              android:ellipsize="end"
+                              android:fontFamily="@font/poppinsmedium"
+                              android:maxLines="1"
+                              android:text="Team Support"
+                              android:textColor="@android:color/black"
+                              android:textSize="13sp" />
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:alpha="0.6"
+                              android:ellipsize="end"
+                              android:fontFamily="@font/poppins"
+                              android:maxLines="1"
+                              android:text="We are Here to help you!"
+                              android:textColor="@android:color/black"
+                              android:textSize="12sp" />
+
+                      </LinearLayout>
+
+                      <View
+                          android:layout_width="match_parent"
+                          android:layout_height="1dp"
+                          android:layout_alignParentBottom="true"
+                          android:background="#dcdcdc" />
+
+                  </RelativeLayout>
+
+                  <RelativeLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="@dimen/_75ssp"
+                      android:id="@+id/change_password"
+                      android:orientation="vertical">
+
+                      <ImageView
+                          android:id="@+id/image2"
+                          android:layout_width="@dimen/_38ssp"
+                          android:layout_height="@dimen/_38ssp"
+                          android:layout_centerVertical="true"
+                          android:layout_marginStart="@dimen/_16ssp"
+                          android:src="@drawable/password"
+                          tools:ignore="DuplicateIds" />
+
+                      <LinearLayout
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_centerVertical="true"
+                          android:layout_marginStart="@dimen/_16ssp"
+                          android:layout_toEndOf="@id/image2"
+                          android:orientation="vertical">
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:alpha="0.9"
+                              android:ellipsize="end"
+                              android:fontFamily="@font/poppinsmedium"
+                              android:maxLines="1"
+                              android:text="Change Password"
+                              android:textColor="@android:color/black"
+                              android:textSize="13sp" />
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:alpha="0.6"
+                              android:ellipsize="end"
+                              android:fontFamily="@font/poppins"
+                              android:maxLines="1"
+                              android:text="Change password Anytime and anywhere!"
+                              android:textColor="@android:color/black"
+                              android:textSize="12sp" />
+
+                      </LinearLayout>
+
+                      <View
+                          android:layout_width="match_parent"
+                          android:layout_height="1dp"
+                          android:layout_alignParentBottom="true"
+                          android:background="#dcdcdc" />
+
+                  </RelativeLayout>
+
+                  <RelativeLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="@dimen/_75ssp"
+                      android:id="@+id/feedbackText"
+                      android:orientation="vertical">
+
+                      <ImageView
+                          android:id="@+id/image3"
+                          android:layout_width="@dimen/_38ssp"
+                          android:layout_height="@dimen/_38ssp"
+                          android:layout_centerVertical="true"
+                          android:layout_marginStart="@dimen/_16ssp"
+                          android:src="@drawable/ic_feedback"
+                          tools:ignore="DuplicateIds" />
+
+                      <LinearLayout
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_centerVertical="true"
+                          android:layout_marginStart="@dimen/_16ssp"
+                          android:layout_toEndOf="@id/image3"
+                          android:orientation="vertical">
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:alpha="0.9"
+                              android:ellipsize="end"
+                              android:fontFamily="@font/poppinsmedium"
+                              android:maxLines="1"
+                              android:text="Feedback"
+                              android:textColor="@android:color/black"
+                              android:textSize="13sp" />
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:alpha="0.6"
+                              android:ellipsize="end"
+                              android:fontFamily="@font/poppins"
+                              android:maxLines="1"
+                              android:text="Always welcome, for feedback"
+                              android:textColor="@android:color/black"
+                              android:textSize="12sp" />
+
+                      </LinearLayout>
+
+                      <View
+                          android:layout_width="match_parent"
+                          android:layout_height="1dp"
+                          android:layout_alignParentBottom="true"
+                          android:background="#dcdcdc" />
+
+                  </RelativeLayout>
+
+                  <RelativeLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="@dimen/_75ssp"
+                      android:id="@+id/signout"
+                      android:orientation="vertical">
+
+                      <ImageView
+                          android:id="@+id/image4"
+                          android:layout_width="@dimen/_38ssp"
+                          android:layout_height="@dimen/_38ssp"
+                          android:layout_centerVertical="true"
+                          android:layout_marginStart="@dimen/_16ssp"
+                          android:src="@drawable/ic_icon_logout"
+                          tools:ignore="DuplicateIds" />
+
+                      <LinearLayout
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_centerVertical="true"
+                          android:layout_marginStart="@dimen/_16ssp"
+                          android:layout_toEndOf="@id/image4"
+                          android:orientation="vertical">
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:alpha="0.9"
+                              android:ellipsize="end"
+                              android:fontFamily="@font/poppinsmedium"
+                              android:maxLines="1"
+                              android:text="Signout"
+                              android:textColor="@android:color/black"
+                              android:textSize="13sp" />
+
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:alpha="0.6"
+                              android:ellipsize="end"
+                              android:fontFamily="@font/poppins"
+                              android:maxLines="1"
+                              android:text="Logout From App"
+                              android:textColor="@android:color/black"
+                              android:textSize="12sp" />
+
+                      </LinearLayout>
+
+                      <View
+                          android:layout_width="match_parent"
+                          android:layout_height="1dp"
+                          android:layout_alignParentBottom="true"
+                          android:background="#dcdcdc" />
+
+                  </RelativeLayout>
+
+              </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</layout>

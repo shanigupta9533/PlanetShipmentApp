@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:background="@color/project_color"
+        >
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:fillViewport="true"
+            android:layout_above="@+id/bottom_space"
+            android:layout_marginBottom="-23dp"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_16ssp"
+                    android:layout_marginStart="@dimen/_8ssp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="@dimen/_30ssp"
+                        app:cardBackgroundColor="#ff0000"
+                        android:layout_height="@dimen/_30ssp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_30ssp"
+                            android:layout_height="@dimen/_30ssp"
+                            android:layout_gravity="center"
+                            app:cardBackgroundColor="#ff0000"
+                            android:src="@drawable/ic_feedback"
+                             />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_centerInParent="true"
+                        android:layout_toEndOf="@+id/back"
+                        android:fontFamily="@font/poppinsbold"
+                        android:text="On-Road Assistance"
+                        android:textColor="@color/white"
+                        android:textSize="15dp" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="@dimen/_36ssp"
+                        android:visibility="gone"
+                        android:layout_height="@dimen/_36ssp"
+                        android:src="@drawable/profile_image"
+                        android:layout_marginEnd="@dimen/_12ssp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/round_as_project_code_upper_white"
+                    android:layout_marginTop="@dimen/_15ssp"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:layout_marginStart="@dimen/_20ssp"
+                        android:layout_marginEnd="@dimen/_20ssp"
+                        android:layout_marginTop="@dimen/_20ssp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppinsbold"
+                            android:text="Select Complain"
+                            android:textColor="@color/project_color"
+                            android:textSize="13dp" />
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:id="@+id/select_complaint"
+                            android:layout_marginTop="@dimen/_4ssp"
+                            android:layout_height="wrap_content">
+
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Problem 1"
+                                android:id="@+id/pb_1"
+                                android:checked="true"
+                                android:buttonTint="@color/quantum_googred"
+                                android:paddingStart="@dimen/_6ssp"
+                                android:fontFamily="@font/poppins"
+                                android:textSize="15dp"
+                                />
+
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Problem 2"
+                                android:id="@+id/pb_2"
+                                android:buttonTint="@color/quantum_googred"
+                                android:paddingStart="@dimen/_6ssp"
+                                android:fontFamily="@font/poppins"
+                                android:textSize="15dp"
+                                />
+
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/quantum_googred"
+                                android:text="Problem 3"
+                                android:id="@+id/pb_3"
+                                android:paddingStart="@dimen/_6ssp"
+                                android:fontFamily="@font/poppins"
+                                android:textSize="15dp"
+                                />
+
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Other Support"
+                                android:id="@+id/other_support"
+                                android:buttonTint="@color/quantum_googred"
+                                android:paddingStart="@dimen/_6ssp"
+                                android:fontFamily="@font/poppins"
+                                android:textSize="15dp"
+                                />
+
+                        </RadioGroup>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="@dimen/_18ssp"
+                            android:fontFamily="@font/poppinsbold"
+                            android:text="Add Message"
+                            android:textColor="@color/project_color"
+                            android:textSize="13dp" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:lines="6"
+                            android:hint="Type Your Message"
+                            android:fontFamily="@font/poppins"
+                            android:gravity="top"
+                            android:paddingStart="@dimen/_9ssp"
+                            android:maxLines="16"
+                            android:id="@+id/ticket_complaint"
+                            android:paddingEnd="@dimen/_9ssp"
+                            android:textSize="@dimen/_14ssp"
+                            android:paddingTop="@dimen/_9ssp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_14ssp"
+                            android:background="@drawable/round_as_eddittext"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="@dimen/_25ssp"
+                            android:visibility="gone"
+                            android:fontFamily="@font/poppinsbold"
+                            android:text="Location Details"
+                            android:textColor="@color/project_color"
+                            android:textSize="13dp" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:textSize="@dimen/_14ssp"
+                            android:layout_marginTop="@dimen/_14ssp"
+                            android:hint="Add Location Details"
+                            android:fontFamily="@font/poppins"
+                            />
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/submit"
+                        android:layout_width="150dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginBottom="@dimen/_30ssp"
+                        android:background="@drawable/design_as_edittext_gradient"
+                        android:elevation="6dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/poppinsbold"
+                            android:text="Submit"
+                            android:textColor="@color/white"
+                            android:textSize="14dp" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </RelativeLayout>
+
+</layout>

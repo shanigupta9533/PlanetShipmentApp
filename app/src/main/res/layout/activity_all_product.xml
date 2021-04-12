@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.AllProductActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_action_back"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/toolbar_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="18dp"
+                android:layout_toEndOf="@id/back_button"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins"
+                android:maxLines="1"
+                android:text="All Product"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.yalantis.phoenix.PullToRefreshView
+        android:id="@+id/pullToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:background="#eeeeee"
+            android:layout_height="match_parent">
+
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </com.yalantis.phoenix.PullToRefreshView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/parent_of_date"
+        android:layout_width="@dimen/_50ssp"
+        android:layout_height="@dimen/_50ssp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/_15ssp"
+        app:cardBackgroundColor="@color/project_color"
+        app:cardCornerRadius="@dimen/_25ssp">
+
+        <ImageView
+            android:layout_width="@dimen/_26ssp"
+            android:layout_height="@dimen/_26ssp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_action_calender_range" />
+
+    </androidx.cardview.widget.CardView>
+
+    <include layout="@layout/no_data_found" />
+
+    <include layout="@layout/no_internet_connection" />
+
+    <include layout="@layout/progress_bar_layout" />
+
+</RelativeLayout>
+
+</layout>

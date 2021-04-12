@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PlanetShipmentApp</string>
+    <string name="do_not_have_and_account_create_account">Do not Have an account</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="chairy_daicy_li_black">Chairy - daicy li Black</string>
+    <string name="transport_charges">Transport Charges</string>
+    <string name="delivery_date">Delivery Date</string>
+</resources>

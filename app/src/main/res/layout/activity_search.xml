@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="#fafafa"
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayout"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        app:contentInsetStart="0dp"
+        android:id="@+id/toolbar"
+        android:background="#fdfdfd"
+        app:contentInsetEnd="0dp"
+        android:layout_height="55dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_action_back"
+                android:id="@+id/back"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_20ssp"
+                app:tint="@color/black" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Search by Name Or Product Id"
+                android:maxLines="1"
+                android:layout_toEndOf="@+id/back"
+                android:background="@android:color/transparent"
+                android:id="@+id/search_bar"
+                android:layout_marginEnd="12dp"
+                android:paddingStart="12dp"
+                android:textSize="14sp"
+                android:focusable="true"
+                android:textColorHint="#8c8c8c"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/poppins"
+                android:paddingEnd="8dp"
+                android:drawablePadding="8dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="8dp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#dcdcdc"
+                />
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="wrap_content"
+        app:tabIndicatorHeight="0dp"
+        app:tabPaddingStart="30dp"
+        app:tabMinWidth="160dp"
+        app:tabPaddingEnd="30dp"
+        app:tabPaddingBottom="1dp"
+        android:id="@+id/tabLayout"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_12ssp"
+        app:tabMode="auto"
+        app:tabTextAppearance="@style/MineCustomTabText"
+        app:tabSelectedTextColor="@color/white"
+        android:theme="@style/Base.Widget.Design.TabLayout"
+        app:tabGravity="fill"
+        app:tabTextColor="@android:color/black"
+        android:clipToPadding="false"
+        android:layout_height="35dp"
+        >
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewPager"
+        />
+
+</LinearLayout>
+
+</layout>

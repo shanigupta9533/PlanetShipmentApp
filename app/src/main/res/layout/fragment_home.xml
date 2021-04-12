@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#eeeeee"
+        android:orientation="vertical"
+        tools:context=".Fragment.HomeFragment">
+
+        <LinearLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:background="@color/white"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:id="@+id/sort_delay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:drawableStart="@drawable/ic_action_sort"
+                        android:drawablePadding="@dimen/_7ssp"
+                        android:drawableTint="#000000"
+                        android:fontFamily="@font/poppins"
+                        android:gravity="center"
+                        android:text="Sorting Date : "
+                        android:textColor="#000000"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:id="@+id/date_sorting"
+                        android:fontFamily="@font/poppins"
+                        android:gravity="center"
+                        android:text="Whole Data"
+                        android:alpha="0.7"
+                        android:textColor="@color/black"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#eeeeee" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <com.yalantis.phoenix.PullToRefreshView
+            android:id="@+id/pullToRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </com.yalantis.phoenix.PullToRefreshView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/parent_of_date"
+            android:layout_width="@dimen/_50ssp"
+            android:layout_height="@dimen/_50ssp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/_15ssp"
+            app:cardBackgroundColor="@color/project_color"
+            app:cardCornerRadius="@dimen/_25ssp">
+
+            <ImageView
+                android:layout_width="@dimen/_26ssp"
+                android:layout_height="@dimen/_26ssp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_action_calender_range" />
+
+        </androidx.cardview.widget.CardView>
+
+        <include layout="@layout/no_data_found" />
+
+        <include layout="@layout/no_internet_connection" />
+
+        <include layout="@layout/progress_bar_layout" />
+
+    </RelativeLayout>
+
+</layout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.ProductFragment">
+
+    <com.yalantis.phoenix.PullToRefreshView
+        android:layout_width="match_parent"
+        android:id="@+id/pullToRefresh"
+        android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    </com.yalantis.phoenix.PullToRefreshView>
+
+    <include layout="@layout/no_data_found"/>
+
+    <include layout="@layout/no_internet_connection"/>
+
+    <include layout="@layout/progress_bar_layout"/>
+
+</RelativeLayout>
+
+</layout>

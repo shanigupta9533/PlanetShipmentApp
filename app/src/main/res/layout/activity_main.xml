@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.MainActivity">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:elevation="8dp"
+            app:layout_scrollFlags="scroll">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                app:cardCornerRadius="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/menuItem"
+                        android:layout_width="21dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="25dp"
+                        android:src="@drawable/ic_dashboard_icon" />
+
+                    <TextView
+                        android:id="@+id/search_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="18dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:focusable="false"
+                        android:fontFamily="@font/poppins"
+                        android:maxLines="1"
+                        android:text="Search Added Product"
+                        android:textColor="@color/quantum_grey700"
+                        android:textSize="14dp" />
+
+                    <ImageView
+                        android:id="@+id/scanned_product_icon"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="20dp"
+                        android:elevation="3dp"
+                        android:src="@drawable/ic_barcode_icon" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="-30dp"
+            android:layout_above="@+id/bottom_space"
+            android:layout_below="@+id/toolbar"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_height="match_parent"
+            />
+
+        <com.luseen.spacenavigation.SpaceNavigationView
+            android:id="@+id/bottom_space"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:active_centre_button_background_color="@color/quantum_pink"
+            app:active_centre_button_icon_color="@color/white"
+            app:active_item_color="@color/quantum_pink"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            app:layout_anchorGravity="center|bottom"
+            app:centre_button_color="@color/quantum_pink"
+            app:centre_button_icon="@drawable/ic_best_seller"
+            app:inactive_centre_button_icon_color="@color/white"
+            app:inactive_item_color="@color/black"
+            app:space_background_color="@color/white"
+            app:space_item_icon_only_size="22dp" />
+
+</RelativeLayout>
