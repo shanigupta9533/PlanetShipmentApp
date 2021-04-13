@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.androidbuts.multispinnerfilter.*
+import com.virtual_market.planetshipmentapp.Adapter.NestedProductAndPartsAdapter
 import com.virtual_market.planetshipmentapp.Adapter.OrderDetailsAdapter
 import com.virtual_market.planetshipmentapp.Modal.*
 import com.virtual_market.planetshipmentapp.MyUils.MySharedPreferences
@@ -33,6 +34,7 @@ import com.virtual_market.planetshipmentapp.databinding.ActivityOrderDetailsBind
 import com.virtual_market.virtualmarket.api.RetrofitClient
 import kotlinx.android.synthetic.main.activity_create_menu.view.*
 import kotlinx.android.synthetic.main.activity_order_details.*
+import kotlinx.android.synthetic.main.activity_qr_code_with_product.*
 import kotlinx.android.synthetic.main.no_internet_connection.*
 import java.io.IOException
 import java.util.*
@@ -42,6 +44,8 @@ import kotlin.concurrent.thread
 
 class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener {
 
+    private lateinit var nestedProductAndPartsAdapter: NestedProductAndPartsAdapter
+    private var customer_details: Customers?=null
     private lateinit var responseUserLogin: ResponseUserLogin
     private var addressOfShipping: String? = null
     private lateinit var viewModel: OrdersViewModel
@@ -53,13 +57,12 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
     private var progressBar: RelativeLayout? = null
     private var refreshButton: RelativeLayout? = null
     private var responseOrders: ResponseOrders? = null
-    private var noDataFound: RelativeLayout? = null
     private var ordJson: OrdJson? = null
     private val fitterArrayList = ArrayList<KeyPairBoolData>()
     private val helperArrayList = ArrayList<KeyPairBoolData>()
     private val transportArraylist = ArrayList<KeyPairBoolData>()
     private lateinit var activity: ActivityOrderDetailsBinding
-    private lateinit var showModel: ArrayList<ProductItem>
+    private lateinit var showModelSnl: ArrayList<SerialProductListModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,28 +73,29 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
             responseOrders = intent.getParcelableExtra("responseOrders")
             ordJson = intent.getParcelableExtra("ordJson")
             productItem = intent.getParcelableArrayListExtra("productItem")
+            customer_details = intent.getParcelableExtra("customer_details")
 
         }
 
         responseUserLogin = (application as PlanetShippingApplication).responseUserLogin
 
-        noDataFound = findViewById(R.id.no_data_found)
-        noDataFound!!.visibility = View.GONE
-
         progressBar = findViewById(R.id.progress_bar)
 
         refreshButton = findViewById(R.id.refresh_button)
-
-        showModel = ArrayList()
 
         setUpLocationData()
 
         mySharedPreferences = MySharedPreferences.getInstance(this)
 
-        val gridLayoutManager = GridLayoutManager(this, 1, LinearLayoutManager.HORIZONTAL, false)
-        activity.allProductList.layoutManager = gridLayoutManager
-        orderDetailsAdapter = OrderDetailsAdapter(this, showModel)
-        activity.allProductList.adapter = orderDetailsAdapter
+        showModelSnl=ArrayList()
+
+        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        activity.allProductList.layoutManager = linearLayoutManager
+        nestedProductAndPartsAdapter = NestedProductAndPartsAdapter(this, showModelSnl)
+
+        nestedProductAndPartsAdapter.isOrderdetails(true)
+
+        activity.allProductList.adapter = nestedProductAndPartsAdapter
 
         setDataOnPage(responseOrders!!)
 
@@ -135,11 +139,12 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
                         uri =
                             "http://maps.google.com/maps?saddr=" + latitude + "," + longitude + "&daddr=" + near_locations.latitude + "," + near_locations.longitude
 
-                        activity.shippingDistance.text = "Distance From Address : $s K.M"
+                        activity.shippingDistance.text = "Distance to Address : $s K.M"
 
                     }
 
                 }
+
 
             }
 
@@ -220,21 +225,14 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
         val address = ordJson!!.getAddress()
 
         activity.orderNo.text = responseOrders.OrdCode
-        activity.amount.text = responseOrders.OrdAmount
-        activity.date.text = responseOrders.DeliveryDate
+        activity.date.text = "Delivery Date: "+responseOrders.DeliveryDate
         activity.noOfItems.text = responseOrders.ItemCount
-        activity.totalAmount.text = responseOrders.BookingAmount
         activity.address.text = address!!.getShippingAddress()!!.addType
-        activity.address2.text = address.getShippingAddress()!!.addLine1
-        activity.address3.text = address.getShippingAddress()!!.addLine2
+        activity.address2.text = address.getShippingAddress()!!.addLine1+" "+address.getShippingAddress()!!.addLandmark+" "+address.getShippingAddress()!!.addCity+" "+address.getShippingAddress()!!.addPinCode+" "+address.getShippingAddress()!!.addState
+        activity.address3.text = address.getShippingAddress()!!.addLine2+" "+address.getShippingAddress()!!.addFullName+" "+address.getShippingAddress()!!.companyName+" "+address.getShippingAddress()!!.addMobNo
 
-        showModel.clear()
-        showModel.addAll(productItem!!)
-        orderDetailsAdapter.notifyDataSetChanged()
-
-        activity.installationParent.visibility = View.GONE
-        activity.customizationParent.visibility = View.GONE
-        activity.deliveryParent.visibility = View.GONE
+        activity.customerName.text=customer_details!!.customerName
+        activity.phoneNumber.text=customer_details!!.mobNo
 
         activity.deliveryDateSubmit.setOnClickListener {
 
@@ -259,30 +257,6 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
             )
 
             datePickerDialog.show()
-
-        }
-
-        if (!TextUtils.isEmpty(responseOrders.InstallationCharges) && responseOrders.InstallationCharges!!.trim()
-                .toFloat() > 0
-        ) {
-            activity.installationCharges.text = responseOrders.InstallationCharges
-            activity.installationParent.visibility = View.VISIBLE
-
-        }
-
-        if (!TextUtils.isEmpty(responseOrders.CustomizationCharges) && responseOrders.CustomizationCharges!!.trim()
-                .toFloat() > 0
-        ) {
-            activity.customizationCharges.text = responseOrders.CustomizationCharges
-            activity.customizationParent.visibility = View.VISIBLE
-
-        }
-
-        if (!TextUtils.isEmpty(responseOrders.DeliveryCharges) && responseOrders.DeliveryCharges!!.trim()
-                .toFloat() > 0
-        ) {
-            activity.deliveryCharges.text = responseOrders.DeliveryCharges
-            activity.deliveryParent.visibility = View.VISIBLE
 
         }
 
@@ -337,8 +311,6 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
         }
 
-        activity.totalAmount.text = responseOrders.OrdAmount
-
         activity.scanProduct.setOnClickListener {
 
             val intent = Intent(this, QrCodeWithProductActivity::class.java)
@@ -382,6 +354,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
         setupObservers()
 
+
         refreshButton!!.setOnClickListener {
 
             setupObservers()
@@ -409,12 +382,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
         viewModel.loading.observe(this, {
             if (it) {
                 progressBar!!.visibility = View.VISIBLE
-                noDataFound!!.visibility = View.GONE
                 no_internet_connection.visibility = View.GONE
-
-            } else {
-
-                progressBar!!.visibility = View.GONE
 
             }
         })
@@ -433,21 +401,10 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
                 MyUtils.createToast(this.applicationContext, it.message)
 
-                if (it.message.equals("No Data Available")) {
-
-                    noDataFound!!.visibility = View.VISIBLE
-
-                } else {
-
-                    noDataFound!!.visibility = View.GONE
-
-                }
-
                 return@observe
 
             } else {
 
-                noDataFound!!.visibility = View.GONE
                 val employees = it.Employees
 
                 helperArrayList.clear()
@@ -492,6 +449,8 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
                 callTranporterApi()
 
+                setupSNLDATA()
+
                 onSetFitterSpinnerData(
                     activity.fitterSpinner,
                     fitterArrayList
@@ -500,6 +459,44 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
                     activity.helperSpinner,
                     helperArrayList
                 ) // data set on helper
+
+            }
+
+        })
+
+    }
+
+    private fun setupSNLDATA() {
+
+        progressBar!!.visibility=View.VISIBLE
+
+        viewModel.dispatchOrdersByParts(responseOrders!!.OrdCode!!)
+
+        viewModel.orderDispatchByParts.removeObservers(this)
+
+        viewModel.orderDispatchByParts.observe(this, {
+
+            if (it.success.equals("failure")) {
+
+                activity.lineOfProduct.visibility = View.GONE
+
+                progressBar!!.visibility = View.GONE
+
+                return@observe
+
+            } else {
+
+                val items = it.Info
+                showModelSnl.clear()
+                showModelSnl.addAll(items!!)
+
+                if (showModelSnl.size == 0) {
+                    activity.lineOfProduct.visibility = View.GONE
+                }
+
+                nestedProductAndPartsAdapter.notifyDataSetChanged()
+
+                progressBar!!.visibility = View.GONE
 
             }
 

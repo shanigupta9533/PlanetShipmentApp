@@ -97,25 +97,7 @@ class MainActivity : AppCompatActivity() {
 
         mLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        findViewById<ImageView>(R.id.scanned_product_icon).setOnClickListener {
-
-            startActivity(Intent(this, ScannedProductActivity::class.java))
-
-        }
-
         supportFragmentManager.beginTransaction().add(R.id.frameLayout, HomeFragment(), "home").commit()
-
-        findViewById<ImageView>(R.id.menuItem).setOnClickListener {
-
-            startActivity(Intent(this, CreateMenuActivity::class.java))
-
-        }
-
-        findViewById<TextView>(R.id.search_view).setOnClickListener {
-
-            startActivity(Intent(this, SearchActivity::class.java))
-
-        }
 
         spaceNavigationView!!.setSpaceOnClickListener(object : SpaceOnClickListener {
             override fun onCentreButtonClick() {

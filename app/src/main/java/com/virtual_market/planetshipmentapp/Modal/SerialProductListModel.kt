@@ -56,6 +56,15 @@ class SerialProductListModel() :Parcelable {
     var DelliveryDate:String?=null
 
     @Ignore
+    var helpers:String?=null
+
+    @Ignore
+    var fitters:String?=null
+
+    @Ignore
+    var Transporters:String?=null
+
+    @Ignore
     var Details:ArrayList<SerialDetailsModal>?=null
 
     constructor(parcel: Parcel) : this() {

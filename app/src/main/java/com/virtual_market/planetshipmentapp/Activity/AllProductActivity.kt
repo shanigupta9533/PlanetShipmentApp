@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.TextUtils
 import android.view.View
 import android.widget.DatePicker
 import android.widget.RelativeLayout
@@ -224,14 +225,41 @@ class AllProductActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
                 thread {
 
-                    showModel.clear()
+                    if (responseUserLogin.Role.equals("Fitter")) {
 
-                    showModel.addAll(it.Info!!)
+                        val findIdsFromStringFitter = findIdsFromStringFitter(it.Info!!)
+                        showModel.clear()
+                        showModel.addAll(findIdsFromStringFitter)
+
+                    } else if (responseUserLogin.Role.equals("Helper")) {
+
+                        val findIdsFromStringHelper = findIdsFromStringHelper(it.Info!!)
+                        showModel.clear()
+                        showModel.addAll(findIdsFromStringHelper)
+
+                    } else if (!TextUtils.isEmpty(mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id))) {
+
+                        val findIdsFromStringTransporter = findIdsFromStringTransporter(it.Info!!)
+                        showModel.clear()
+                        showModel.addAll(findIdsFromStringTransporter)
+
+                    } else {
+
+                        showModel.clear()
+                        showModel.addAll(it.Info!!)
+
+                    }
 
                     Collections.sort(showModel,
                         Comparator<SerialProductListModel> { o1, o2 -> o1.Warehouse!!.compareTo(o2.Warehouse!!) })
 
                     runOnUiThread {
+
+                        if(showModel.size>0)
+                            noDataFound.visibility=View.GONE
+                        else
+                            noDataFound.visibility=View.VISIBLE
+
 
                         showProductAdapter.notifyDataSetChanged()
 
@@ -245,6 +273,106 @@ class AllProductActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         })
 
     }
+
+    private fun findIdsFromStringTransporter(orders: java.util.ArrayList<SerialProductListModel>): ArrayList<SerialProductListModel> {
+
+        val responseOrdersArray = ArrayList<SerialProductListModel>()
+
+        var responseOrders: SerialProductListModel
+
+        orders.forEach {
+
+            responseOrders = it
+
+            if (!TextUtils.isEmpty(it.Transporters)) {
+
+                val split = it.Transporters!!.split(",")
+
+                split.forEach {
+
+                    if (mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id)
+                            .equals(it, true)
+                    )
+
+                        responseOrdersArray.add(responseOrders)
+
+                    return@forEach
+
+                }
+
+            }
+
+        }
+
+        return responseOrdersArray
+
+    }
+
+    private fun findIdsFromStringFitter(orders: ArrayList<SerialProductListModel>): ArrayList<SerialProductListModel> {
+
+        val responseOrdersArray = ArrayList<SerialProductListModel>()
+
+        var responseOrders: SerialProductListModel
+
+        orders.forEach {
+
+            responseOrders = it
+
+            if (!TextUtils.isEmpty(it.fitters)) {
+
+                val split = it.fitters!!.split(",")
+
+                split.forEach {
+
+                    if (responseUserLogin.EmpId!!.equals(it, true))
+
+                        responseOrdersArray.add(responseOrders)
+
+                    return@forEach
+
+                }
+
+            }
+
+        }
+
+        return responseOrdersArray
+
+    }
+
+    private fun findIdsFromStringHelper(orders: java.util.ArrayList<SerialProductListModel>): ArrayList<SerialProductListModel> {
+
+        val responseOrdersArray = ArrayList<SerialProductListModel>()
+
+        var responseOrders: SerialProductListModel
+
+        orders.forEach {
+
+            responseOrders = it
+
+            if (!TextUtils.isEmpty(it.helpers)) {
+
+                val split = it.helpers!!.split(",")
+
+                split.forEach {
+
+                    if (responseUserLogin.EmpId!!.equals(it, true))
+
+                        responseOrdersArray.add(responseOrders)
+
+                    return@forEach
+
+
+                }
+
+            }
+
+        }
+
+        return responseOrdersArray
+
+    }
+
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 

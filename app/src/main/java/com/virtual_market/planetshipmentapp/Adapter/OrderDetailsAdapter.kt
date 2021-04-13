@@ -38,7 +38,7 @@ private val responsePost: List<ProductItem>
 
         val productItem = responsePost[position]
 
-        Glide.with(context).load(productItem.mainImage).error(R.drawable.after_delete_sofa).into(holder.image_icon)
+        Glide.with(context).load(productItem.mainImage).placeholder(R.drawable.ic_logo_brown).error(R.drawable.ic_logo_brown).into(holder.image_icon)
         holder.no_of_items.text = productItem.qty.toString()
         holder.price.text = productItem.mRP
         holder.title.text = productItem.detailName

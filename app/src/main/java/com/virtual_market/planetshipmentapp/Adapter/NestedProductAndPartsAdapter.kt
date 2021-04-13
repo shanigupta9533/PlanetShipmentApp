@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.virtual_market.planetshipmentapp.Modal.SerialDetailsModal
 import com.virtual_market.planetshipmentapp.Modal.SerialProductListModel
 import com.virtual_market.planetshipmentapp.MyUils.GridSpacingItemDecoration
+import com.virtual_market.planetshipmentapp.MyUils.MyUtils
 import com.virtual_market.planetshipmentapp.R
 
 class NestedProductAndPartsAdapter(
@@ -18,7 +19,9 @@ class NestedProductAndPartsAdapter(
     private val responsePost: List<SerialProductListModel>
 ) : RecyclerView.Adapter<NestedProductAndPartsAdapter.viewholder>() {
 
+    private var isOrderDetails: Boolean=false
     private val productId: ArrayList<String> = ArrayList()
+    private lateinit var onClickListener: NestedProductAndPartsAdapter.OnClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewholder {
         val layoutInflater = LayoutInflater.from(context)
@@ -35,6 +38,8 @@ class NestedProductAndPartsAdapter(
 
     fun setOnClickListener(onClickListener: OnClickListener) {
 
+        this.onClickListener=onClickListener
+
     }
 
     override fun onBindViewHolder(holder: viewholder, position: Int) {
@@ -42,7 +47,6 @@ class NestedProductAndPartsAdapter(
         val responseOrders = responsePost[position]
 
         holder.foreign_name.text=responseOrders.ForeignName
-        holder.sapCode.text=responseOrders.SapOrderCode
         holder.no_of_items.text=responseOrders.AllocQty
         holder.warehouse.text=responseOrders.Warehouse
         holder.item_code.text=responseOrders.ItemCode
@@ -62,9 +66,7 @@ class NestedProductAndPartsAdapter(
     inner class viewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private var recyclerView: RecyclerView? = null
-        val imageIcon: ImageView = itemView.findViewById(R.id.image_icon)
         val foreign_name: TextView = itemView.findViewById(R.id.foreign_name)
-        val sapCode: TextView = itemView.findViewById(R.id.sapCode)
         val no_of_items: TextView = itemView.findViewById(R.id.no_of_items)
         val warehouse: TextView = itemView.findViewById(R.id.warehouse)
         val item_code: TextView = itemView.findViewById(R.id.item_code)
@@ -100,18 +102,23 @@ class NestedProductAndPartsAdapter(
 
             showPartitianAdapter.productId(productId)
 
+            showPartitianAdapter.setOnClickListener(object : ShowPartitianAdapter.OnClickListener{
+
+                override fun onClick(serialNumber: String?) {
+
+                    if(!isOrderDetails) {
+
+                        productId.add(serialNumber!!)
+                        showPartitianAdapter.productId(productId)
+                        notifyDataSetChanged()
+
+                    }
+
+                }
+
+            })
+
         }
-
-
-    }
-
-    fun numberCalculation(number: Long): String? {
-        if (number < 1000) return "" + number
-        val exp = (Math.log(number.toDouble()) / Math.log(1000.0)).toInt()
-        return String.format(
-            "%.1f %c", number / Math.pow(1000.0, exp.toDouble()),
-            "kMGTPE"[exp - 1]
-        )
 
 
     }
@@ -120,6 +127,12 @@ class NestedProductAndPartsAdapter(
 
         this.productId.clear()
         this.productId.addAll(productId)
+
+    }
+
+    fun isOrderdetails(b: Boolean) {
+
+        isOrderDetails=b
 
     }
 

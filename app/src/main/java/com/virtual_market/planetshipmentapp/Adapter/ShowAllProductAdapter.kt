@@ -39,13 +39,12 @@ class ShowAllProductAdapter(private val context: Context,
         val responseOrders = responsePost[position]
 
         holder.foreign_name.text=responseOrders.ForeignName
-        holder.sapCode.text=responseOrders.SapOrderCode
         holder.no_of_items.text=responseOrders.AllocQty
         holder.warehouse.text=responseOrders.Warehouse
         holder.item_code.text=responseOrders.ItemCode
         holder.order_no.text="Order No : "+responseOrders.OrdCode
         holder.detail_name.text=responseOrders.DetailName
-        holder.date.text=responseOrders.DeliveryDate!!.substring(0,10)
+        holder.date.text="Delivery date : "+responseOrders.DeliveryDate!!.substring(0,10)
 
         holder.scan_now.setOnClickListener {
 
@@ -67,7 +66,6 @@ class ShowAllProductAdapter(private val context: Context,
 
         val imageIcon: ImageView = itemView.findViewById(R.id.image_icon)
         val foreign_name: TextView = itemView.findViewById(R.id.foreign_name)
-        val sapCode: TextView = itemView.findViewById(R.id.sapCode)
         val no_of_items: TextView = itemView.findViewById(R.id.no_of_items)
         val warehouse: TextView = itemView.findViewById(R.id.warehouse)
         val item_code: TextView = itemView.findViewById(R.id.item_code)

@@ -147,45 +147,6 @@
                         android:fontFamily="@font/open_sans"
                         android:letterSpacing="0.01"
                         android:maxLines="1"
-                        android:text="Total Amount : "
-                        android:textColor="@color/quantum_googgreen900"
-                        android:textSize="13dp" />
-
-                    <TextView
-                        android:id="@+id/amount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="-6dp"
-                        android:alpha="0.6"
-                        android:drawablePadding="-5dp"
-                        android:drawableTint="@color/black"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:gravity="center"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="50.00"
-                        android:textColor="@color/black"
-                        android:textSize="12dp"
-                        app:drawableStartCompat="@drawable/ic_action_indian_rupee" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8ssp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:alpha="0.8"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
                         android:text="No. of items : "
                         android:textColor="@color/quantum_googgreen900"
                         android:textSize="13dp" />
@@ -216,7 +177,248 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="@dimen/_12ssp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins"
+                    android:maxLines="1"
+                    android:text="Customer Details"
+                    android:textColor="@color/project_color"
+                    android:textSize="14dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8ssp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:alpha="0.8"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="Name : "
+                        android:textColor="@color/quantum_googgreen900"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/customer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.6"
+                        android:drawablePadding="-5dp"
+                        android:drawableTint="@color/black"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:gravity="center"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="50.00"
+                        android:textColor="@color/black"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8ssp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:alpha="0.8"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="Phone Number : "
+                        android:textColor="@color/quantum_googgreen900"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/phone_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.6"
+                        android:drawablePadding="-5dp"
+                        android:drawableTint="@color/black"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:gravity="center"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="50.00"
+                        android:textColor="@color/black"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_12ssp"
+                    android:background="#eeeeee" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12ssp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/poppins"
+                        android:maxLines="1"
+                        android:text="Shipping Address"
+                        android:textColor="@color/project_color"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_14ssp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="Coupon Code : "
+                        android:textColor="@color/black"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/address_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.8"
+                        android:layout_marginTop="@dimen/_7ssp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="Coupon Code : "
+                        android:textColor="@color/black"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/address_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6ssp"
+                        android:alpha="0.8"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="Coupon Code : "
+                        android:textColor="@color/black"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/shipping_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="@dimen/_12ssp"
+                        android:ellipsize="end"
+                        android:alpha="0.8"
+                        android:fontFamily="@font/poppins"
+                        android:maxLines="1"
+                        android:text="Loading Shipping Distance .... "
+                        android:textColor="@color/quantum_googgreen900"
+                        android:textSize="14dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_12ssp"
+                    android:background="#eeeeee" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_12ssp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="Delivery date"
+                        android:textColor="@color/project_color"
+                        android:textSize="15dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/dateOfDelivery"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/_10ssp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/_40ssp"
+                            android:layout_marginStart="@dimen/_4ssp"
+                            android:background="@drawable/default_border_on_seletection"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="@string/delivery_date"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:maxLines="1"
+                            android:padding="10dp"
+                            android:textSize="@dimen/_12ssp" />
+
+                        <RelativeLayout
+                            android:id="@+id/delivery_date_submit"
+                            android:layout_width="230dp"
+                            android:layout_height="37dp"
+                            android:layout_marginStart="@dimen/_12ssp"
+                            android:layout_weight="1"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/design_as_outlined_button"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/poppins"
+                                android:text="Submit date"
+                                android:enabled="false"
+                                android:textColor="@color/quantum_pink"
+                                android:textSize="13dp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_15ssp"
+                    android:background="#eeeeee" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12ssp"
                     android:ellipsize="end"
                     android:fontFamily="@font/poppins"
@@ -321,41 +523,6 @@
                         android:fontFamily="@font/open_sans"
                         android:letterSpacing="0.01"
                         android:maxLines="1"
-                        android:text="Delivery date"
-                        android:textColor="@color/quantum_googgreen900"
-                        android:textSize="13dp" />
-
-                    <TextView
-                        android:id="@+id/dateOfDelivery"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40ssp"
-                        android:layout_marginStart="@dimen/_12ssp"
-                        android:background="@drawable/default_border_on_seletection"
-                        android:fontFamily="@font/open_sans"
-                        android:hint="@string/delivery_date"
-                        android:inputType="text"
-                        android:textColor="@color/black"
-                        android:maxLines="1"
-                        android:padding="10dp"
-                        android:textSize="@dimen/_12ssp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/_8ssp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:alpha="0.8"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
                         android:text="Transport charges"
                         android:textColor="@color/quantum_googgreen900"
                         android:textSize="13dp" />
@@ -378,9 +545,10 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="170dp"
                     android:orientation="horizontal"
                     android:id="@+id/parent_of_button"
+                    android:layout_gravity="center_horizontal"
                     android:layout_height="wrap_content">
 
                     <RelativeLayout
@@ -403,109 +571,12 @@
 
                     </RelativeLayout>
 
-                    <RelativeLayout
-                        android:id="@+id/delivery_date_submit"
-                        android:layout_width="match_parent"
-                        android:layout_height="37dp"
-                        android:layout_marginTop="22dp"
-                        android:layout_marginStart="@dimen/_12ssp"
-                        android:layout_weight="1"
-                        android:background="@drawable/design_as_outlined_button"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:fontFamily="@font/poppins"
-                            android:text="Submit date"
-                            android:enabled="false"
-                            android:textColor="@color/quantum_pink"
-                            android:textSize="13dp" />
-
-                    </RelativeLayout>
-
-
                 </LinearLayout>
 
-
-                <TextView
-                    android:id="@+id/shipping_distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="@dimen/_12ssp"
-                    android:ellipsize="end"
-                    android:alpha="0.8"
-                    android:fontFamily="@font/poppins"
-                    android:maxLines="1"
-                    android:text="Loading Shipping Distance .... "
-                    android:textColor="@color/quantum_googgreen900"
-                    android:textSize="14dp" />
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_12ssp"
-                    android:background="#eeeeee" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginTop="@dimen/_12ssp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/poppins"
-                    android:maxLines="1"
-                    android:text="Shipping Address"
-                    android:textColor="@color/project_color"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_14ssp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/open_sans"
-                    android:letterSpacing="0.01"
-                    android:maxLines="1"
-                    android:text="Coupon Code : "
-                    android:textColor="@color/black"
-                    android:textSize="13dp" />
-
-                <TextView
-                    android:id="@+id/address_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.8"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/open_sans"
-                    android:letterSpacing="0.01"
-                    android:maxLines="1"
-                    android:text="Coupon Code : "
-                    android:textColor="@color/black"
-                    android:textSize="13dp" />
-
-                <TextView
-                    android:id="@+id/address_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_6ssp"
-                    android:alpha="0.8"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/open_sans"
-                    android:letterSpacing="0.01"
-                    android:maxLines="1"
-                    android:text="Coupon Code : "
-                    android:textColor="@color/black"
-                    android:textSize="13dp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:id="@+id/line_of_product"
                     android:layout_marginTop="@dimen/_12ssp"
                     android:background="#eeeeee" />
 
@@ -521,295 +592,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_12ssp"
+                    android:layout_marginTop="@dimen/_16ssp"
                     android:background="#eeeeee" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginTop="@dimen/_12ssp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/poppins"
-                    android:maxLines="1"
-                    android:text="Order Summary"
-                    android:textColor="@color/project_color"
-                    android:textSize="14dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_14ssp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:alpha="0.8"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="Total before tax"
-                        android:textColor="@color/black"
-                        android:textSize="13dp" />
-
-                    <TextView
-                        android:id="@+id/before_tax"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.6"
-                        android:drawableStart="@drawable/ic_action_indian_rupee"
-                        android:drawablePadding="-5dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:gravity="center"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="50.00"
-                        android:textColor="@color/black"
-                        android:textSize="12dp"
-                        app:drawableTint="@color/black" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8ssp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:alpha="0.8"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="Coupon Discount"
-                        android:textColor="@color/black"
-                        android:textSize="13dp" />
-
-                    <TextView
-                        android:id="@+id/coupon_discount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.6"
-                        android:drawableStart="@drawable/ic_action_indian_rupee"
-                        android:drawablePadding="-5dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:gravity="center"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="50.00"
-                        android:textColor="@color/black"
-                        android:textSize="12dp"
-                        app:drawableTint="@color/black" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8ssp"
-                    android:id="@+id/installation_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:alpha="0.8"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="Total installation charges"
-                        android:textColor="@color/black"
-                        android:textSize="13dp" />
-
-                    <TextView
-                        android:id="@+id/installation_charges"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.6"
-                        android:drawableStart="@drawable/ic_action_indian_rupee"
-                        android:drawablePadding="-5dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:gravity="center"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="50.00"
-                        android:textColor="@color/black"
-                        android:textSize="12dp"
-                        app:drawableTint="@color/black" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/customization_parent"
-                    android:layout_marginTop="@dimen/_8ssp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:alpha="0.8"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="Total customization charges"
-                        android:textColor="@color/black"
-                        android:textSize="13dp" />
-
-                    <TextView
-                        android:id="@+id/customization_charges"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.6"
-                        android:drawablePadding="-5dp"
-                        android:ellipsize="end"
-                        android:drawableStart="@drawable/ic_action_indian_rupee"
-                        android:fontFamily="@font/open_sans"
-                        android:gravity="center"
-                        android:letterSpacing="0.01"
-                        android:drawableTint="@color/black"
-                        android:maxLines="1"
-                        android:text="50.00"
-                        android:textColor="@color/black"
-                        android:textSize="12dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8ssp"
-                    android:id="@+id/delivery_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:alpha="0.8"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="Total delivery charges"
-                        android:textColor="@color/black"
-                        android:textSize="13dp" />
-
-                    <TextView
-                        android:id="@+id/delivery_charges"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.6"
-                        android:drawableStart="@drawable/ic_action_indian_rupee"
-                        android:drawablePadding="-5dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:gravity="center"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="50.00"
-                        android:textColor="@color/black"
-                        android:textSize="12dp"
-                        app:drawableTint="@color/black" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8ssp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:alpha="0.8"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="Tax amount"
-                        android:textColor="@color/black"
-                        android:textSize="13dp" />
-
-                    <TextView
-                        android:id="@+id/tax_amount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.6"
-                        android:drawableStart="@drawable/ic_action_indian_rupee"
-                        android:drawablePadding="-5dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:gravity="center"
-                        android:letterSpacing="0.01"
-                        app:drawableTint="@color/black"
-                        android:maxLines="1"
-                        android:text="50.00"
-                        android:textColor="@color/black"
-                        android:textSize="12dp"
-                         />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15ssp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="Total Amount"
-                        android:textColor="@color/black"
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:id="@+id/total_amount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_action_indian_rupee"
-                        android:drawablePadding="-5dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
-                        android:gravity="center"
-                        android:letterSpacing="0.01"
-                        android:maxLines="1"
-                        android:text="50.00"
-                        android:textColor="@color/black"
-                        android:textSize="15dp"
-                        app:drawableTint="@color/black" />
-
-                </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/scan_product"
