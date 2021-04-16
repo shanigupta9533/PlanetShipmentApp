@@ -113,4 +113,13 @@ dependencies {
     // gms client
     implementation "com.google.android.gms:play-services-location:18.0.0"
 
+    //image compress
+    implementation 'id.zelory:compressor:2.1.0'
+
+    // upload files by server
+    implementation 'net.gotev:uploadservice:4.5.2'
+
+    // photo view zoom
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
 }

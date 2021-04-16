@@ -36,12 +36,12 @@ class ShowProductAdapter(
             .into(holder.imageIcon)
 
         holder.order_no.text = "Order No. ${responseOrders.OrdCode}"
-        holder.date.text = "Delivery Date " + responseOrders.DeliveryDate
+        holder.date.text = "Delivery Date : " + responseOrders.DeliveryDate
         holder.no_of_items.text = "${responseOrders.ItemCount}"
 
         holder.customer_name.text = customers!!.customerName
 
-        holder.order_date.text=responseOrders.OrdDate
+        holder.order_date.text=responseOrders.OrdDate!!
 
         holder.details_button.setOnClickListener {
 

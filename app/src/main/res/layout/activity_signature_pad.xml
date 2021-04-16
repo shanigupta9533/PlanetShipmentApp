@@ -104,4 +104,6 @@
 
     </LinearLayout>
 
+    <include layout="@layout/transparent_progress_bar_layout"/>
+
 </RelativeLayout>

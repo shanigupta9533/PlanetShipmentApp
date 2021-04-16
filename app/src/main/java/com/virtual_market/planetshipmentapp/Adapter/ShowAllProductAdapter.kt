@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.virtual_market.planetshipmentapp.Activity.QrCodeWithProductActivity
 import com.virtual_market.planetshipmentapp.Modal.ResponseOrders
 import com.virtual_market.planetshipmentapp.Modal.SerialProductListModel
@@ -45,6 +46,8 @@ class ShowAllProductAdapter(private val context: Context,
         holder.order_no.text="Order No : "+responseOrders.OrdCode
         holder.detail_name.text=responseOrders.DetailName
         holder.date.text="Delivery date : "+responseOrders.DeliveryDate!!.substring(0,10)
+
+        Glide.with(context).load("responseOrders.image").placeholder(R.drawable.ic_logo_brown).error(R.drawable.ic_logo_brown).into(holder.imageIcon)
 
         holder.scan_now.setOnClickListener {
 

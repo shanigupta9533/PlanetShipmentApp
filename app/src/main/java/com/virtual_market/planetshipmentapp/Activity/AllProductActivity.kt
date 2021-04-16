@@ -63,6 +63,12 @@ class AllProductActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
         showModel = ArrayList()
 
+        activity.backButton.setOnClickListener {
+
+            onBackPressed()
+
+        }
+
         progressBar = findViewById(R.id.progress_bar)
 
         val refreshButtonNoData = findViewById<RelativeLayout>(R.id.refresh_button_no_data)

@@ -12,14 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.virtual_market.planetshipmentapp.Modal.SerialDetailsModal
 import com.virtual_market.planetshipmentapp.R
 
-class ShowPartitianAdapter (
+class ShowPartitianAdapter(
     private val context: Context,
     private val responsePost: List<SerialDetailsModal>
 ) : RecyclerView.Adapter<ShowPartitianAdapter.viewholder>() {
 
-    private var productIdString: String?=null
+    private var productIdString: String? = null
     private lateinit var onClickListener: OnClickListener
-    private var stringModel:MutableList<String> = ArrayList<String>()
+    private var stringModel: MutableList<String> = ArrayList<String>()
+    private var i=0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewholder {
         val layoutInflater = LayoutInflater.from(context)
@@ -29,13 +30,15 @@ class ShowPartitianAdapter (
 
     interface OnClickListener {
 
-        fun onClick(serialNumber: String?)
+        fun onClick(serialNumber: SerialDetailsModal)
+        fun deleteOnClick(serialNumber: SerialDetailsModal)
+        fun greenAllProduct(boolean: Boolean)
 
     }
 
     fun setOnClickListener(onClickListener: OnClickListener) {
 
-        this.onClickListener=onClickListener
+        this.onClickListener = onClickListener
 
     }
 
@@ -43,31 +46,40 @@ class ShowPartitianAdapter (
 
         val responseOrders = responsePost[position]
 
-        holder.foreign_name.text=responseOrders.ForeignName
-        holder.no_of_items.text=responseOrders.AllocQty
-        holder.warehouse.text=responseOrders.Warehouse
-        holder.item_code.text=responseOrders.ItemCode
-        holder.order_no.text= "Sub Product ${position+1}"
-        holder.detail_name.text=responseOrders.DetailName
-        holder.date.text=responseOrders.DeliveryDate!!.substring(0,10)
-        holder.serial_number.text=responseOrders.SerialNumber!!
-
-        if((position+1)%2==0)
-            holder.divider.visibility=View.GONE
-        else
-            holder.divider.visibility=View.VISIBLE
+        holder.foreign_name.text = responseOrders.ForeignName
+        holder.no_of_items.text = responseOrders.AllocQty
+        holder.warehouse.text = responseOrders.Warehouse
+        holder.item_code.text = responseOrders.ItemCode
+        holder.order_no.text = "Sub Product ${position + 1}"
+        holder.detail_name.text = responseOrders.DetailName
+        holder.date.text = responseOrders.DeliveryDate!!.substring(0, 10)
+        holder.serial_number.text = responseOrders.SerialNumber!!
 
         holder.itemView.setOnClickListener {
 
-            onClickListener.onClick(responseOrders.SerialNumber)
+            if (stringModel.contains(responseOrders.SerialNumber))
+                onClickListener.deleteOnClick(responseOrders)
+            else
+                onClickListener.onClick(responseOrders)
 
         }
 
         stringModel.forEach {
 
-            if(responseOrders.SerialNumber.equals(it,true)){
+            if (responseOrders.SerialNumber.equals(it, true)) {
                 holder.parent_of_card.setCardBackgroundColor(Color.parseColor("#00ff00"))
+                i++
             }
+
+        }
+
+        if(responsePost.size==i){
+
+            onClickListener.greenAllProduct(true)
+
+        } else{
+
+            onClickListener.greenAllProduct(false)
 
         }
 
@@ -93,7 +105,6 @@ class ShowPartitianAdapter (
         val item_code: TextView = itemView.findViewById(R.id.item_code)
         val order_no: TextView = itemView.findViewById(R.id.order_no)
         val date: TextView = itemView.findViewById(R.id.date)
-        val divider: View = itemView.findViewById(R.id.divider)
         val parent_of_card: CardView = itemView.findViewById(R.id.parent_of_card)
         val detail_name: TextView = itemView.findViewById(R.id.detail_name)
         val serial_number: TextView = itemView.findViewById(R.id.serial_number)

@@ -3,6 +3,7 @@ package com.virtual_market.planetshipmentapp.ViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.virtual_market.planetshipmentapp.Adapter.InstallationModel
 import com.virtual_market.planetshipmentapp.Modal.*
 import com.virtual_market.planetshipmentapp.Repository.OrdersRepository
 import com.virtual_market.virtualmarket.api.ApiInterface
@@ -21,6 +22,14 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
 
     val serializedModel: MutableLiveData<SerialProductModel> by lazy {
         MutableLiveData<SerialProductModel>()
+    }
+
+    val installationImages: MutableLiveData<InstallationModel> by lazy {
+        MutableLiveData<InstallationModel>()
+    }
+
+    val documentOnServer: MutableLiveData<SuccessModel> by lazy {
+        MutableLiveData<SuccessModel>()
     }
 
     val allTransporters: MutableLiveData<TransportersModal> by lazy {
@@ -171,6 +180,40 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
             when (result) {
                 is Result.Success -> {
                     serializedModel.postValue(result.data)
+                }
+                is Result.Error -> {
+                    errorMessage.postValue(result.exception)
+                    noInternet.postValue(result.noInternet)
+                }
+            }
+        }
+    }
+
+    fun getInstallationImages(code:String) {
+        viewModelScope.launch {
+            loading.postValue(true)
+            val result = OrdersRepository(apiclient).installationImages(code)
+            loading.postValue(false)
+            when (result) {
+                is Result.Success -> {
+                    installationImages.postValue(result.data)
+                }
+                is Result.Error -> {
+                    errorMessage.postValue(result.exception)
+                    noInternet.postValue(result.noInternet)
+                }
+            }
+        }
+    }
+
+    fun sendDocumentOnServer(code:HashMap<String,String>) {
+        viewModelScope.launch {
+            loading.postValue(true)
+            val result = OrdersRepository(apiclient).sendDocumentOnServer(code)
+            loading.postValue(false)
+            when (result) {
+                is Result.Success -> {
+                    documentOnServer.postValue(result.data)
                 }
                 is Result.Error -> {
                     errorMessage.postValue(result.exception)

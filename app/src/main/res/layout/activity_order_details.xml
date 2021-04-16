@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -197,12 +196,12 @@
                         android:layout_gravity="center"
                         android:alpha="0.8"
                         android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
+                        android:fontFamily="@font/open_sans_semibold"
                         android:letterSpacing="0.01"
                         android:maxLines="1"
                         android:text="Name : "
                         android:textColor="@color/quantum_googgreen900"
-                        android:textSize="13dp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:id="@+id/customer_name"
@@ -212,13 +211,13 @@
                         android:drawablePadding="-5dp"
                         android:drawableTint="@color/black"
                         android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
+                        android:fontFamily="@font/poppinsmedium"
                         android:gravity="center"
                         android:letterSpacing="0.01"
                         android:maxLines="1"
                         android:text="50.00"
                         android:textColor="@color/black"
-                        android:textSize="12dp" />
+                        android:textSize="15dp" />
 
                 </LinearLayout>
 
@@ -226,6 +225,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8ssp"
+                    android:id="@+id/parent_of_phone"
                     android:orientation="horizontal">
 
                     <TextView
@@ -234,12 +234,12 @@
                         android:layout_gravity="center"
                         android:alpha="0.8"
                         android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
+                        android:fontFamily="@font/open_sans_semibold"
                         android:letterSpacing="0.01"
                         android:maxLines="1"
                         android:text="Phone Number : "
                         android:textColor="@color/quantum_googgreen900"
-                        android:textSize="13dp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:id="@+id/phone_number"
@@ -249,13 +249,13 @@
                         android:drawablePadding="-5dp"
                         android:drawableTint="@color/black"
                         android:ellipsize="end"
-                        android:fontFamily="@font/open_sans"
+                        android:fontFamily="@font/open_sans_semibold"
                         android:gravity="center"
                         android:letterSpacing="0.01"
                         android:maxLines="1"
                         android:text="50.00"
                         android:textColor="@color/black"
-                        android:textSize="12dp" />
+                        android:textSize="15dp" />
 
                 </LinearLayout>
 
@@ -347,6 +347,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
+                    android:id="@+id/parent_of_delivery_date"
                     android:layout_marginTop="@dimen/_12ssp"
                     android:layout_height="wrap_content">
 
@@ -595,30 +596,57 @@
                     android:layout_marginTop="@dimen/_16ssp"
                     android:background="#eeeeee" />
 
-                <RelativeLayout
-                    android:id="@+id/scan_product"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="@dimen/_20ssp"
-                    android:background="@drawable/design_as_outlined_button"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_12ssp"
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="@font/poppins"
-                        android:text="Scan Product"
-                        android:textColor="@color/quantum_pink"
-                        android:textSize="14dp" />
+                    <RelativeLayout
+                        android:id="@+id/installation_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/design_as_edittext_gradient"
+                        >
 
-                </RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/poppins"
+                            android:text="Installation Images"
+                            android:textColor="@color/white"
+                            android:textSize="13dp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/scan_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="@dimen/_20ssp"
+                        android:background="@drawable/design_as_outlined_button"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/poppins"
+                            android:text="Scan Product"
+                            android:textColor="@color/quantum_pink"
+                            android:textSize="14dp" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 

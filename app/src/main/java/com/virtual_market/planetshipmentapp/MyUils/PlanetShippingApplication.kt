@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.os.Build
 import com.virtual_market.planetshipmentapp.Modal.ResponseTransporter
 import com.virtual_market.planetshipmentapp.Modal.ResponseUserLogin
+import net.gotev.uploadservice.BuildConfig
+import net.gotev.uploadservice.UploadServiceConfig
 
 class PlanetShippingApplication: Application() {
 
@@ -28,6 +30,28 @@ class PlanetShippingApplication: Application() {
 //
 //        // Enable verbose OneSignal logging to debug issues if needed.
 //        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
+
+        createNotificationChannel()
+
+        UploadServiceConfig.initialize(
+            this,
+            CHANNEL,
+            BuildConfig.DEBUG
+        )
+
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            val channel = NotificationChannel(
+                CHANNEL,
+                "Upload Service Demo",
+                NotificationManager.IMPORTANCE_LOW
+            )
+            channel.setSound(null, null);
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
 }

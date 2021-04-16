@@ -1,5 +1,6 @@
 package com.virtual_market.planetshipmentapp.Repository
 
+import com.virtual_market.planetshipmentapp.Adapter.InstallationModel
 import com.virtual_market.planetshipmentapp.Modal.*
 import com.virtual_market.virtualmarket.api.ApiInterface
 import com.virtual_market.virtualmarket.api.Result
@@ -32,8 +33,16 @@ class OrdersRepository(private val apiClient: ApiInterface) : SafeApiRequest {
         return safeApiCall { apiClient.getAllTransporters() }
     }
 
+    suspend fun sendDocumentOnServer(code:HashMap<String,String>): Result<SuccessModel> {
+        return safeApiCall { apiClient.sendDocumentOnServer(code) }
+    }
+
     suspend fun serializedModel(code:String): Result<SerialProductModel> {
         return safeApiCall { apiClient.serializedModel(code) }
+    }
+
+    suspend fun installationImages(code:String): Result<InstallationModel> {
+        return safeApiCall { apiClient.installationImages(code) }
     }
 
 }

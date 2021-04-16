@@ -88,8 +88,8 @@ class LoginActivity : AppCompatActivity() {
     private fun setUpTransporters() {
 
         MyUtils.clearAllMap()
-        MyUtils.setHashmap("DriverMobile", activity.mobileNumber.text.toString())
-        val hashmap = MyUtils.setHashmap("DriverPassword", activity.password.text.toString())
+        MyUtils.setHashmap("DriverMobile", activity.mobileNumber.text.toString().trim())
+        val hashmap = MyUtils.setHashmap("DriverPassword", activity.password.text.toString().trim())
         viewModel!!.loginTransportersWithEmail(hashmap)
 
         viewModel!!.transporterUser.removeObservers(this)
@@ -142,12 +142,12 @@ class LoginActivity : AppCompatActivity() {
         MyUtils.clearAllMap()
 
         if (isValidEmail(activity.mobileNumber.text.toString()))
-            MyUtils.setHashmap("Email", activity.mobileNumber.text.toString())
+            MyUtils.setHashmap("Email", activity.mobileNumber.text.toString().trim())
         else {
-            MyUtils.setHashmap("Mobile", activity.mobileNumber.text.toString())
+            MyUtils.setHashmap("Mobile", activity.mobileNumber.text.toString().trim())
         }
 
-        val hashmap = MyUtils.setHashmap("password", activity.password.text.toString())
+        val hashmap = MyUtils.setHashmap("password", activity.password.text.toString().trim())
         viewModel!!.loginUserWithEmail(hashmap)
 
         viewModel!!.user.removeObservers(this)

@@ -244,7 +244,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
                             android:alpha="0.8"
                             android:ellipsize="end"
                             android:fontFamily="@font/open_sans"
@@ -281,16 +280,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:id="@+id/divider"
-                android:visibility="gone"
-                android:layout_marginEnd="@dimen/_11ssp"
-                android:layout_height="130dp"
-                android:background="#eeeeee"
-                android:layout_alignParentEnd="true"
-                />
 
         </RelativeLayout>
 

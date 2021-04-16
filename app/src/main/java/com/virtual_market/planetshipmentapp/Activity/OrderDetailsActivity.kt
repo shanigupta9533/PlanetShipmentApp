@@ -85,6 +85,12 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
         setUpLocationData()
 
+        activity.backButton.setOnClickListener {
+
+            onBackPressed()
+
+        }
+
         mySharedPreferences = MySharedPreferences.getInstance(this)
 
         showModelSnl=ArrayList()
@@ -234,6 +240,22 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
         activity.customerName.text=customer_details!!.customerName
         activity.phoneNumber.text=customer_details!!.mobNo
 
+        activity.parentOfPhone.setOnClickListener {
+
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:"+customer_details!!.mobNo)
+            startActivity(intent)
+
+        }
+
+        activity.installationImages.setOnClickListener {
+
+            val intent=Intent(this,InstallationImagesActivity::class.java)
+            intent.putExtra("ordCode",responseOrders.OrdCode)
+            startActivity(intent)
+
+        }
+
         activity.deliveryDateSubmit.setOnClickListener {
 
             MyUtils.clearAllMap()
@@ -288,6 +310,9 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
             activity.dateOfDelivery.isEnabled=false
 
             activity.parentOfButton.visibility=View.GONE
+            activity.transportCharges.visibility=View.GONE
+
+            activity.parentOfDeliveryDate.visibility=View.GONE
 
         } else if(responseUserLogin.Role.equals("Helper")){
 
@@ -298,6 +323,9 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
             activity.dateOfDelivery.isEnabled=false
 
             activity.parentOfButton.visibility=View.GONE
+            activity.transportCharges.visibility=View.GONE
+
+            activity.parentOfDeliveryDate.visibility=View.GONE
 
         } else if(!TextUtils.isEmpty(mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id))){
 
@@ -341,6 +369,8 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
                 MyUtils.createToast(this, it.message)
 
             }
+
+            progressBar!!.visibility=View.GONE
 
         })
 
@@ -529,7 +559,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
                         }
                     }
 
-                    keyPairBoolData.name = "${it.DriverName}"
+                    keyPairBoolData.name = "${it.DriverName}  ${it.VehicleType} ${it.VehicleNo}"
                     transportArraylist.add(keyPairBoolData)
 
                 }

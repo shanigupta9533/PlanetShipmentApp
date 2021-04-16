@@ -31,6 +31,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/button_of_parent"
         android:layout_below="@+id/scanner_view"
         android:id="@+id/recyclerView"
         />
@@ -75,6 +76,100 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:visibility="visible"
+        android:id="@+id/button_of_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/mark_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42ssp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:visibility="visible"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="@dimen/_10ssp"
+            android:background="@drawable/design_as_outlined_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:id="@+id/text_as_button"
+                android:fontFamily="@font/poppins"
+                android:text="Mark Shipped"
+                android:textColor="@color/quantum_pink"
+                android:textSize="14dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/_8ssp"
+            android:layout_marginEnd="@dimen/_8ssp"
+            android:id="@+id/parent_of_feedback"
+            android:layout_marginTop="@dimen/_8ssp"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/_12ssp"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/image_upload"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:layout_marginStart="@dimen/_12ssp"
+                android:layout_weight="1"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/design_as_outlined_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/poppins"
+                    android:text="Image"
+                    android:enabled="false"
+                    android:textColor="@color/quantum_pink"
+                    android:textSize="13dp" />
+
+            </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/feedbackText"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="@dimen/_12ssp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/design_as_edittext_gradient"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/poppins"
+                        android:text="Feedback"
+                        android:textColor="@color/white"
+                        android:textSize="13dp" />
+
+                </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <include layout="@layout/no_data_found"/>
 

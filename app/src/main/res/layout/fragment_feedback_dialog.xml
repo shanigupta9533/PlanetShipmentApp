@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:minWidth="330dp"
+    android:background="@drawable/round_dialog_background_sharp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/personAdd"
+            android:layout_width="@dimen/_24ssp"
+            android:layout_height="@dimen/_24ssp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:alpha="0.9"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/ic_feedback"
+            />
+
+        <TextView
+            android:id="@+id/showText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@+id/personAdd"
+            android:alpha="0.9"
+            android:fontFamily="@font/poppinsmedium"
+            android:letterSpacing="0.03"
+            android:text="Write Feedback"
+            android:textColor="@color/quantum_googgreen900"
+            android:textSize="15sp"
+            tools:ignore="RelativeOverlap" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#dcdcdc" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/white"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:maxLines="8"
+            android:background="@color/white"
+            android:minLines="4"
+            android:gravity="top"
+            android:textSize="15sp"
+            android:id="@+id/note_text"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@android:color/black"
+            android:hint="Feedback" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#dcdcdc">
+
+        <TextView
+            android:id="@+id/feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="Add Feedback"
+            android:textColor="@color/quantum_googgreen900"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_14ssp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="Cancel"
+            android:textColor="@color/quantum_googgreen900"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:visibility="gone"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="Delete"
+            android:textColor="@color/quantum_googgreen900"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

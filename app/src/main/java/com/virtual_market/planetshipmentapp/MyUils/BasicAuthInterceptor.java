@@ -9,10 +9,10 @@ import okhttp3.Response;
 
 public class BasicAuthInterceptor implements Interceptor {
 
-    private String credentials;
+    public static String credentials;
 
     public BasicAuthInterceptor() {
-        this.credentials = Credentials.basic("planet", "planet@#ioi$&*Tqhodktsnifk");
+        credentials = Credentials.basic("planet", "planet@#ioi$&*Tqhodktsnifk");
     }
 
     @Override

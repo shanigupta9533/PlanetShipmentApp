@@ -1,17 +1,21 @@
 package com.virtual_market.planetshipmentapp.Adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.virtual_market.planetshipmentapp.Modal.ResponseUserLogin
 import com.virtual_market.planetshipmentapp.Modal.SerialDetailsModal
 import com.virtual_market.planetshipmentapp.Modal.SerialProductListModel
 import com.virtual_market.planetshipmentapp.MyUils.GridSpacingItemDecoration
-import com.virtual_market.planetshipmentapp.MyUils.MyUtils
+import com.virtual_market.planetshipmentapp.MyUils.PlanetShippingApplication
 import com.virtual_market.planetshipmentapp.R
 
 class NestedProductAndPartsAdapter(
@@ -19,8 +23,11 @@ class NestedProductAndPartsAdapter(
     private val responsePost: List<SerialProductListModel>
 ) : RecyclerView.Adapter<NestedProductAndPartsAdapter.viewholder>() {
 
-    private var isOrderDetails: Boolean=false
+    private var isOrderDetails: Boolean = false
     private val productId: ArrayList<String> = ArrayList()
+    private val responseUserLogin: ResponseUserLogin =
+        (context.applicationContext as PlanetShippingApplication).responseUserLogin
+    private val serialIds: ArrayList<String> = ArrayList()
     private lateinit var onClickListener: NestedProductAndPartsAdapter.OnClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewholder {
@@ -38,7 +45,7 @@ class NestedProductAndPartsAdapter(
 
     fun setOnClickListener(onClickListener: OnClickListener) {
 
-        this.onClickListener=onClickListener
+        this.onClickListener = onClickListener
 
     }
 
@@ -46,16 +53,19 @@ class NestedProductAndPartsAdapter(
 
         val responseOrders = responsePost[position]
 
-        holder.foreign_name.text=responseOrders.ForeignName
-        holder.no_of_items.text=responseOrders.AllocQty
-        holder.warehouse.text=responseOrders.Warehouse
-        holder.item_code.text=responseOrders.ItemCode
-        holder.order_no.text="Order No : "+responseOrders.OrdCode
-        holder.detail_name.text=responseOrders.DetailName
-        holder.serial_number.text=responseOrders.SerialNumber
-        holder.date.text=responseOrders.DeliveryDate!!.substring(0,10)
+        holder.foreign_name.text = responseOrders.ForeignName
+        holder.no_of_items.text = responseOrders.AllocQty
+        holder.warehouse.text = responseOrders.Warehouse
+        holder.item_code.text = responseOrders.ItemCode
+        holder.order_no.text = "Order No : " + responseOrders.OrdCode
+        holder.detail_name.text = responseOrders.DetailName
+        holder.serial_number.text = responseOrders.SerialNumber
+        holder.date.text = responseOrders.DeliveryDate!!.substring(0, 10)
 
-        holder.bindView(responseOrders.Details)
+        Glide.with(context).load("responseOrders.image").placeholder(R.drawable.ic_logo_brown)
+            .error(R.drawable.ic_logo_brown).into(holder.image_icon)
+
+        holder.bindView(responseOrders.Details, responseOrders, holder.parent_of_parent)
 
     }
 
@@ -74,6 +84,8 @@ class NestedProductAndPartsAdapter(
         val date: TextView = itemView.findViewById(R.id.date)
         val detail_name: TextView = itemView.findViewById(R.id.detail_name)
         val serial_number: TextView = itemView.findViewById(R.id.serial_number)
+        val parent_of_parent: LinearLayout = itemView.findViewById(R.id.parent_of_parent)
+        val image_icon: ImageView = itemView.findViewById(R.id.image_icon)
 
         init {
 
@@ -95,28 +107,114 @@ class NestedProductAndPartsAdapter(
 
         }
 
-        fun bindView(parts: ArrayList<SerialDetailsModal>?) {
+        fun bindView(
+            parts: ArrayList<SerialDetailsModal>?,
+            responseOrdersParent: SerialProductListModel,
+            itemView: View
+        ) {
 
             val showPartitianAdapter = ShowPartitianAdapter(context, parts!!)
             recyclerView!!.adapter = showPartitianAdapter
 
             showPartitianAdapter.productId(productId)
 
-            showPartitianAdapter.setOnClickListener(object : ShowPartitianAdapter.OnClickListener{
+            // fitter jiska delivery status delivered ho usko red red kar do
+            if (responseUserLogin.Role.equals("Fitter") && responseOrdersParent.DeliveryStatus.equals(
+                    "Delivered")) {
 
-                override fun onClick(serialNumber: String?) {
+                parent_of_parent.setBackgroundColor(Color.parseColor("#ffcccb"))
+                showPartitianAdapter.setOnClickListener(object :
+                    ShowPartitianAdapter.OnClickListener {
+                    override fun onClick(serialNumber: SerialDetailsModal) {
+                    }
 
-                    if(!isOrderDetails) {
+                    override fun deleteOnClick(serialNumber: SerialDetailsModal) {
+                    }
 
-                        productId.add(serialNumber!!)
-                        showPartitianAdapter.productId(productId)
-                        notifyDataSetChanged()
+                    override fun greenAllProduct(boolean: Boolean) {
+                    }
+
+
+                })
+
+                // Fitter jiska Shipped status Shipped ho usko red red kar do
+            } else if (responseUserLogin.Role.equals("Stores") && responseOrdersParent.ShipStatus.equals("Shipped")) {
+                parent_of_parent.setBackgroundColor(Color.parseColor("#ffcccb"))
+                showPartitianAdapter.setOnClickListener(object :
+                    ShowPartitianAdapter.OnClickListener {
+                    override fun onClick(serialNumber: SerialDetailsModal) {
+                    }
+
+                    override fun deleteOnClick(serialNumber: SerialDetailsModal) {
+                    }
+
+                    override fun greenAllProduct(boolean: Boolean) {
+                    }
+
+
+                })
+
+            } else {
+
+                // in last sub product click par add kardo and color change kar do
+
+                showPartitianAdapter.setOnClickListener(object :
+                    ShowPartitianAdapter.OnClickListener {
+
+                    override fun onClick(responseOrders: SerialDetailsModal) {
+
+                        if (!isOrderDetails) {
+
+                            productId.add(responseOrders.SerialNumber!!)
+                            serialIds.add(responseOrders.SerialId!!)
+                            showPartitianAdapter.productId(productId)
+                            notifyDataSetChanged()
+
+                        }
 
                     }
 
-                }
+                    // in last sub product click par add kardo and delete karke color change kar do
 
-            })
+                    override fun deleteOnClick(responseOrders: SerialDetailsModal) {
+
+                        if (!isOrderDetails) {
+
+                            productId.remove(responseOrders.SerialNumber!!)
+                            serialIds.remove(responseOrders.SerialId!!)
+                            showPartitianAdapter.productId(productId)
+                            notifyDataSetChanged()
+
+                        }
+                    }
+
+                    // in last sub product total green ho toh product bhi green kar do
+
+                    override fun greenAllProduct(boolean: Boolean) {
+
+                        if (!isOrderDetails) {
+
+                            if (boolean) {
+
+                                productId.add(responseOrdersParent.SerialNumber!!)
+                                serialIds.add(responseOrdersParent.SerialId!!)
+                                parent_of_parent.setBackgroundColor(Color.parseColor("#00ff00"))
+                                showPartitianAdapter.productId(productId)
+
+                            } else {
+
+                                productId.remove(responseOrdersParent.SerialNumber!!)
+                                serialIds.remove(responseOrdersParent.SerialId!!)
+                                parent_of_parent.setBackgroundColor(Color.parseColor("#ffffff"))
+                                showPartitianAdapter.productId(productId)
+
+                            }
+
+                        }
+                    }
+
+                })
+            }
 
         }
 
@@ -130,9 +228,22 @@ class NestedProductAndPartsAdapter(
 
     }
 
+    fun getArrayList(): ArrayList<String> {
+
+        return productId
+
+    }
+
+
+    fun getSerialId(): ArrayList<String> {
+
+        return serialIds
+
+    }
+
     fun isOrderdetails(b: Boolean) {
 
-        isOrderDetails=b
+        isOrderDetails = b
 
     }
 

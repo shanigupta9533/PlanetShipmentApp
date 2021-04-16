@@ -35,7 +35,7 @@
                 android:maxLines="1"
                 android:text="Order No : 2020202020"
                 android:textColor="@color/quantum_googgreen900"
-                android:textSize="13dp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
 
         <ImageView
             android:id="@+id/image_icon"
-            android:layout_width="130dp"
+            android:layout_width="110dp"
             android:layout_height="@dimen/_100ssp"
             android:layout_gravity="start"
             android:layout_marginTop="8dp"

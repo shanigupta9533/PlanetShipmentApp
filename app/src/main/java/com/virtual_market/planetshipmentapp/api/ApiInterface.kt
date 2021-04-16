@@ -1,5 +1,6 @@
 package com.virtual_market.virtualmarket.api
 
+import com.virtual_market.planetshipmentapp.Adapter.InstallationModel
 import com.virtual_market.planetshipmentapp.Modal.*
 import retrofit2.Response
 import retrofit2.http.*
@@ -45,6 +46,11 @@ interface ApiInterface {
     @POST("UO")
     suspend fun sendIdsOnServer(@FieldMap hashmap: HashMap<String, String>): Response<UpdateOrderModel>
 
+    //send document on server
+    @FormUrlEncoded
+    @POST("AS")
+    suspend fun sendDocumentOnServer(@FieldMap hashmap: HashMap<String, String>): Response<SuccessModel>
+
     //send ids on server
     @FormUrlEncoded
     @POST("TL")
@@ -54,5 +60,10 @@ interface ApiInterface {
     @FormUrlEncoded
     @POST("SNL")
     suspend fun serializedModel(@Field("Code") code:String): Response<SerialProductModel>
+
+    //installation Images
+    @FormUrlEncoded
+    @POST("IM")
+    suspend fun installationImages(@Field("OrdCode") code:String): Response<InstallationModel>
 
 }
