@@ -1,5 +1,6 @@
 package com.virtual_market.planetshipmentapp.Activity
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -18,7 +19,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.androidbuts.multispinnerfilter.*
 import com.virtual_market.planetshipmentapp.Adapter.NestedProductAndPartsAdapter
@@ -52,7 +52,6 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
     private var uri: String? = null
     var result: String? = null
     private var mySharedPreferences: MySharedPreferences? = null
-    private lateinit var orderDetailsAdapter: OrderDetailsAdapter
     private var productItem: ArrayList<ProductItem>? = null
     private var progressBar: RelativeLayout? = null
     private var refreshButton: RelativeLayout? = null
@@ -109,41 +108,42 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
     }
 
+    @SuppressLint("SetTextI18n")
     fun getDistanceViaLatLong(addressOfShipping: String) {
 
         thread {
 
-            // calculate langitute and longitude by address
-            val locationFromAddress: LatLng = getLocationFromAddress(this, addressOfShipping)!!
+            // calculate latitude and longitude by address
+            val locationFromAddress: LatLng = getLocationFromAddress(this, addressOfShipping)
 
             // calculate distance
-            if (locationFromAddress != null && locationFromAddress.lattitude > 0 && locationFromAddress.longitude > 0) {
+            if (locationFromAddress.lattitude > 0 && locationFromAddress.longitude > 0) {
 
-                val selected_location = Location("locationA")
+                val selectedLocation = Location("locationA")
 
                 val latitude = mySharedPreferences!!.getStringkey(MySharedPreferences.myLatitude)
                 val longitude = mySharedPreferences!!.getStringkey(MySharedPreferences.myLongitude)
 
                 if (!TextUtils.isEmpty(latitude) && !TextUtils.isEmpty(longitude)) {
 
-                    selected_location.latitude = latitude.toDouble()
-                    selected_location.longitude = longitude.toDouble()
+                    selectedLocation.latitude = latitude.toDouble()
+                    selectedLocation.longitude = longitude.toDouble()
 
-                    val near_locations = Location("locationB")
+                    val nearLocations = Location("locationB")
 
-                    near_locations.latitude = locationFromAddress.lattitude
-                    near_locations.longitude = locationFromAddress.longitude
+                    nearLocations.latitude = locationFromAddress.lattitude
+                    nearLocations.longitude = locationFromAddress.longitude
 
-                    getAddressFromLocation(near_locations.latitude, near_locations.longitude, this)
+                    getAddressFromLocation(nearLocations.latitude, nearLocations.longitude, this)
 
-                    val distance = selected_location.distanceTo(near_locations)
+                    val distance = selectedLocation.distanceTo(nearLocations)
 
                     val s = String.format("%.2f", distance / 1000)
 
                     runOnUiThread {
 
                         uri =
-                            "http://maps.google.com/maps?saddr=" + latitude + "," + longitude + "&daddr=" + near_locations.latitude + "," + near_locations.longitude
+                            "http://maps.google.com/maps?saddr=" + latitude + "," + longitude + "&daddr=" + nearLocations.latitude + "," + nearLocations.longitude
 
                         activity.shippingDistance.text = "Distance to Address : $s K.M"
 
@@ -158,12 +158,12 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
     }
 
-    fun getAddressFromLocation(lat: Double, long: Double, context: Context?) {
+    private fun getAddressFromLocation(lat: Double, long: Double, context: Context?) {
         val thread: Thread = object : Thread() {
             override fun run() {
-                val geocoder = Geocoder(context, Locale.getDefault())
+                val geoCoder = Geocoder(context, Locale.getDefault())
                 try {
-                    val list = geocoder.getFromLocation(
+                    val list = geoCoder.getFromLocation(
                         lat, long, 1
                     )
                     if (list != null && list.size > 0) {
@@ -180,10 +180,10 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
         thread.start()
     }
 
-    fun getLocationFromAddress(context: Context?, strAddress: String?): LatLng? {
+    private fun getLocationFromAddress(context: Context?, strAddress: String?): LatLng {
         val coder = Geocoder(context)
         var address: List<Address>? = null
-        var p1: LatLng? = null
+        val p1: LatLng?
 
         // May throw an IOException
         try {
@@ -198,7 +198,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
                 getDistanceViaLatLong(addressOfShipping!!)
 
         }
-        if (address != null && address.size > 0) {
+        if (address != null && address.isNotEmpty()) {
             val location = address[0]
             p1 = LatLng(location.latitude, location.longitude)
         } else {
@@ -207,7 +207,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
         return p1
     }
 
-    fun getIdsWithComma(spinner: MultiSpinnerSearch): String {
+    private fun getIdsWithComma(spinner: MultiSpinnerSearch): String {
 
         val selectedIds = spinner.selectedIds
         val fitterIdsBuilder = StringBuilder()
@@ -226,6 +226,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
         super.onPause()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setDataOnPage(responseOrders: ResponseOrders) {
 
         val address = ordJson!!.getAddress()
@@ -247,6 +248,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
             startActivity(intent)
 
         }
+
 
         activity.installationImages.setOnClickListener {
 
@@ -278,6 +280,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
                 now.get(Calendar.DAY_OF_MONTH)
             )
 
+            datePickerDialog.datePicker.minDate = Date().time - (Date().time % (24*60*60*1000))
             datePickerDialog.show()
 
         }
@@ -425,7 +428,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
         viewModel.employeeDetailsModal.removeObservers(this)
 
-        viewModel.employeeDetailsModal.observe(this, {
+        viewModel.employeeDetailsModal.observe(this, { it ->
 
             if (it.success.equals("failure")) {
 
@@ -540,9 +543,9 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
         viewModel.allTransporters.removeObservers(this)
 
-        viewModel.allTransporters.observe(this, {
+        viewModel.allTransporters.observe(this, { it ->
 
-            if (it.success!!.equals("success")) {
+            if (it.success!!.equals("success",true)) {
 
                 transportArraylist.clear()
 
@@ -553,7 +556,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
                     keyPairBoolData.id = it.DriverId!!.toLong()
                     keyPairBoolData.isSelected = false
                     val transporters = responseOrders!!.Transporters
-                    transporters!!.split(",").forEach {
+                    transporters!!.split(",").forEach { it
                         if (empId.equals(it, true)) {
                             keyPairBoolData.isSelected = true
                         }
@@ -619,7 +622,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
         spinner.setEmptyTitle("Not Data Found!")
         spinner.isShowSelectAllButton = false
         spinner.setClearText("Clear")
-        spinner.setItems(fitterArrayList, MultiSpinnerListener { items ->
+        spinner.setItems(fitterArrayList, MultiSpinnerListener { _ ->
 
         })
 
@@ -637,7 +640,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
         spinner.setEmptyTitle("Not Data Found!")
         spinner.isShowSelectAllButton = false
         spinner.setItems(transportArraylist,
-            MultiSpinnerListener { items ->
+            MultiSpinnerListener { _ ->
 
             })
 
@@ -656,11 +659,12 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
         spinner.setClearText("Clear")
 
         spinner.setItems(helperArrayList,
-            MultiSpinnerListener { items ->
+            MultiSpinnerListener { _ ->
 
             })
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 
         activity.dateOfDelivery.text="$year-${month+1}-$dayOfMonth"

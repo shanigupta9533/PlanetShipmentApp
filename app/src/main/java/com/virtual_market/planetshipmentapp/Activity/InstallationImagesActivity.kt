@@ -28,6 +28,7 @@ import com.virtual_market.planetshipmentapp.ViewModel.ViewModelFactory
 import com.virtual_market.planetshipmentapp.databinding.ActivityInstallationImagesBinding
 import com.virtual_market.planetshipmentapp.databinding.FragmentHomeBinding
 import com.virtual_market.virtualmarket.api.RetrofitClient
+import kotlinx.android.synthetic.main.activity_installation_images.*
 import kotlinx.android.synthetic.main.no_internet_connection.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -52,6 +53,12 @@ class InstallationImagesActivity : AppCompatActivity() {
 
         responseUserLogin =
             (application as PlanetShippingApplication).responseUserLogin
+
+        activity.backButton.setOnClickListener {
+
+            onBackPressed()
+
+        }
 
         noDataFound = findViewById(R.id.no_data_found)
         noDataFound.visibility = View.GONE
@@ -167,7 +174,7 @@ class InstallationImagesActivity : AppCompatActivity() {
 
     private fun setupObservers() {
 
-        viewModel!!.getInstallationImages("2021041")
+        viewModel!!.getInstallationImages(ordCode!!)
 
         viewModel!!.installationImages.removeObservers(this)
 
