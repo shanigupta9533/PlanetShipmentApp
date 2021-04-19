@@ -210,20 +210,9 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
     private fun getIdsWithComma(spinner: MultiSpinnerSearch): String {
 
         val selectedIds = spinner.selectedIds
-        val fitterIdsBuilder = StringBuilder()
 
-        selectedIds.forEach {
+        return TextUtils.join(",",selectedIds)
 
-            fitterIdsBuilder.append(it).append(",")
-
-        }
-
-        return fitterIdsBuilder.toString()
-
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 
     @SuppressLint("SetTextI18n")
@@ -292,10 +281,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
             MyUtils.setHashmap("Helpers", getIdsWithComma(activity.helperSpinner))
             MyUtils.setHashmap("TransportCharges", activity.transportCharges.text.toString())
             MyUtils.setHashmap("OrdCode", responseOrders.OrdCode)
-            val hashmap = MyUtils.setHashmap(
-                "Transporters",
-                getIdsWithComma(activity.transportSpinner)
-            )
+            val hashmap = MyUtils.setHashmap("Transporters", getIdsWithComma(activity.transportSpinner))
 
             sendDataOnServer(hashmap)
 

@@ -14,6 +14,7 @@ import com.virtual_market.planetshipmentapp.Activity.QrCodeWithProductActivity
 import com.virtual_market.planetshipmentapp.Modal.ResponseOrders
 import com.virtual_market.planetshipmentapp.Modal.SerialProductListModel
 import com.virtual_market.planetshipmentapp.R
+import java.lang.NumberFormatException
 
 class ShowAllProductAdapter(private val context: Context,
                             private val responsePost: List<SerialProductListModel>
@@ -40,12 +41,17 @@ class ShowAllProductAdapter(private val context: Context,
         val responseOrders = responsePost[position]
 
         holder.foreign_name.text=responseOrders.ForeignName
-        holder.no_of_items.text=responseOrders.AllocQty
         holder.warehouse.text=responseOrders.Warehouse
         holder.item_code.text=responseOrders.ItemCode
         holder.order_no.text="Order No : "+responseOrders.OrdCode
         holder.detail_name.text=responseOrders.DetailName
         holder.date.text="Delivery date : "+responseOrders.DeliveryDate!!.substring(0,10)
+
+        try{
+            holder.no_of_items.text = responseOrders.AllocQty!!.trim().toFloat().toInt().toString()
+        } catch (e:NumberFormatException){
+            holder.no_of_items.text=responseOrders.AllocQty!!
+        }
 
         Glide.with(context).load("responseOrders.image").placeholder(R.drawable.ic_logo_brown).error(R.drawable.ic_logo_brown).into(holder.imageIcon)
 

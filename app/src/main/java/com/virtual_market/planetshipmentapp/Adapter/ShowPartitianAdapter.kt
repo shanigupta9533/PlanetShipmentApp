@@ -11,8 +11,9 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.virtual_market.planetshipmentapp.Modal.SerialDetailsModal
 import com.virtual_market.planetshipmentapp.R
+import java.lang.NumberFormatException
 
-class ShowPartitianAdapter(
+class  ShowPartitianAdapter(
     private val context: Context,
     private val responsePost: List<SerialDetailsModal>
 ) : RecyclerView.Adapter<ShowPartitianAdapter.viewholder>() {
@@ -47,13 +48,18 @@ class ShowPartitianAdapter(
         val responseOrders = responsePost[position]
 
         holder.foreign_name.text = responseOrders.ForeignName
-        holder.no_of_items.text = responseOrders.AllocQty
         holder.warehouse.text = responseOrders.Warehouse
         holder.item_code.text = responseOrders.ItemCode
         holder.order_no.text = "Sub Product ${position + 1}"
         holder.detail_name.text = responseOrders.DetailName
         holder.date.text = responseOrders.DeliveryDate!!.substring(0, 10)
         holder.serial_number.text = responseOrders.SerialNumber!!
+
+        try{
+            holder.no_of_items.text = responseOrders.AllocQty!!.trim().toFloat().toInt().toString()
+        } catch (e: NumberFormatException){
+            holder.no_of_items.text=responseOrders.AllocQty!!
+        }
 
         holder.itemView.setOnClickListener {
 

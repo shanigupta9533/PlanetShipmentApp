@@ -1,4 +1,4 @@
-package com.virtual_market.planetshipmentapp.Adapter
+ package com.virtual_market.planetshipmentapp.Adapter
 
 import android.content.Context
 import android.graphics.Color
@@ -11,12 +11,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.virtual_market.planetshipmentapp.Modal.ProductWithSubProduct
 import com.virtual_market.planetshipmentapp.Modal.ResponseUserLogin
 import com.virtual_market.planetshipmentapp.Modal.SerialDetailsModal
 import com.virtual_market.planetshipmentapp.Modal.SerialProductListModel
 import com.virtual_market.planetshipmentapp.MyUils.GridSpacingItemDecoration
 import com.virtual_market.planetshipmentapp.MyUils.PlanetShippingApplication
 import com.virtual_market.planetshipmentapp.R
+import java.lang.NumberFormatException
 
 class NestedProductAndPartsAdapter(
     private val context: Context,
@@ -25,6 +27,7 @@ class NestedProductAndPartsAdapter(
 
     private var isOrderDetails: Boolean = false
     private val productId: ArrayList<String> = ArrayList()
+    private val checkedCheckList: ArrayList<ProductWithSubProduct> = ArrayList()
     private val responseUserLogin: ResponseUserLogin =
         (context.applicationContext as PlanetShippingApplication).responseUserLogin
     private val serialIds: ArrayList<String> = ArrayList()
@@ -54,13 +57,18 @@ class NestedProductAndPartsAdapter(
         val responseOrders = responsePost[position]
 
         holder.foreign_name.text = responseOrders.ForeignName
-        holder.no_of_items.text = responseOrders.AllocQty
         holder.warehouse.text = responseOrders.Warehouse
         holder.item_code.text = responseOrders.ItemCode
         holder.order_no.text = "Order No : " + responseOrders.OrdCode
         holder.detail_name.text = responseOrders.DetailName
         holder.serial_number.text = responseOrders.SerialNumber
         holder.date.text = responseOrders.DeliveryDate!!.substring(0, 10)
+
+        try{
+            holder.no_of_items.text = responseOrders.AllocQty!!.trim().toFloat().toInt().toString()
+        } catch (e: NumberFormatException){
+            holder.no_of_items.text=responseOrders.AllocQty!!
+        }
 
         Glide.with(context).load("responseOrders.image").placeholder(R.drawable.ic_logo_brown)
             .error(R.drawable.ic_logo_brown).into(holder.image_icon)
@@ -161,6 +169,8 @@ class NestedProductAndPartsAdapter(
                 showPartitianAdapter.setOnClickListener(object :
                     ShowPartitianAdapter.OnClickListener {
 
+                    var productWithSubProduct=ProductWithSubProduct()
+
                     override fun onClick(responseOrders: SerialDetailsModal) {
 
                         if (!isOrderDetails) {
@@ -169,6 +179,12 @@ class NestedProductAndPartsAdapter(
                             serialIds.add(responseOrders.SerialId!!)
                             showPartitianAdapter.productId(productId)
                             notifyDataSetChanged()
+
+                            checkedCheckList.forEach {
+                                if(responseOrdersParent.SerialId == it.serialId){
+                                    it.isSubProduct=true
+                                }
+                            }
 
                         }
 
@@ -184,6 +200,12 @@ class NestedProductAndPartsAdapter(
                             serialIds.remove(responseOrders.SerialId!!)
                             showPartitianAdapter.productId(productId)
                             notifyDataSetChanged()
+
+                            checkedCheckList.forEach {
+                                if(responseOrdersParent.SerialId == it.serialId){
+                                    it.isSubProduct=false
+                                }
+                            }
 
                         }
                     }
@@ -201,12 +223,24 @@ class NestedProductAndPartsAdapter(
                                 parent_of_parent.setBackgroundColor(Color.parseColor("#00ff00"))
                                 showPartitianAdapter.productId(productId)
 
+                                productWithSubProduct.isProduct=true
+                                productWithSubProduct.isSubProduct=true
+                                productWithSubProduct.serialId=responseOrdersParent.SerialId!!
+
+                                checkedCheckList.add(productWithSubProduct)
+
                             } else {
 
                                 productId.remove(responseOrdersParent.SerialNumber!!)
                                 serialIds.remove(responseOrdersParent.SerialId!!)
                                 parent_of_parent.setBackgroundColor(Color.parseColor("#ffffff"))
                                 showPartitianAdapter.productId(productId)
+
+                                productWithSubProduct.isProduct=false
+                                productWithSubProduct.isSubProduct=false
+                                productWithSubProduct.serialId=responseOrdersParent.SerialId!!
+
+                                checkedCheckList.remove(productWithSubProduct)
 
                             }
 
@@ -231,6 +265,12 @@ class NestedProductAndPartsAdapter(
     fun getArrayList(): ArrayList<String> {
 
         return productId
+
+    }
+
+    fun getCheckedArrayList():ArrayList<ProductWithSubProduct>{
+
+        return checkedCheckList
 
     }
 

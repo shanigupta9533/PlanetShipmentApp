@@ -1,6 +1,7 @@
 package com.virtual_market.planetshipmentapp.Activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -59,7 +60,6 @@ class QrCodeWithProductActivity : AppCompatActivity() {
     private val REQUEST_CODE_CHOOSE: Int = 1001
     private lateinit var responseUserLogin: ResponseUserLogin
     private var spoCode: String? = null
-    private var productId: String? = null
     private lateinit var nestedProductAndPartsAdapter: NestedProductAndPartsAdapter
     private lateinit var viewModel: OrdersViewModel
     private var noDataFound: RelativeLayout? = null
@@ -67,7 +67,6 @@ class QrCodeWithProductActivity : AppCompatActivity() {
     private var text_as_button: TextView? = null
     private var mark_button: RelativeLayout? = null
     private var distnumber = ArrayList<String>()
-    private val arrayList = ArrayList<String>()
     private var scanner: CodeScanner? = null
     private var parent_of_lottie: LinearLayout? = null
     private var scan_again: RelativeLayout? = null
@@ -80,6 +79,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
     private lateinit var showModel: ArrayList<SerialProductListModel>
     private var lattie: LottieAnimationView? = null
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qr_code_with_product)
@@ -151,11 +151,27 @@ class QrCodeWithProductActivity : AppCompatActivity() {
             val month = now.get(Calendar.MONTH)
             val year = now.get(Calendar.YEAR)
 
-            var hashmap: HashMap<String, String>? = null
+            var hashmap: HashMap<String, String>?
 
             if (responseUserLogin.Role.equals("Fitter")) {
 
+                val chekedProduct = isChekedProduct()
+
+                if(!chekedProduct){
+
+                    MyUtils.createToast(this,"Add all the sub products of a product.")
+
+                    return@setOnClickListener
+                }
+
                 val arrayList = nestedProductAndPartsAdapter.getSerialId()
+
+                if(arrayList.isEmpty()){
+
+                    MyUtils.createToast(this,"Select A Product")
+                    return@setOnClickListener
+
+                }
 
                 val confirmationDialogFragment = ConfirmationDialogFragment()
                 confirmationDialogFragment.show(
@@ -182,7 +198,23 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
             } else if (responseUserLogin.Role.equals("Stores")) {
 
+                val chekedProduct = isChekedProduct()// checked a product all subproduct chcked or not
+
+                if(!chekedProduct){
+
+                    MyUtils.createToast(this,"Add all the sub products of a product.")
+
+                    return@setOnClickListener
+                }
+
                 val arrayList1 = nestedProductAndPartsAdapter.getSerialId()
+
+                if(arrayList1.isEmpty()){
+
+                    MyUtils.createToast(this,"Select A Product")
+                    return@setOnClickListener
+
+                }
 
                 val join = TextUtils.join(",", arrayList1)
                 MyUtils.clearAllMap()
@@ -228,6 +260,23 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         else
             openQrCode()
 
+    }
+
+    private fun isChekedProduct():Boolean {
+        val checkedArrayList = nestedProductAndPartsAdapter.getCheckedArrayList()
+
+        Log.i("TAG", "isChekedProduct: "+checkedArrayList)
+
+        if(checkedArrayList.isEmpty())
+            return false
+
+        checkedArrayList.forEach {
+            if(!it.isProduct || !it.isSubProduct){
+                return false
+            }
+        }
+
+        return true
     }
 
     private fun sendDocumentOnServer(hashmap: HashMap<String, String>?, fitter: Boolean) {
@@ -531,8 +580,6 @@ class QrCodeWithProductActivity : AppCompatActivity() {
             runOnUiThread {
                 Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
 
-                val scanCodeString = it
-
                 parent_of_lottie!!.visibility = View.VISIBLE
                 lattie!!.playAnimation()
 
@@ -591,7 +638,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
                 val items = it.Info
                 noDataFound!!.visibility = View.GONE
 
-                if(responseUserLogin.Role!!.equals("Fitter",true)){ // fitter jiska shippped status shipped hai
+                if(responseUserLogin.Role!!.equals("Fitter",true)){ // fitter jiska shippped status shipped hai,wahi sirf show karo
 
                     showModel.clear()
 
@@ -614,7 +661,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
                 nestedProductAndPartsAdapter.notifyDataSetChanged()
 
-                var i = 0 // button hide and show karna hai, jab product delivered ho jaye , fillers end se
+                var i = 0 // button hide and show karna hai, jab product delivered ho jaye , fitters end se, jismai image and feedback dikhani hai
 
                 it.Info!!.forEach {
 
