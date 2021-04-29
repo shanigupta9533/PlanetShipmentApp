@@ -52,7 +52,13 @@ class  ShowPartitianAdapter(
         holder.item_code.text = responseOrders.ItemCode
         holder.order_no.text = "Sub Product ${position + 1}"
         holder.detail_name.text = responseOrders.DetailName
-        holder.date.text = responseOrders.DeliveryDate!!.substring(0, 10)
+
+        try {
+            holder.date.text = responseOrders.DeliveryDate!!.substring(0, 10)
+        } catch (e:StringIndexOutOfBoundsException){
+            holder.date.text = responseOrders.DeliveryDate!!
+        }
+
         holder.serial_number.text = responseOrders.SerialNumber!!
 
         try{

@@ -62,6 +62,9 @@ class SerialProductListModel() :Parcelable {
     var fitters:String?=null
 
     @Ignore
+    var CustomerCode:String?=null
+
+    @Ignore
     var Transporters:String?=null
 
     @Ignore
@@ -82,6 +85,7 @@ class SerialProductListModel() :Parcelable {
         DetailName = parcel.readString()
         ForeignName = parcel.readString()
         DelliveryDate = parcel.readString()
+        CustomerCode = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -99,6 +103,7 @@ class SerialProductListModel() :Parcelable {
         parcel.writeString(DetailName)
         parcel.writeString(ForeignName)
         parcel.writeString(DelliveryDate)
+        parcel.writeString(CustomerCode)
     }
 
     override fun describeContents(): Int {

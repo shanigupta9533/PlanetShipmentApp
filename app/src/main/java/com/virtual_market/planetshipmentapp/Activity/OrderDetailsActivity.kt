@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.androidbuts.multispinnerfilter.*
 import com.virtual_market.planetshipmentapp.Adapter.NestedProductAndPartsAdapter
-import com.virtual_market.planetshipmentapp.Adapter.OrderDetailsAdapter
 import com.virtual_market.planetshipmentapp.Modal.*
 import com.virtual_market.planetshipmentapp.MyUils.MySharedPreferences
 import com.virtual_market.planetshipmentapp.MyUils.MyUtils
@@ -42,10 +41,10 @@ import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 
 
-class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener {
+class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var nestedProductAndPartsAdapter: NestedProductAndPartsAdapter
-    private var customer_details: Customers?=null
+    private var customer_details: Customers? = null
     private lateinit var responseUserLogin: ResponseUserLogin
     private var addressOfShipping: String? = null
     private lateinit var viewModel: OrdersViewModel
@@ -92,7 +91,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
         mySharedPreferences = MySharedPreferences.getInstance(this)
 
-        showModelSnl=ArrayList()
+        showModelSnl = ArrayList()
 
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         activity.allProductList.layoutManager = linearLayoutManager
@@ -112,7 +111,6 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
     fun getDistanceViaLatLong(addressOfShipping: String) {
 
         thread {
-
             // calculate latitude and longitude by address
             val locationFromAddress: LatLng = getLocationFromAddress(this, addressOfShipping)
 
@@ -211,7 +209,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
         val selectedIds = spinner.selectedIds
 
-        return TextUtils.join(",",selectedIds)
+        return TextUtils.join(",", selectedIds)
 
     }
 
@@ -221,19 +219,27 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
         val address = ordJson!!.getAddress()
 
         activity.orderNo.text = responseOrders.OrdCode
-        activity.date.text = "Delivery Date: "+responseOrders.DeliveryDate
+        activity.date.text = "Delivery Date: " + responseOrders.DeliveryDate
         activity.noOfItems.text = responseOrders.ItemCount
         activity.address.text = address!!.getShippingAddress()!!.addType
-        activity.address2.text = address.getShippingAddress()!!.addLine1+" "+address.getShippingAddress()!!.addLandmark+" "+address.getShippingAddress()!!.addCity+" "+address.getShippingAddress()!!.addPinCode+" "+address.getShippingAddress()!!.addState
-        activity.address3.text = address.getShippingAddress()!!.addLine2+" "+address.getShippingAddress()!!.addFullName+" "+address.getShippingAddress()!!.companyName+" "+address.getShippingAddress()!!.addMobNo
+        activity.address2.text =
+            address.getShippingAddress()!!.addLine1 + " " + address.getShippingAddress()!!.addLandmark + " " + address.getShippingAddress()!!.addCity + " " + address.getShippingAddress()!!.addPinCode + " " + address.getShippingAddress()!!.addState
+        activity.address3.text =
+            address.getShippingAddress()!!.addLine2 + " " + address.getShippingAddress()!!.addFullName + " " + address.getShippingAddress()!!.companyName + " " + address.getShippingAddress()!!.addMobNo
 
-        activity.customerName.text=customer_details!!.customerName
-        activity.phoneNumber.text=customer_details!!.mobNo
+        activity.customerName.text = customer_details!!.customerName
+        activity.phoneNumber.text = customer_details!!.mobNo
+
+        if (!TextUtils.isEmpty(responseOrders.OrdStatus) && !responseOrders.OrdStatus!!.equals("Created", true))
+            activity.orderStatus.text = responseOrders.OrdStatus
+        else
+            activity.orderStatus.text = "Pending"
+
 
         activity.parentOfPhone.setOnClickListener {
 
             val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:"+customer_details!!.mobNo)
+            intent.data = Uri.parse("tel:" + customer_details!!.mobNo)
             startActivity(intent)
 
         }
@@ -241,8 +247,8 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
         activity.installationImages.setOnClickListener {
 
-            val intent=Intent(this,InstallationImagesActivity::class.java)
-            intent.putExtra("ordCode",responseOrders.OrdCode)
+            val intent = Intent(this, InstallationImagesActivity::class.java)
+            intent.putExtra("ordCode", responseOrders.OrdCode)
             startActivity(intent)
 
         }
@@ -256,7 +262,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
         }
 
-        dateOfDelivery.text=responseOrders.DeliveryDate
+        dateOfDelivery.text = responseOrders.DeliveryDate
 
         activity.dateOfDelivery.setOnClickListener {
 
@@ -269,7 +275,8 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
                 now.get(Calendar.DAY_OF_MONTH)
             )
 
-            datePickerDialog.datePicker.minDate = Date().time - (Date().time % (24*60*60*1000))
+            datePickerDialog.datePicker.minDate =
+                Date().time - (Date().time % (24 * 60 * 60 * 1000))
             datePickerDialog.show()
 
         }
@@ -281,7 +288,8 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
             MyUtils.setHashmap("Helpers", getIdsWithComma(activity.helperSpinner))
             MyUtils.setHashmap("TransportCharges", activity.transportCharges.text.toString())
             MyUtils.setHashmap("OrdCode", responseOrders.OrdCode)
-            val hashmap = MyUtils.setHashmap("Transporters", getIdsWithComma(activity.transportSpinner))
+            val hashmap =
+                MyUtils.setHashmap("Transporters", getIdsWithComma(activity.transportSpinner))
 
             sendDataOnServer(hashmap)
 
@@ -289,42 +297,42 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
         activity.transportCharges.setText(responseOrders.TransportCharges)
 
-        if(responseUserLogin.Role.equals("Fitter")){
+        if (responseUserLogin.Role.equals("Fitter")) {
 
-            activity.helperSpinner.isEnabled=false
-            activity.fitterSpinner.isEnabled=false
-            activity.transportSpinner.isEnabled=false
-            activity.transportCharges.isEnabled=false
+            activity.helperSpinner.isEnabled = false
+            activity.fitterSpinner.isEnabled = false
+            activity.transportSpinner.isEnabled = false
+            activity.transportCharges.isEnabled = false
 
-            activity.dateOfDelivery.isEnabled=false
+            activity.dateOfDelivery.isEnabled = false
 
-            activity.parentOfButton.visibility=View.GONE
-            activity.transportCharges.visibility=View.GONE
+            activity.parentOfButton.visibility = View.GONE
+            activity.transportCharges.visibility = View.GONE
 
-            activity.parentOfDeliveryDate.visibility=View.GONE
+            activity.parentOfDeliveryDate.visibility = View.GONE
 
-        } else if(responseUserLogin.Role.equals("Helper")){
+        } else if (responseUserLogin.Role.equals("Helper")) {
 
-            activity.helperSpinner.isEnabled=false
-            activity.fitterSpinner.isEnabled=false
-            activity.transportSpinner.isEnabled=false
-            activity.transportCharges.isEnabled=false
-            activity.dateOfDelivery.isEnabled=false
+            activity.helperSpinner.isEnabled = false
+            activity.fitterSpinner.isEnabled = false
+            activity.transportSpinner.isEnabled = false
+            activity.transportCharges.isEnabled = false
+            activity.dateOfDelivery.isEnabled = false
 
-            activity.parentOfButton.visibility=View.GONE
-            activity.transportCharges.visibility=View.GONE
+            activity.parentOfButton.visibility = View.GONE
+            activity.transportCharges.visibility = View.GONE
 
-            activity.parentOfDeliveryDate.visibility=View.GONE
+            activity.parentOfDeliveryDate.visibility = View.GONE
 
-        } else if(!TextUtils.isEmpty(mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id))){
+        } else if (!TextUtils.isEmpty(mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id))) {
 
-            activity.helperSpinner.isEnabled=false
-            activity.fitterSpinner.isEnabled=false
-            activity.transportSpinner.isEnabled=false
-            activity.dateOfDelivery.isEnabled=false
-            activity.transportCharges.isEnabled=false
+            activity.helperSpinner.isEnabled = false
+            activity.fitterSpinner.isEnabled = false
+            activity.transportSpinner.isEnabled = false
+            activity.dateOfDelivery.isEnabled = false
+            activity.transportCharges.isEnabled = false
 
-            activity.parentOfButton.visibility=View.GONE
+            activity.parentOfButton.visibility = View.GONE
 
         }
 
@@ -333,6 +341,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
             val intent = Intent(this, QrCodeWithProductActivity::class.java)
             intent.putExtra("orderCode", responseOrders.OrdCode)
             intent.putExtra("spoCode", responseOrders.SapOrdCode)
+            intent.putExtra("customerCode",customer_details!!.customerCode)
             startActivity(intent)
 
         }
@@ -359,7 +368,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
             }
 
-            progressBar!!.visibility=View.GONE
+            progressBar!!.visibility = View.GONE
 
         })
 
@@ -395,6 +404,8 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
             MyUtils.createToast(this.applicationContext, it)
 
             no_internet_connection.visibility = View.VISIBLE
+
+            progressBar!!.visibility=View.GONE
 
         })
 
@@ -487,7 +498,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
     private fun setupSNLDATA() {
 
-        progressBar!!.visibility=View.VISIBLE
+        progressBar!!.visibility = View.VISIBLE
 
         viewModel.dispatchOrdersByParts(responseOrders!!.OrdCode!!)
 
@@ -531,7 +542,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
 
         viewModel.allTransporters.observe(this, { it ->
 
-            if (it.success!!.equals("success",true)) {
+            if (it.success!!.equals("success", true)) {
 
                 transportArraylist.clear()
 
@@ -542,7 +553,8 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
                     keyPairBoolData.id = it.DriverId!!.toLong()
                     keyPairBoolData.isSelected = false
                     val transporters = responseOrders!!.Transporters
-                    transporters!!.split(",").forEach { it
+                    transporters!!.split(",").forEach {
+                        it
                         if (empId.equals(it, true)) {
                             keyPairBoolData.isSelected = true
                         }
@@ -580,7 +592,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
                     intent.setPackage("com.google.android.apps.maps")
                     startActivity(intent)
 
-                } catch (e: ActivityNotFoundException){
+                } catch (e: ActivityNotFoundException) {
 
                     try {
                         val unrestrictedIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
@@ -653,7 +665,7 @@ class OrderDetailsActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListe
     @SuppressLint("SetTextI18n")
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 
-        activity.dateOfDelivery.text="$year-${month+1}-$dayOfMonth"
+        activity.dateOfDelivery.text = "$year-${month + 1}-$dayOfMonth"
 
     }
 

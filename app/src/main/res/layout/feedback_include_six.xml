@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/_17ssp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginEnd="@dimen/_8ssp"
+        android:layout_marginStart="@dimen/_8ssp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ellipsize="end"
+            android:alpha="0.8"
+            android:id="@+id/feedbackTextOnInclude"
+            android:layout_gravity="start"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="6. Customer \n Feedback"
+            android:textColor="@color/quantum_googgreen900"
+            android:textSize="12dp"  />
+
+        <EditText
+            android:id="@+id/customer_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:background="@drawable/default_border_on_seletection_top"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:maxLines="4"
+            android:lines="3"
+            android:padding="10dp"
+            android:textSize="@dimen/_12ssp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginEnd="@dimen/_8ssp"
+        android:layout_marginTop="@dimen/_18ssp"
+        android:layout_marginStart="@dimen/_12ssp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:alpha="0.8"
+            android:fontFamily="@font/poppins"
+            android:text="Customer Name"
+            android:textColor="@color/black"
+            android:textSize="13dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40ssp"
+            android:layout_marginStart="@dimen/_6ssp"
+            android:layout_weight="1"
+            android:id="@+id/customer_name"
+            android:layout_gravity="center"
+            android:background="@drawable/default_border_on_seletection_top"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="@dimen/_12ssp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginEnd="@dimen/_8ssp"
+        android:layout_marginTop="@dimen/_24ssp"
+        android:layout_marginStart="@dimen/_20ssp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:alpha="0.8"
+            android:fontFamily="@font/poppins"
+            android:text="Mobile Number"
+            android:textColor="@color/black"
+            android:textSize="13dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40ssp"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_6ssp"
+            android:id="@+id/mobileNumber"
+            android:layout_gravity="center"
+            android:background="@drawable/default_border_on_seletection_top"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="@dimen/_12ssp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginEnd="@dimen/_8ssp"
+        android:layout_marginTop="@dimen/_24ssp"
+        android:layout_marginStart="@dimen/_20ssp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.1"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:alpha="0.8"
+            android:fontFamily="@font/poppins"
+            android:text="Signature"
+            android:textColor="@color/black"
+            android:textSize="13dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_80ssp"
+            android:layout_weight="1"
+            android:id="@+id/signature_pad"
+            android:layout_marginStart="@dimen/_6ssp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:background="@drawable/default_border_on_seletection_top"
+            android:padding="10dp"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:alpha="0.8"
+            android:fontFamily="@font/poppins"
+            android:text="Date."
+            android:textColor="@color/black"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40ssp"
+            android:layout_weight="1.1"
+            android:layout_marginStart="@dimen/_6ssp"
+            android:id="@+id/date"
+            android:layout_gravity="center"
+            android:background="@drawable/default_border_on_seletection_top"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="@dimen/_12ssp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginEnd="@dimen/_8ssp"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_24ssp"
+        android:layout_marginStart="@dimen/_20ssp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:alpha="0.8"
+            android:fontFamily="@font/poppins"
+            android:text="Fitters name"
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40ssp"
+                    android:layout_marginStart="@dimen/_4ssp"
+                    android:layout_gravity="center"
+                    android:id="@+id/fitter_1"
+                    android:layout_weight="1"
+                    android:gravity="top"
+                    android:hint="1"
+                    android:background="@drawable/default_border_on_seletection_top"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:padding="10dp"
+                    android:textSize="@dimen/_12ssp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40ssp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:id="@+id/fitter_2"
+                    android:hint="2"
+                    android:gravity="top"
+                    android:background="@drawable/default_border_on_seletection_top"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:padding="10dp"
+                    android:textSize="@dimen/_12ssp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40ssp"
+                    android:layout_marginStart="@dimen/_4ssp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="top"
+                    android:id="@+id/fitter_3"
+                    android:hint="3"
+                    android:background="@drawable/default_border_on_seletection_top"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:padding="10dp"
+                    android:textSize="@dimen/_12ssp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40ssp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:hint="4"
+                    android:id="@+id/fitter_4"
+                    android:gravity="top"
+                    android:background="@drawable/default_border_on_seletection_top"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:padding="10dp"
+                    android:textSize="@dimen/_12ssp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginEnd="@dimen/_8ssp"
+        android:layout_marginTop="@dimen/_24ssp"
+        android:layout_marginStart="@dimen/_20ssp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:alpha="0.8"
+            android:fontFamily="@font/poppins"
+            android:text="transporters name and vehicle number"
+            android:textColor="@color/black"
+            android:textSize="11dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40ssp"
+            android:layout_marginStart="@dimen/_4ssp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:id="@+id/transport_name"
+            android:background="@drawable/default_border_on_seletection_top"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="@dimen/_12ssp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40ssp"
+            android:layout_weight="1"
+            android:id="@+id/vehicle_number"
+            android:layout_gravity="center"
+            android:background="@drawable/default_border_on_seletection_top"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="@dimen/_12ssp" />
+
+    </LinearLayout>
+
+</LinearLayout>

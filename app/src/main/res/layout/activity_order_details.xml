@@ -167,6 +167,42 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8ssp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:alpha="0.8"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="Order Status : "
+                        android:textColor="@color/quantum_googgreen900"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/order_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.6"
+                        android:drawablePadding="-5dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:gravity="center"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="50.00"
+                        android:textColor="@color/black"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

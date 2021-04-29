@@ -24,7 +24,6 @@ import com.budiyev.android.codescanner.*
 import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
 import com.virtual_market.planetshipmentapp.Adapter.NestedProductAndPartsAdapter
-import com.virtual_market.planetshipmentapp.BuildConfig
 import com.virtual_market.planetshipmentapp.Fragment.ConfirmationDialogFragment
 import com.virtual_market.planetshipmentapp.Fragment.FeedbackDialogFragment
 import com.virtual_market.planetshipmentapp.Modal.ResponseUserLogin
@@ -57,6 +56,7 @@ import kotlin.collections.ArrayList
 
 class QrCodeWithProductActivity : AppCompatActivity() {
 
+    private var items1 =ArrayList<SerialProductListModel>()
     private val REQUEST_CODE_CHOOSE: Int = 1001
     private lateinit var responseUserLogin: ResponseUserLogin
     private var spoCode: String? = null
@@ -72,6 +72,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
     private var scan_again: RelativeLayout? = null
     private var refreshButton: RelativeLayout? = null
     private var progressBar: RelativeLayout? = null
+    private var isMarkedClicked:Boolean=false
     private var feedbackText: RelativeLayout? = null
     private var image_upload: RelativeLayout? = null
     private var button_of_parent: RelativeLayout? = null
@@ -128,19 +129,30 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
         feedbackText!!.setOnClickListener {
 
-            val feedbackDialogFragment = FeedbackDialogFragment()
-            feedbackDialogFragment.isCancelable = false
-            feedbackDialogFragment.show(supportFragmentManager, "feedbackDialogFragment")
+            var fitters:String?=null
+            var CustomerCode:String?=null
 
-            feedbackDialogFragment.setOnClickListener(object :
-                FeedbackDialogFragment.OnClickListener {
-                override fun onClick(toString: String) {
+            items1.forEach {
+                fitters = it.fitters
+                if(!TextUtils.isEmpty(fitters))
+                    return@forEach
 
-                    // todo here
+            }
 
-                }
+            items1.forEach {
 
-            })
+                CustomerCode=it.CustomerCode
+                if(!TextUtils.isEmpty(it.CustomerCode))
+                    return@forEach
+
+            }
+
+            val intent = Intent(this, FeedbackActivity::class.java)
+            intent.putExtra("ordCode",orderCode)
+            intent.putExtra("empId",responseUserLogin.EmpId)
+            intent.putExtra("customerCode",CustomerCode)
+            intent.putExtra("fitters",fitters)
+            startActivity(intent)
 
         }
 
@@ -189,7 +201,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
                         MyUtils.setHashmap("SerialIds", join)
                         MyUtils.setHashmap("DeliveryStatus", "Delivered")
                         hashmap =
-                            MyUtils.setHashmap("DeliveryDate", "${year}-${month}-${dayOfMonth}")
+                            MyUtils.setHashmap("DeliveryDate", "${year}-${month+1}-${dayOfMonth}")
 
                         sendDocumentOnServer(hashmap, true)
                     }
@@ -220,10 +232,11 @@ class QrCodeWithProductActivity : AppCompatActivity() {
                 MyUtils.clearAllMap()
                 MyUtils.setHashmap("SerialIds", join)
                 MyUtils.setHashmap("ShipStatus", "Shipped")
-                hashmap = MyUtils.setHashmap("ShipDate", "${year}-${month}-${dayOfMonth}")
+                hashmap = MyUtils.setHashmap("ShipDate", "${year}-${month+1}-${dayOfMonth}")
+
+                Log.i("TAG", "onCreate: ${year}-${month+1}-${dayOfMonth}")
 
                 sendDocumentOnServer(hashmap, false)
-
 
             }
 
@@ -265,8 +278,6 @@ class QrCodeWithProductActivity : AppCompatActivity() {
     private fun isChekedProduct():Boolean {
         val checkedArrayList = nestedProductAndPartsAdapter.getCheckedArrayList()
 
-        Log.i("TAG", "isChekedProduct: "+checkedArrayList)
-
         if(checkedArrayList.isEmpty())
             return false
 
@@ -285,15 +296,18 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         viewModel.documentOnServer.removeObservers(this)
         viewModel.documentOnServer.observe(this, {
 
-            if (fitter && it.success!!.equals(
-                    "success",
-                    true
-                )
-            ) { // after success open signature pad
+            if (fitter && it.success!!.equals("success", true)) { // after success open signature pad
 
                 val intent = Intent(this, SignaturePadActivity::class.java)
                 intent.putExtra("ordCode",orderCode)
+                isMarkedClicked=true
+                setupObservers()
                 startActivity(intent)
+
+            } else if(it.success!!.equals("success", true)){
+
+                setupObservers()
+                isMarkedClicked=true
 
             }
 
@@ -341,7 +355,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
             .maxSelectable(10)
             .capture(true)
             .captureStrategy(
-                CaptureStrategy(true, BuildConfig.APPLICATION_ID + ".provider")
+                CaptureStrategy(true, com.virtual_market.planetshipmentapp.BuildConfig.APPLICATION_ID + ".provider")
             )
             .gridExpectedSize(
                 resources.getDimensionPixelSize(R.dimen._100ssp)
@@ -451,6 +465,9 @@ class QrCodeWithProductActivity : AppCompatActivity() {
             }
 
             override fun onProgress(context: Context, uploadInfo: UploadInfo) {
+
+
+
             }
 
             override fun onSuccess(
@@ -514,9 +531,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         viewModel.errorMessage.observe(this, {
 
             MyUtils.createToast(this.applicationContext, it)
-
             progressBar!!.visibility = View.GONE
-
             no_internet_connection.visibility = View.VISIBLE
 
         })
@@ -636,61 +651,123 @@ class QrCodeWithProductActivity : AppCompatActivity() {
                 noDataFound!!.visibility = View.GONE
 
                 val items = it.Info
+
+                items1.clear()
+                items1.addAll(items!!)
+
                 noDataFound!!.visibility = View.GONE
 
-                if(responseUserLogin.Role!!.equals("Fitter",true)){ // fitter jiska shippped status shipped hai,wahi sirf show karo
+                checkedAllProductIsShippedOrNot(items) // check karo saare product shipped hai stores side se , toh UO api call karni hai open ko
 
-                    showModel.clear()
+                showOnlyShippedProduct(items) // fitter jiska shippped status shipped hai,wahi sirf show karo
 
-                    it.Info!!.forEach {
-
-                         if(it.ShipStatus!!.equals("Shipped",true)){
-
-                             showModel.add(it)
-
-                         }
-
-                     }
-
-                } else {
-
-                    showModel.clear()
-                    showModel.addAll(items!!)
-
-                }
-
-                nestedProductAndPartsAdapter.notifyDataSetChanged()
-
-                var i = 0 // button hide and show karna hai, jab product delivered ho jaye , fitters end se, jismai image and feedback dikhani hai
-
-                it.Info!!.forEach {
-
-                    if (responseUserLogin.Role.equals("Fitter") && it.DeliveryStatus.equals("Delivered")) {
-                        i++
-                    }
-                }
-
-                if (responseUserLogin.Role.equals("Fitter") && it.Info!!.size == i) {
-
-                    mark_button!!.visibility = View.GONE
-                    parent_of_feedback!!.visibility = View.VISIBLE
-
-                } else if (responseUserLogin.Role.equals("Fitter")) {
-
-                    mark_button!!.visibility=View.VISIBLE
-                    parent_of_feedback!!.visibility=View.GONE
-//
-//                    mark_button!!.visibility = View.GONE
-//                    parent_of_feedback!!.visibility = View.VISIBLE
-
-                }
-
+                buttonHideAndShowOfFeedback(items) // button hide and show karna hai, jab product delivered ho jaye , fitters end se, jismai image and feedback dikhani hai
 
             }
 
             progressBar!!.visibility = View.GONE
 
         })
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun checkedAllProductIsShippedOrNot(items: java.util.ArrayList<SerialProductListModel>?) {
+
+        var i = 0
+
+        items!!.forEach {
+
+            if (responseUserLogin.Role.equals("Stores") && it.ShipStatus.equals("Shipped")) {
+                i++
+            }
+        }
+
+        if (responseUserLogin.Role.equals("Stores") && items.size == i && isMarkedClicked) {
+            callUpdateUoApi("Shipped")
+        }
+
+        if(responseUserLogin.Role.equals("Stores") && items.size == i)
+            text_as_button!!.text="Already Shipped"
+
+    }
+
+    private fun callUpdateUoApi(s: String) {
+
+        MyUtils.clearAllMap()
+        MyUtils.setHashmap("OrdStatus", s)
+        val hashmap = MyUtils.setHashmap("OrdCode", orderCode)
+
+        viewModel.callUpdateOrdersFromScanPage(hashmap)
+        viewModel.updateOrderModel.removeObservers(this)
+        viewModel.updateOrderModel.observe(this,{
+
+            MyUtils.createToast(this,it.message)
+            progressBar!!.visibility=View.GONE
+            isMarkedClicked=false
+
+        })
+
+        progressBar!!.visibility=View.GONE
+
+    }
+
+    private fun buttonHideAndShowOfFeedback(items: java.util.ArrayList<SerialProductListModel>?) {
+
+        var i = 0
+
+        items!!.forEach {
+
+            if (responseUserLogin.Role.equals("Fitter") && it.DeliveryStatus.equals("Delivered")) {
+                i++
+            }
+        }
+
+        if (responseUserLogin.Role.equals("Fitter") && items.size == i) {
+
+            mark_button!!.visibility = View.GONE
+            parent_of_feedback!!.visibility = View.VISIBLE
+
+        } else if (responseUserLogin.Role.equals("Fitter")) {
+
+            mark_button!!.visibility=View.VISIBLE
+            parent_of_feedback!!.visibility=View.GONE
+
+        }
+
+        if(responseUserLogin.Role.equals("Fitter") && items.size == i && isMarkedClicked){
+
+            callUpdateUoApi("Delivered")
+
+        }
+
+
+    }
+
+    private fun showOnlyShippedProduct(items: java.util.ArrayList<SerialProductListModel>?) {
+
+        if(responseUserLogin.Role!!.equals("Fitter",true)){ // fitter jiska shippped status shipped hai,wahi sirf show karo
+
+            showModel.clear()
+
+            items!!.forEach {
+
+                if(it.ShipStatus!!.equals("Shipped",true)){
+
+                    showModel.add(it)
+
+                }
+
+            }
+
+        } else {
+
+            showModel.clear()
+            showModel.addAll(items!!)
+
+        }
+
+        nestedProductAndPartsAdapter.notifyDataSetChanged()
 
     }
 

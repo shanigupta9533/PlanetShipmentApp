@@ -7,11 +7,10 @@ class ProductWithSubProduct {
     var serialId:String=""
 
     override fun equals(other: Any?): Boolean {
-        if (javaClass != other?.javaClass) return false
         other as ProductWithSubProduct
-        if (serialId == other.serialId) return true
+        if (serialId.equals(other.serialId,true)) return true
 
-        return true
+        return false
     }
 
     override fun hashCode(): Int {
@@ -22,7 +21,7 @@ class ProductWithSubProduct {
     }
 
     override fun toString(): String {
-        return "ProductWithSubProduct(isSubProduct=$isSubProduct, isProduct=$isProduct, isSerialNumber='$serialId')"
+        return "ProductWithSubProduct(isSubProduct=$isSubProduct, isProduct=$isProduct, serialId='$serialId')"
     }
 
 

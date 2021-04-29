@@ -3,8 +3,11 @@ package com.virtual_market.planetshipmentapp.Activity
 import android.Manifest
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.PaintFlagsDrawFilter
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -18,11 +21,15 @@ import com.virtual_market.planetshipmentapp.MyUils.PlanetShippingApplication
 import com.virtual_market.planetshipmentapp.R
 import com.virtual_market.virtualmarket.api.RetrofitClient
 import kotlinx.android.synthetic.main.transparent_progress_bar_layout.*
+import net.gotev.uploadservice.UploadServiceConfig
 import net.gotev.uploadservice.data.UploadInfo
+import net.gotev.uploadservice.data.UploadNotificationConfig
+import net.gotev.uploadservice.data.UploadNotificationStatusConfig
 import net.gotev.uploadservice.exceptions.UploadError
 import net.gotev.uploadservice.exceptions.UserCancelledUploadException
 import net.gotev.uploadservice.network.ServerResponse
 import net.gotev.uploadservice.observer.request.RequestObserverDelegate
+import net.gotev.uploadservice.placeholders.Placeholder
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -36,6 +43,7 @@ class SignaturePadActivity : AppCompatActivity() {
     private var signature_pad: SignaturePad?=null
     private lateinit var responseUserLogin: ResponseUserLogin
     private val REQUEST_CODE_CHOOSE: Int=1001
+    private var i:Int=0
     private var ordCode: String?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,15 +51,38 @@ class SignaturePadActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signature_pad)
 
         ordCode = intent.getStringExtra("ordCode")
+
+//        ordCode="202104111"
+
         responseUserLogin = (application as PlanetShippingApplication).responseUserLogin
 
         signature_pad = findViewById<SignaturePad>(R.id.signature_pad)
         val clear_text = findViewById<Button>(R.id.clear_text)
         val save = findViewById<Button>(R.id.save)
 
+        signature_pad!!.setOnSignedListener(object : SignaturePad.OnSignedListener {
+            override fun onStartSigning() {
+
+            }
+
+            override fun onSigned() {
+                i++ // called when users signied
+            }
+
+            override fun onClear() {
+
+            }
+
+
+        })
+
         save.setOnClickListener {
 
-            askPermissionsForStorage()
+            if(i>5)
+                askPermissionsForStorage()
+             else
+                MyUtils.createToast(this,"Please do a valid signed")
+
 
         }
 
@@ -95,6 +126,35 @@ class SignaturePadActivity : AppCompatActivity() {
 
         progress_bar.visibility=View.VISIBLE
 
+        val uploadNotificationConfig = UploadNotificationConfig(
+            notificationChannelId = UploadServiceConfig.defaultNotificationChannel!!,
+            isRingToneEnabled = false,
+            progress = UploadNotificationStatusConfig(
+                title = "${Placeholder.Progress} Percent",
+                message = "${Placeholder.TotalFiles} Files",
+                clearOnAction = true,
+                autoClear = true
+
+            ),
+            success = UploadNotificationStatusConfig(
+                title = "success",
+                message = "some success message",
+                clearOnAction = true,
+                autoClear = true
+            ),
+            error = UploadNotificationStatusConfig(
+                title = "error",
+                message = "Something Went Wrong",
+                iconResourceID = R.drawable.ic_logo_brown
+            ),
+            cancelled = UploadNotificationStatusConfig(
+                title = "cancelled",
+                message = "some cancelled message",
+                clearOnAction = true,
+                autoClear = true
+            )
+        )
+
         val multipartUploadRequest: MultipartUploadRequest =
             MultipartUploadRequest(
                 this, RetrofitClient.MainServer + "AOM"
@@ -106,6 +166,7 @@ class SignaturePadActivity : AppCompatActivity() {
                 .addParameter("OrdCode", ordCode!!)
                 .addParameter("EmpId", responseUserLogin.EmpId!!)
                 .setAutoDeleteFilesAfterSuccessfulUpload(false)
+                .setNotificationConfig { context, uploadId -> uploadNotificationConfig }
                 .setUsesFixedLengthStreamingMode(true)
                 .setMaxRetries(5)
                 .setMethod("POST")
@@ -166,7 +227,11 @@ class SignaturePadActivity : AppCompatActivity() {
 
                 progress_bar_main!!.visibility = View.GONE
 
-                Log.e("RECEIVER", "Error: " + serverResponse.bodyString)
+                Handler(Looper.myLooper()!!).postDelayed({
+
+                      onBackPressed()
+
+                },800)
 
                 MyUtils.createToast(
                     this@SignaturePadActivity,

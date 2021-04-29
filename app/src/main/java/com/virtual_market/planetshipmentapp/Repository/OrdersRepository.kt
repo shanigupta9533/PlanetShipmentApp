@@ -1,6 +1,6 @@
 package com.virtual_market.planetshipmentapp.Repository
 
-import com.virtual_market.planetshipmentapp.Adapter.InstallationModel
+import com.virtual_market.planetshipmentapp.Modal.InstallationModel
 import com.virtual_market.planetshipmentapp.Modal.*
 import com.virtual_market.virtualmarket.api.ApiInterface
 import com.virtual_market.virtualmarket.api.Result
@@ -21,6 +21,10 @@ class OrdersRepository(private val apiClient: ApiInterface) : SafeApiRequest {
         return safeApiCall { apiClient.hiddingCD2(orderCode) }
     }
 
+    suspend fun updateOrdersUpdateStatus(hashmap: HashMap<String, String>): Result<UpdateOrderModel> {
+        return safeApiCall { apiClient.updateOrdersUpdateStatus(hashmap) }
+    }
+
     suspend fun getEmployeeDetailsFromparts(): Result<EmployeeDetailsModal> {
         return safeApiCall { apiClient.employeesDetails() }
     }
@@ -31,6 +35,10 @@ class OrdersRepository(private val apiClient: ApiInterface) : SafeApiRequest {
 
     suspend fun getAllTransporters(): Result<TransportersModal> {
         return safeApiCall { apiClient.getAllTransporters() }
+    }
+
+    suspend fun getAllQuestions(): Result<FeedbackModel> {
+        return safeApiCall { apiClient.getQuestions() }
     }
 
     suspend fun sendDocumentOnServer(code:HashMap<String,String>): Result<SuccessModel> {

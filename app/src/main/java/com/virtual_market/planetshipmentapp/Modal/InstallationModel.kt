@@ -1,4 +1,6 @@
-package com.virtual_market.planetshipmentapp.Adapter
+package com.virtual_market.planetshipmentapp.Modal
+
+import com.virtual_market.planetshipmentapp.Adapter.InstallationListModel
 
 class InstallationModel {
 

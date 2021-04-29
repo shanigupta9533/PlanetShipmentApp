@@ -2,6 +2,7 @@
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +17,11 @@ import com.virtual_market.planetshipmentapp.Modal.ResponseUserLogin
 import com.virtual_market.planetshipmentapp.Modal.SerialDetailsModal
 import com.virtual_market.planetshipmentapp.Modal.SerialProductListModel
 import com.virtual_market.planetshipmentapp.MyUils.GridSpacingItemDecoration
+import com.virtual_market.planetshipmentapp.MyUils.MyUtils
 import com.virtual_market.planetshipmentapp.MyUils.PlanetShippingApplication
 import com.virtual_market.planetshipmentapp.R
-import java.lang.NumberFormatException
 
-class NestedProductAndPartsAdapter(
+ class NestedProductAndPartsAdapter(
     private val context: Context,
     private val responsePost: List<SerialProductListModel>
 ) : RecyclerView.Adapter<NestedProductAndPartsAdapter.viewholder>() {
@@ -62,7 +63,12 @@ class NestedProductAndPartsAdapter(
         holder.order_no.text = "Order No : " + responseOrders.OrdCode
         holder.detail_name.text = responseOrders.DetailName
         holder.serial_number.text = responseOrders.SerialNumber
-        holder.date.text = responseOrders.DeliveryDate!!.substring(0, 10)
+
+        try {
+            holder.date.text = responseOrders.DeliveryDate!!.substring(0, 10)
+        } catch (e: StringIndexOutOfBoundsException){
+            holder.date.text = responseOrders.DeliveryDate!!
+        }
 
         try{
             holder.no_of_items.text = responseOrders.AllocQty!!.trim().toFloat().toInt().toString()
@@ -128,7 +134,8 @@ class NestedProductAndPartsAdapter(
 
             // fitter jiska delivery status delivered ho usko red red kar do
             if (responseUserLogin.Role.equals("Fitter") && responseOrdersParent.DeliveryStatus.equals(
-                    "Delivered")) {
+                    "Delivered"
+                )) {
 
                 parent_of_parent.setBackgroundColor(Color.parseColor("#ffcccb"))
                 showPartitianAdapter.setOnClickListener(object :
@@ -146,7 +153,9 @@ class NestedProductAndPartsAdapter(
                 })
 
                 // Fitter jiska Shipped status Shipped ho usko red red kar do
-            } else if (responseUserLogin.Role.equals("Stores") && responseOrdersParent.ShipStatus.equals("Shipped")) {
+            } else if (responseUserLogin.Role.equals("Stores") && responseOrdersParent.ShipStatus.equals(
+                    "Shipped"
+                )) {
                 parent_of_parent.setBackgroundColor(Color.parseColor("#ffcccb"))
                 showPartitianAdapter.setOnClickListener(object :
                     ShowPartitianAdapter.OnClickListener {
@@ -169,7 +178,7 @@ class NestedProductAndPartsAdapter(
                 showPartitianAdapter.setOnClickListener(object :
                     ShowPartitianAdapter.OnClickListener {
 
-                    var productWithSubProduct=ProductWithSubProduct()
+                    var productWithSubProduct = ProductWithSubProduct()
 
                     override fun onClick(responseOrders: SerialDetailsModal) {
 
@@ -180,11 +189,10 @@ class NestedProductAndPartsAdapter(
                             showPartitianAdapter.productId(productId)
                             notifyDataSetChanged()
 
-                            checkedCheckList.forEach {
-                                if(responseOrdersParent.SerialId == it.serialId){
-                                    it.isSubProduct=true
-                                }
-                            }
+                            productWithSubProduct.isProduct = false
+                            productWithSubProduct.isSubProduct = true
+                            productWithSubProduct.serialId = responseOrdersParent.SerialId!!
+                            checkedCheckList.add(productWithSubProduct)
 
                         }
 
@@ -201,12 +209,9 @@ class NestedProductAndPartsAdapter(
                             showPartitianAdapter.productId(productId)
                             notifyDataSetChanged()
 
-                            checkedCheckList.forEach {
-                                if(responseOrdersParent.SerialId == it.serialId){
-                                    it.isSubProduct=false
-                                }
-                            }
-
+                            productWithSubProduct.serialId = responseOrdersParent.SerialId!!
+                            checkedCheckList.remove(productWithSubProduct)
+                            
                         }
                     }
 
@@ -223,11 +228,11 @@ class NestedProductAndPartsAdapter(
                                 parent_of_parent.setBackgroundColor(Color.parseColor("#00ff00"))
                                 showPartitianAdapter.productId(productId)
 
-                                productWithSubProduct.isProduct=true
-                                productWithSubProduct.isSubProduct=true
-                                productWithSubProduct.serialId=responseOrdersParent.SerialId!!
-
-                                checkedCheckList.add(productWithSubProduct)
+                                checkedCheckList.forEach {
+                                    if (responseOrdersParent.SerialId == it.serialId) {
+                                        it.isProduct = true
+                                    }
+                                }
 
                             } else {
 
@@ -236,11 +241,11 @@ class NestedProductAndPartsAdapter(
                                 parent_of_parent.setBackgroundColor(Color.parseColor("#ffffff"))
                                 showPartitianAdapter.productId(productId)
 
-                                productWithSubProduct.isProduct=false
-                                productWithSubProduct.isSubProduct=false
-                                productWithSubProduct.serialId=responseOrdersParent.SerialId!!
-
-                                checkedCheckList.remove(productWithSubProduct)
+                                checkedCheckList.forEach {
+                                    if (responseOrdersParent.SerialId == it.serialId) {
+                                        it.isProduct = false
+                                    }
+                                }
 
                             }
 

@@ -3,7 +3,7 @@ package com.virtual_market.planetshipmentapp.ViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.virtual_market.planetshipmentapp.Adapter.InstallationModel
+import com.virtual_market.planetshipmentapp.Modal.InstallationModel
 import com.virtual_market.planetshipmentapp.Modal.*
 import com.virtual_market.planetshipmentapp.Repository.OrdersRepository
 import com.virtual_market.virtualmarket.api.ApiInterface
@@ -20,6 +20,10 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
         MutableLiveData<SerialProductModel>()
     }
 
+    val updateOrderModel: MutableLiveData<UpdateOrderModel> by lazy {
+        MutableLiveData<UpdateOrderModel>()
+    }
+
     val serializedModel: MutableLiveData<SerialProductModel> by lazy {
         MutableLiveData<SerialProductModel>()
     }
@@ -34,6 +38,10 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
 
     val allTransporters: MutableLiveData<TransportersModal> by lazy {
         MutableLiveData<TransportersModal>()
+    }
+
+    val allQuestions: MutableLiveData<FeedbackModel> by lazy {
+        MutableLiveData<FeedbackModel>()
     }
 
     val updateOrdersByParts: MutableLiveData<UpdateOrderModel> by lazy {
@@ -117,6 +125,25 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
 
     }
 
+    fun getQuestions() {
+
+        viewModelScope.launch {
+            loading.postValue(true)
+            val result = OrdersRepository(apiclient).getAllQuestions()
+            loading.postValue(false)
+            when (result) {
+                is Result.Success -> {
+                    allQuestions.postValue(result.data)
+                }
+                is Result.Error -> {
+                    errorMessage.postValue(result.exception)
+                    noInternet.postValue(result.noInternet)
+                }
+            }
+        }
+
+    }
+
     fun sendIdsOnServers(hashmap: HashMap<String, String>) {
 
         viewModelScope.launch {
@@ -163,6 +190,23 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
             when (result) {
                 is Result.Success -> {
                     ApiCD2.postValue(result.data)
+                }
+                is Result.Error -> {
+                    errorMessage.postValue(result.exception)
+                    noInternet.postValue(result.noInternet)
+                }
+            }
+        }
+    }
+
+    fun callUpdateOrdersFromScanPage(hashmap: HashMap<String, String>) {
+        viewModelScope.launch {
+            loading.postValue(true)
+            val result = OrdersRepository(apiclient).updateOrdersUpdateStatus(hashmap)
+            loading.postValue(false)
+            when (result) {
+                is Result.Success -> {
+                    updateOrderModel.postValue(result.data)
                 }
                 is Result.Error -> {
                     errorMessage.postValue(result.exception)

@@ -1,6 +1,6 @@
 package com.virtual_market.virtualmarket.api
 
-import com.virtual_market.planetshipmentapp.Adapter.InstallationModel
+import com.virtual_market.planetshipmentapp.Modal.InstallationModel
 import com.virtual_market.planetshipmentapp.Modal.*
 import retrofit2.Response
 import retrofit2.http.*
@@ -27,21 +27,29 @@ interface ApiInterface {
     @POST("SNL")
     suspend fun orderDispatchByParts(@Field("OrdCode") id:String): Response<SerialProductModel>
 
-
     //orderDispatchByParts
     @FormUrlEncoded
     @POST("CD2")
     suspend fun hiddingCD2(@Field("Code") id:String): Response<CD2Modal>
 
+    //update orders
+    @FormUrlEncoded
+    @POST("UO")
+    suspend fun updateOrdersUpdateStatus(@FieldMap hashmap: HashMap<String, String>): Response<UpdateOrderModel>
+
     //employees details
     @GET("AE")
     suspend fun employeesDetails(): Response<EmployeeDetailsModal>
+
+    //get All Questions
+    @GET("FQ")
+    suspend fun getQuestions(): Response<FeedbackModel>
 
     //transporter details
     @GET("TE")
     suspend fun getAllTransporters(): Response<TransportersModal>
 
-    //send ids on server
+    //called update orders
     @FormUrlEncoded
     @POST("UO")
     suspend fun sendIdsOnServer(@FieldMap hashmap: HashMap<String, String>): Response<UpdateOrderModel>
@@ -51,7 +59,7 @@ interface ApiInterface {
     @POST("AS")
     suspend fun sendDocumentOnServer(@FieldMap hashmap: HashMap<String, String>): Response<SuccessModel>
 
-    //send ids on server
+    //called transporters api
     @FormUrlEncoded
     @POST("TL")
     suspend fun userTransportersLogin(@FieldMap hashmap: HashMap<String, String>): Response<ResponseTransporter>
