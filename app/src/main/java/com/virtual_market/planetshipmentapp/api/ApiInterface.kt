@@ -74,4 +74,9 @@ interface ApiInterface {
     @POST("IM")
     suspend fun installationImages(@Field("OrdCode") code:String): Response<InstallationModel>
 
+    //feedback details
+    @FormUrlEncoded
+    @POST("FDL")
+    suspend fun feedbackDetails(@Field("OrdCode") code:String): Response<FeedbackLoadModels>
+
 }

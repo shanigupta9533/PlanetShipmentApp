@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.virtual_market.planetshipmentapp.Modal.AnswerIdModel
+import com.virtual_market.planetshipmentapp.Modal.FeedbackUserList
 import com.virtual_market.planetshipmentapp.Modal.QuestionsModel
 import com.virtual_market.planetshipmentapp.Modal.SubQuestionsModel
 import com.virtual_market.planetshipmentapp.R
@@ -20,6 +21,7 @@ class HeadingOfQuestionsAdapter(
     private val context: Context,
     private val responsePost: List<QuestionsModel>) : RecyclerView.Adapter<HeadingOfQuestionsAdapter.viewholder>() {
 
+    private var feedbackUserList: FeedbackUserList?=null
     private val answerIdModelList=ArrayList<AnswerIdModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewholder {
@@ -70,6 +72,9 @@ class HeadingOfQuestionsAdapter(
             val answerOfQuestionAdapter=AnswerOfQuestionAdapter(context,questionsModel)
             recyclerView!!.adapter=answerOfQuestionAdapter
 
+            if(feedbackUserList!=null)
+                answerOfQuestionAdapter.setOptionIds(feedbackUserList!!.OptionIds);
+
             answerOfQuestionAdapter.setOnClickListener(object : AnswerOfQuestionAdapter.OnClickListener{
                 override fun onClick(s: Int, answerId: String?) {
 
@@ -83,6 +88,12 @@ class HeadingOfQuestionsAdapter(
             })
 
         }
+
+    }
+
+    fun feedbackModels(feedbackUserList:FeedbackUserList){
+
+        this.feedbackUserList=feedbackUserList
 
     }
 

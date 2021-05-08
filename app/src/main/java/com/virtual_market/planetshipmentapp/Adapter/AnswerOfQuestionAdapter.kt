@@ -20,6 +20,7 @@ class AnswerOfQuestionAdapter(
     private val responsePost: ArrayList<SubQuestionsModel>
 ) : RecyclerView.Adapter<AnswerOfQuestionAdapter.viewholder>() {
 
+    private var optionids: String?=null
     private lateinit var onClickListener: OnClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewholder {
@@ -49,7 +50,6 @@ class AnswerOfQuestionAdapter(
 
         holder.radio_group.setOnCheckedChangeListener { radioGroup, i ->
             val radioButton = radioGroup.findViewById<RadioButton>(i)
-
             onClickListener.onClick(i,subQuestionsModel.AnswerId)
         }
 
@@ -67,7 +67,6 @@ class AnswerOfQuestionAdapter(
         fun bindView(options: ArrayList<AnswersModel>?) {
 
             options!!.forEach {
-
                 val rbn = RadioButton(context)
                 rbn.id = it.OptionId!!.toInt()
                 rbn.text = it.Options
@@ -78,12 +77,28 @@ class AnswerOfQuestionAdapter(
                         1f
                     )
                 rbn.layoutParams = params
+
+                if(optionids!=null) {
+
+                    optionids!!.forEach { optionIds ->
+
+                        if (optionIds.toString().equals(it.OptionId!!, true)) {
+                            rbn.isChecked = true
+                        }
+
+                    }
+                }
+
                 radio_group.addView(rbn)
 
             }
 
         }
 
+    }
+
+    fun setOptionIds(optionIds: String?) {
+        this.optionids=optionIds
     }
 
 }

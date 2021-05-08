@@ -17,10 +17,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.androidbuts.multispinnerfilter.KeyPairBoolData
+import com.bumptech.glide.Glide
 import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
 import com.virtual_market.planetshipmentapp.Adapter.HeadingOfQuestionsAdapter
 import com.virtual_market.planetshipmentapp.Fragment.SignaturePanelFragment
+import com.virtual_market.planetshipmentapp.Modal.FeedbackUserList
 import com.virtual_market.planetshipmentapp.Modal.QuestionsModel
 import com.virtual_market.planetshipmentapp.MyUils.MyUtils
 import com.virtual_market.planetshipmentapp.R
@@ -253,12 +255,12 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
                 .addParameter("FiterId", fitters!!)
                 .addParameter("CustomerCode",customerCode!!)
                 .addParameter("Date",activity.included.date.text.toString())
-                .addParameter("OptionsIds",headingOfQuestionsAdapter.answerIdModel()!!)
+                .addParameter("OptionIds",headingOfQuestionsAdapter.answerIdModel()!!)
                 .addParameter("Feedback",activity.included.customer_feedback.text.toString())
                 .addParameter("CustomerName",activity.included.customer_name.text.toString())
                 .addParameter("Mobile",activity.included.mobileNumber.text.toString())
-                .addParameter("TransporterName",activity.included.transport_name.toString())
-                .addParameter("VehicleNumber",activity.included.vehicle_number.toString())
+                .addParameter("TransporterName",activity.included.transport_name.text.toString())
+                .addParameter("VehicleNumber",activity.included.vehicle_number.text.toString())
                 .setAutoDeleteFilesAfterSuccessfulUpload(false)
                 .setNotificationConfig { context, uploadId -> uploadNotificationConfig }
                 .setUsesFixedLengthStreamingMode(true)
@@ -304,7 +306,7 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
                             applicationContext,
                             exception.serverResponse.bodyString
                         )
-                        Log.e("RECEIVER", "Error, upload error: ${exception.serverResponse}")
+                        Log.e("RECEIVER", "Error, upload error: ${exception.serverResponse.bodyString}")
                     }
 
                     else -> {
@@ -342,6 +344,24 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
         multipartUploadRequest.startUpload()
     }
 
+    private fun setDataOnFeedback(feedbackUserList: FeedbackUserList){
+
+        activity.included.customer_feedback.setText(feedbackUserList.Feedback)
+        activity.included.customer_name.setText(feedbackUserList.CustomerName)
+        activity.included.mobileNumber.setText(feedbackUserList.Mobile)
+        activity.included.transport_name.setText(feedbackUserList.TranspoterName)
+        activity.included.vehicle_number.setText(feedbackUserList.VehicleNumber)
+        activity.included.feedback_notice_text.visibility=View.VISIBLE
+        activity.submitFeedback.visibility=View.GONE
+        activity.included.date.text = feedbackUserList.Date
+
+        headingOfQuestionsAdapter.feedbackModels(feedbackUserList)
+        headingOfQuestionsAdapter.notifyDataSetChanged()
+
+        Glide.with(this).load(feedbackUserList.Signature).into(activity.included.signature_pad)
+
+    }
+
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
@@ -359,7 +379,6 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
         viewModel.errorMessage.observe(this, {
 
             MyUtils.createToast(this.applicationContext, it)
-            progressBar!!.visibility = View.GONE
             noInternetConnection!!.visibility = View.VISIBLE
 
         })
@@ -379,7 +398,8 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
                 progressBar!!.visibility = View.VISIBLE
                 noDataFound!!.visibility = View.GONE
                 noInternetConnection!!.visibility = View.GONE
-            }
+            } else
+                progressBar!!.visibility=View.GONE
         })
 
     }
@@ -406,8 +426,6 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
 
                 }
 
-                progressBar!!.visibility = View.GONE
-
                 return@observe
 
             } else {
@@ -425,11 +443,33 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
 
                 noDataFound!!.visibility = View.GONE
 
+                getUploadedDataFeedbackOrderCode()
+
             }
 
-            progressBar!!.visibility = View.GONE
-
         })
+
+    }
+
+    private fun getUploadedDataFeedbackOrderCode() {
+
+        viewModel.getFeedbackDetails(ordCode!!)
+
+        viewModel.feedbackDetails.removeObservers(this)
+
+        viewModel.feedbackDetails.observe(this, {
+
+            if (it.success.equals("failure")) {
+
+                return@observe
+
+            } else if (it?.Feeedback != null) {
+
+                setDataOnFeedback(it.Feeedback?.get(0)!!)
+
+            }
+
+        });
 
     }
 

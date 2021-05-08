@@ -28,6 +28,10 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
         MutableLiveData<SerialProductModel>()
     }
 
+    val feedbackDetails: MutableLiveData<FeedbackLoadModels> by lazy {
+        MutableLiveData<FeedbackLoadModels>()
+    }
+
     val installationImages: MutableLiveData<InstallationModel> by lazy {
         MutableLiveData<InstallationModel>()
     }
@@ -241,6 +245,23 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
             when (result) {
                 is Result.Success -> {
                     installationImages.postValue(result.data)
+                }
+                is Result.Error -> {
+                    errorMessage.postValue(result.exception)
+                    noInternet.postValue(result.noInternet)
+                }
+            }
+        }
+    }
+
+    fun getFeedbackDetails(code:String) {
+        viewModelScope.launch {
+            loading.postValue(true)
+            val result = OrdersRepository(apiclient).feedbackDetails(code)
+            loading.postValue(false)
+            when (result) {
+                is Result.Success -> {
+                    feedbackDetails.postValue(result.data)
                 }
                 is Result.Error -> {
                     errorMessage.postValue(result.exception)

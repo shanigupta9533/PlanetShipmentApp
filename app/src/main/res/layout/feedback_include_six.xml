@@ -103,6 +103,8 @@
             android:layout_weight="1"
             android:layout_marginStart="@dimen/_6ssp"
             android:id="@+id/mobileNumber"
+            android:inputType="number|phone"
+            android:digits="0123456789"
             android:layout_gravity="center"
             android:background="@drawable/default_border_on_seletection_top"
             android:fontFamily="@font/open_sans"
@@ -322,5 +324,21 @@
             android:textSize="@dimen/_12ssp" />
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ellipsize="end"
+        android:id="@+id/feedback_notice_text"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/_30ssp"
+        android:alpha="0.8"
+        android:visibility="gone"
+        android:fontFamily="@font/poppinsmedium"
+        android:layout_marginTop="@dimen/_40ssp"
+        android:text="Feedback Upload Successfully"
+        android:textColor="@color/red_900"
+        android:textSize="16dp" />
 
 </LinearLayout>
