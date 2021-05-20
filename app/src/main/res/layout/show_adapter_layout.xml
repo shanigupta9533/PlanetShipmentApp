@@ -67,8 +67,7 @@
             android:layout_width="110dp"
             android:layout_height="@dimen/_100ssp"
             android:layout_gravity="start"
-            android:layout_marginTop="8dp"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="@dimen/_12ssp"
             android:adjustViewBounds="true"
             android:src="@drawable/after_delete" />

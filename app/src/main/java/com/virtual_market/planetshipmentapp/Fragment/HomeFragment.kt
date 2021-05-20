@@ -320,13 +320,12 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
                 split.forEach {
 
-                    if (mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id)
-                            .equals(it, true)
-                    )
+                    if (mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id).equals(it, true)) {
 
                         responseOrdersArray.add(responseOrders)
+                        return@forEach
 
-                    return@forEach
+                    }
 
                 }
 
@@ -354,11 +353,10 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
                 split.forEach {
 
-                    if (responseUserLogin.EmpId!!.equals(it, true))
-
+                    if (responseUserLogin.EmpId!!.equals(it, true)) {
                         responseOrdersArray.add(responseOrders)
-
-                    return@forEach
+                        return@forEach
+                    }
 
 
                 }
@@ -387,11 +385,10 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
                 split.forEach {
 
-                    if (responseUserLogin.EmpId!!.equals(it, true))
-
+                    if (responseUserLogin.EmpId!!.equals(it, true)) {
                         responseOrdersArray.add(responseOrders)
-
-                    return@forEach
+                        return@forEach
+                    }
 
                 }
 

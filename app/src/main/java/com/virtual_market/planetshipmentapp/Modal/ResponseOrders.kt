@@ -3,7 +3,7 @@ package com.virtual_market.planetshipmentapp.Modal
 import android.os.Parcel
 import android.os.Parcelable
 
-class ResponseOrders() : Parcelable {
+class ResponseOrders() : Parcelable{
 
     var OrdCode:String?=null
     var SapOrdCode:String?=null
@@ -26,6 +26,8 @@ class ResponseOrders() : Parcelable {
     var DeliveryCharges:String?=null
     var CustomizationCharges:String?=null
     var Helpers:String?=null
+    var VehicleIncentives:String?=null
+    var HelperIncentives:String?=null
     var Fitters:String?=null
     var Transporters:String?=null
     var TransportCharges:String?=null
@@ -53,6 +55,8 @@ class ResponseOrders() : Parcelable {
         DeliveryCharges = parcel.readString()
         CustomizationCharges = parcel.readString()
         Helpers = parcel.readString()
+        VehicleIncentives = parcel.readString()
+        HelperIncentives = parcel.readString()
         Fitters = parcel.readString()
         Transporters = parcel.readString()
         TransportCharges = parcel.readString()
@@ -80,6 +84,8 @@ class ResponseOrders() : Parcelable {
         parcel.writeString(DeliveryCharges)
         parcel.writeString(CustomizationCharges)
         parcel.writeString(Helpers)
+        parcel.writeString(VehicleIncentives)
+        parcel.writeString(HelperIncentives)
         parcel.writeString(Fitters)
         parcel.writeString(Transporters)
         parcel.writeString(TransportCharges)

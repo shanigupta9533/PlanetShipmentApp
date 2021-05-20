@@ -230,6 +230,9 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         activity.customerName.text = customer_details!!.customerName
         activity.phoneNumber.text = customer_details!!.mobNo
 
+        activity.helperIncentives.setText(responseOrders.HelperIncentives)
+        activity.vehicleIncentives.setText(responseOrders.VehicleIncentives)
+
         if (!TextUtils.isEmpty(responseOrders.OrdStatus) && !responseOrders.OrdStatus!!.equals("Created", true))
             activity.orderStatus.text = responseOrders.OrdStatus
         else
@@ -287,6 +290,8 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             MyUtils.setHashmap("Fitters", getIdsWithComma(activity.fitterSpinner))
             MyUtils.setHashmap("Helpers", getIdsWithComma(activity.helperSpinner))
             MyUtils.setHashmap("TransportCharges", activity.transportCharges.text.toString())
+            MyUtils.setHashmap("FitterIncentives", activity.vehicleIncentives.text.toString())
+            MyUtils.setHashmap("HelperIncentives", activity.helperIncentives.text.toString())
             MyUtils.setHashmap("OrdCode", responseOrders.OrdCode)
             val hashmap =
                 MyUtils.setHashmap("Transporters", getIdsWithComma(activity.transportSpinner))
@@ -303,11 +308,12 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             activity.fitterSpinner.isEnabled = false
             activity.transportSpinner.isEnabled = false
             activity.transportCharges.isEnabled = false
-
+            activity.vehicleIncentives.isEnabled = false
+            activity.helperIncentives.isEnabled = false
             activity.dateOfDelivery.isEnabled = false
 
             activity.parentOfButton.visibility = View.GONE
-            activity.transportCharges.visibility = View.GONE
+            activity.trasnportParent.visibility = View.GONE
 
             activity.parentOfDeliveryDate.visibility = View.GONE
 
@@ -318,9 +324,11 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             activity.transportSpinner.isEnabled = false
             activity.transportCharges.isEnabled = false
             activity.dateOfDelivery.isEnabled = false
+            activity.vehicleIncentives.isEnabled = false
+            activity.helperIncentives.isEnabled = false
 
             activity.parentOfButton.visibility = View.GONE
-            activity.transportCharges.visibility = View.GONE
+            activity.trasnportParent.visibility = View.GONE
 
             activity.parentOfDeliveryDate.visibility = View.GONE
 
@@ -331,6 +339,8 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             activity.transportSpinner.isEnabled = false
             activity.dateOfDelivery.isEnabled = false
             activity.transportCharges.isEnabled = false
+            activity.vehicleIncentives.isEnabled = false
+            activity.helperIncentives.isEnabled = false
 
             activity.parentOfButton.visibility = View.GONE
 
@@ -381,7 +391,6 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         ).get(OrdersViewModel::class.java)
 
         setupObservers()
-
 
         refreshButton!!.setOnClickListener {
 
@@ -554,7 +563,6 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
                     keyPairBoolData.isSelected = false
                     val transporters = responseOrders!!.Transporters
                     transporters!!.split(",").forEach {
-                        it
                         if (empId.equals(it, true)) {
                             keyPairBoolData.isSelected = true
                         }
@@ -620,9 +628,9 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         spinner.setEmptyTitle("Not Data Found!")
         spinner.isShowSelectAllButton = false
         spinner.setClearText("Clear")
-        spinner.setItems(fitterArrayList, MultiSpinnerListener { _ ->
+        spinner.setItems(fitterArrayList) {
 
-        })
+        }
 
     }
 
@@ -637,10 +645,11 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         spinner.setClearText("Clear")
         spinner.setEmptyTitle("Not Data Found!")
         spinner.isShowSelectAllButton = false
-        spinner.setItems(transportArraylist,
-            MultiSpinnerListener { _ ->
+        with(spinner) {
+            setItems(transportArraylist) {
 
-            })
+            }
+        }
 
 
     }
@@ -656,10 +665,9 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         spinner.isShowSelectAllButton = false
         spinner.setClearText("Clear")
 
-        spinner.setItems(helperArrayList,
-            MultiSpinnerListener { _ ->
+        spinner.setItems(helperArrayList){
 
-            })
+            }
     }
 
     @SuppressLint("SetTextI18n")

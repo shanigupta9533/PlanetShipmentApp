@@ -1,6 +1,7 @@
 package com.virtual_market.planetshipmentapp.Activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Bitmap
@@ -16,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.androidbuts.multispinnerfilter.KeyPairBoolData
 import com.bumptech.glide.Glide
 import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
@@ -179,17 +179,13 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
             })
     }
 
-    fun bitmapToFile(
-        context: Context,
-        bitmap: Bitmap,
-        fileNameToSave: String
-    ): File? { // File name like "image.png"
+    private fun bitmapToFile(bitmap: Bitmap): File? { // File name like "image.png"
         //create a file to write bitmap data
         var file: File? = null
         return try {
             file = File(
                 Environment.getExternalStorageDirectory()
-                    .toString() + File.separator + fileNameToSave
+                    .toString() + File.separator + "Signature"
             )
             file.createNewFile()
 
@@ -273,7 +269,7 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
 
                 listing_logo = UUID.randomUUID().toString().replace("-".toRegex(), "")
                 multipartUploadRequest.addFileToUpload(
-                    bitmapToFile(this, signatureBitmapGlobal!!, "Signature")!!.path,
+                    bitmapToFile( signatureBitmapGlobal!!)!!.path,
                     "Signature",
                     "$listing_logo.jpg",
                     "UTF-8"
@@ -404,6 +400,7 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupObservers() {
 
         viewModel.getQuestions()
@@ -437,7 +434,7 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
                 showModel!!.addAll(items!!)
 
                 activity.included.feedbackTextOnInclude.text =
-                    "${(showModel!!.size + 1).toString()}.  Customer \n Feedback"
+                    "${(showModel!!.size + 1)}.  Customer \n Feedback"
 
                 headingOfQuestionsAdapter.notifyDataSetChanged()
 
@@ -469,10 +466,11 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
 
             }
 
-        });
+        })
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 
         activity.included.date.text = "$year-${month + 1}-$dayOfMonth"

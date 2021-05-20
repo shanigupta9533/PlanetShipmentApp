@@ -232,7 +232,7 @@
                         android:layout_gravity="center"
                         android:alpha="0.8"
                         android:ellipsize="end"
-                        android:fontFamily="@font/open_sans_semibold"
+                        android:fontFamily="@font/poppinsmedium"
                         android:letterSpacing="0.01"
                         android:maxLines="1"
                         android:text="Name : "
@@ -247,7 +247,7 @@
                         android:drawablePadding="-5dp"
                         android:drawableTint="@color/black"
                         android:ellipsize="end"
-                        android:fontFamily="@font/poppinsmedium"
+                        android:fontFamily="@font/poppins"
                         android:gravity="center"
                         android:letterSpacing="0.01"
                         android:maxLines="1"
@@ -270,7 +270,7 @@
                         android:layout_gravity="center"
                         android:alpha="0.8"
                         android:ellipsize="end"
-                        android:fontFamily="@font/open_sans_semibold"
+                        android:fontFamily="@font/poppinsmedium"
                         android:letterSpacing="0.01"
                         android:maxLines="1"
                         android:text="Phone Number : "
@@ -285,7 +285,7 @@
                         android:drawablePadding="-5dp"
                         android:drawableTint="@color/black"
                         android:ellipsize="end"
-                        android:fontFamily="@font/open_sans_semibold"
+                        android:fontFamily="@font/poppins"
                         android:gravity="center"
                         android:letterSpacing="0.01"
                         android:maxLines="1"
@@ -548,7 +548,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/_8ssp"
+                    android:id="@+id/trasnport_parent"
+                    android:layout_marginTop="@dimen/_11ssp"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -580,6 +581,79 @@
                         android:textSize="@dimen/_12ssp" />
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_11ssp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:alpha="0.8"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="Fitter Incentives"
+                        android:textColor="@color/quantum_googgreen900"
+                        android:textSize="13dp" />
+
+                    <EditText
+                        android:id="@+id/vehicle_incentives"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40ssp"
+                        android:digits="0123456789"
+                        android:layout_marginStart="@dimen/_12ssp"
+                        android:background="@drawable/default_border_on_seletection"
+                        android:fontFamily="@font/open_sans"
+                        android:hint="Fitter Incentives"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textSize="@dimen/_12ssp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_11ssp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:alpha="0.8"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/open_sans"
+                        android:letterSpacing="0.01"
+                        android:maxLines="1"
+                        android:text="Helper Incentives"
+                        android:textColor="@color/quantum_googgreen900"
+                        android:textSize="13dp" />
+
+                    <EditText
+                        android:id="@+id/helper_incentives"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40ssp"
+                        android:digits="0123456789"
+                        android:layout_marginStart="@dimen/_12ssp"
+                        android:background="@drawable/default_border_on_seletection"
+                        android:fontFamily="@font/open_sans"
+                        android:hint="Vehicle Incentives"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textSize="@dimen/_12ssp" />
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="170dp"

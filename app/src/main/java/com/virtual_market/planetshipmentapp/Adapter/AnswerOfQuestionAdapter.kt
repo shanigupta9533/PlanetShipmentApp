@@ -1,6 +1,7 @@
 package com.virtual_market.planetshipmentapp.Adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,11 +81,13 @@ class AnswerOfQuestionAdapter(
 
                 if(optionids!=null) {
 
-                    optionids!!.forEach { optionIds ->
+
+
+                    optionids!!.split(",").forEach { optionIds ->
 
                         if (optionIds.toString().equals(it.OptionId!!, true)) {
                             rbn.isChecked = true
-                        }
+                         }
 
                     }
                 }

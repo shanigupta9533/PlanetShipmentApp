@@ -125,6 +125,10 @@ class LoginActivity : AppCompatActivity() {
             ViewModelFactory(RetrofitClient.apiInterface)
         ).get(LoginViewModel::class.java)
 
+        viewModel!!.errorMessage.observe(this,{
+            if (it.isNotEmpty()) MyUtils.createToast(applicationContext, it)
+        })
+
         viewModel!!.noInternet.observe(this, {
             if (it) MyUtils.createToast(applicationContext, "Connection Timeout!")
         })
@@ -178,6 +182,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun isValidEmail(target: CharSequence?): Boolean {
-        return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
+        return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target!!).matches()
     }
 }
