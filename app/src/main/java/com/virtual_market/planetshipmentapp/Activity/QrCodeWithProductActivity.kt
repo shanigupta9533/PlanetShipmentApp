@@ -87,7 +87,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
     private lateinit var showModel: ArrayList<SerialProductListModel>
     private var lattie: LottieAnimationView? = null
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qr_code_with_product)
