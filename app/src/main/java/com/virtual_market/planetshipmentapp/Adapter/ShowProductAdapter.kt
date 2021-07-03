@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.virtual_market.planetshipmentapp.Activity.OrderDetailsActivity
 import com.virtual_market.planetshipmentapp.Modal.ResponseOrders
 import com.virtual_market.planetshipmentapp.R
-import kotlinx.android.synthetic.main.fragment_logout_dialog.view.*
 
 class ShowProductAdapter(
     private val context: Context,
@@ -32,7 +31,8 @@ class ShowProductAdapter(
 
         val customers = responseOrders.ordJsonList!!.getCustomers()
 
-        Glide.with(context).load(responseOrders.main_image).placeholder(R.drawable.ic_logo_brown).error(R.drawable.ic_logo_brown)
+        Glide.with(context).load(responseOrders.main_image).placeholder(R.drawable.ic_logo_brown)
+            .error(R.drawable.ic_logo_brown)
             .into(holder.imageIcon)
 
         holder.order_no.text = "Order No. ${responseOrders.OrdCode}"
@@ -41,7 +41,7 @@ class ShowProductAdapter(
 
         holder.customer_name.text = customers!!.customerName
 
-        holder.order_date.text=responseOrders.OrdDate!!
+        holder.order_date.text = responseOrders.OrdDate!!
 
         holder.details_button.setOnClickListener {
 
@@ -53,6 +53,10 @@ class ShowProductAdapter(
                 "productItem",
                 responseOrders.ordJsonList!!.getProduct()
             )
+
+            if (responseOrders.Items!=null && responseOrders.Items!!.isNotEmpty())
+                intent.putParcelableArrayListExtra("allItems", responseOrders.Items!!)
+
             context.startActivity(intent)
 
         }
@@ -63,10 +67,15 @@ class ShowProductAdapter(
             intent.putExtra("responseOrders", responseOrders)
             intent.putExtra("ordJson", responseOrders.ordJsonList)
             intent.putExtra("customer_details", responseOrders.ordJsonList!!.getCustomers())
+
             intent.putParcelableArrayListExtra(
                 "productItem",
                 responseOrders.ordJsonList!!.getProduct()
             )
+
+            if (responseOrders.Items!=null && responseOrders.Items!!.isNotEmpty())
+                intent.putParcelableArrayListExtra("allItems", responseOrders.Items)
+
             context.startActivity(intent)
 
         }

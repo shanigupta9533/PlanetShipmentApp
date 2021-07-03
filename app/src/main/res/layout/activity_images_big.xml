@@ -13,4 +13,28 @@
         android:adjustViewBounds="true"
         android:layout_height="match_parent"/>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_100ssp"
+        app:cardCornerRadius="@dimen/_30ssp"
+        android:layout_height="@dimen/_40ssp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/delete"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/_13ssp"
+        app:cardBackgroundColor="@color/colorGreyDark"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="Delete"
+            android:textColor="@color/white"
+            android:textSize="13dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <include layout="@layout/progress_bar_layout"/>
+
 </RelativeLayout>

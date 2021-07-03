@@ -18,7 +18,9 @@ public class MySharedPreferences {
     public static final String myLongitude="Mylongitude";
     public static final String uid="uid";
     public static final String id="id";
-    public static final String isUpdate ="false";
+    public static final String isUpdate ="isUpdate";
+    public static final String shippedOrDelivered ="shippedOrDelivered";
+    public static final String isUpdateImages ="isUpdateImages";
 
     //instance field
 

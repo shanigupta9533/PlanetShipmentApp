@@ -299,6 +299,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:id="@+id/recyclerView"
+            android:nestedScrollingEnabled="false"
             android:layout_marginTop="@dimen/_8ssp"
             android:layout_height="wrap_content"
             />

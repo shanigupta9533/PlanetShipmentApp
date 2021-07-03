@@ -17,9 +17,7 @@ public class MyUtils {
     }
 
     public static HashMap<String, String> setHashmap(String key, String value) {
-
         map.put(key,value);
-
         return map;
 
     }

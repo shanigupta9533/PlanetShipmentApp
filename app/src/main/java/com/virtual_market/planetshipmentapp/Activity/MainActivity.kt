@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        getCurrentLocation()
+//        getCurrentLocation()
 
     }
 

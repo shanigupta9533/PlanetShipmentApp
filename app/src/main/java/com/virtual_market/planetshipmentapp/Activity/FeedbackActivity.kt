@@ -330,8 +330,8 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
                 }, 800)
 
                 MyUtils.createToast(
-                    applicationContext,
-                    serverResponse.bodyString
+                    this@FeedbackActivity,
+                    "Image Upload Successfully"
                 )
 
             }
@@ -411,15 +411,18 @@ class FeedbackActivity : AppCompatActivity(),DatePickerDialog.OnDateSetListener 
 
             if (it.success.equals("failure")) {
 
-                MyUtils.createToast(this.applicationContext, it.message)
-
-                if (it.message.equals("No Data Available")) {
+                if (it.message.equals("Data Not available")) {
 
                     noDataFound!!.visibility = View.VISIBLE
+
+                    MyUtils.createToast(this.applicationContext, "No Question Available")
 
                 } else {
 
                     noDataFound!!.visibility = View.GONE
+
+                    MyUtils.createToast(this.applicationContext, it.message)
+
 
                 }
 

@@ -6,7 +6,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 
-class ProductItem: Parcelable {
+class ProductItem() : Parcelable {
     @SerializedName("BrandName")
     var brandName: String? = null
 
@@ -49,6 +49,24 @@ class ProductItem: Parcelable {
     @SerializedName("DeliveryCharges")
     var deliveryCharges:String?=null
 
+    @SerializedName("IndoorFitter")
+    var indoorFitter:String?=null
+
+    @SerializedName("IndoorHelper")
+    var indoorHelper:String?=null
+
+    @SerializedName("OutdoorFitter")
+    var outdoorFitter:String?=null
+
+    @SerializedName("OutdoorHelper")
+    var outdoorHelper:String?=null
+
+    @SerializedName("DbOutdoorFitter")
+    var dbOutDoorFitter:String?=null
+
+    @SerializedName("DbOutdoorHelper")
+    var dbOutDoorHelper:String?=null
+
     @SerializedName("InstallationCharges")
     var installationCharges:String?=null
 
@@ -66,26 +84,13 @@ class ProductItem: Parcelable {
         hSNCode = parcel.readString()
         CustomizationCharges = parcel.readString()
         deliveryCharges = parcel.readString()
+        indoorFitter = parcel.readString()
+        indoorHelper = parcel.readString()
+        outdoorFitter = parcel.readString()
+        outdoorHelper = parcel.readString()
+        dbOutDoorFitter = parcel.readString()
+        dbOutDoorHelper = parcel.readString()
         installationCharges = parcel.readString()
-    }
-
-
-    constructor() {}
-
-    override fun toString(): String {
-        return "ProductItem{" +
-                "brandName = '" + brandName + '\'' +
-                ",mainImage = '" + mainImage + '\'' +
-                ",itemCode = '" + itemCode + '\'' +
-                ",sellAmt = '" + sellAmt + '\'' +
-                ",detailName = '" + detailName + '\'' +
-                ",qty = '" + qty + '\'' +
-                ",brandCode = '" + brandCode + '\'' +
-                ",mRP = '" + mRP + '\'' +
-                ",gSTPercentage = '" + gSTPercentage + '\'' +
-                ",hSNCode = '" + hSNCode + '\'' +
-                ",OrderCod = '" + OrderCod + '\'' +
-                "}"
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -102,6 +107,12 @@ class ProductItem: Parcelable {
         parcel.writeString(hSNCode)
         parcel.writeString(CustomizationCharges)
         parcel.writeString(deliveryCharges)
+        parcel.writeString(indoorFitter)
+        parcel.writeString(indoorHelper)
+        parcel.writeString(outdoorFitter)
+        parcel.writeString(outdoorHelper)
+        parcel.writeString(dbOutDoorFitter)
+        parcel.writeString(dbOutDoorHelper)
         parcel.writeString(installationCharges)
     }
 
@@ -118,4 +129,6 @@ class ProductItem: Parcelable {
             return arrayOfNulls(size)
         }
     }
+
+
 }

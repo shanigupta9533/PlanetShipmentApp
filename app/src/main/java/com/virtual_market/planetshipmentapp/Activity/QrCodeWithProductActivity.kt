@@ -28,6 +28,7 @@ import com.virtual_market.planetshipmentapp.Fragment.ConfirmationDialogFragment
 import com.virtual_market.planetshipmentapp.Fragment.FeedbackDialogFragment
 import com.virtual_market.planetshipmentapp.Modal.ResponseUserLogin
 import com.virtual_market.planetshipmentapp.Modal.SerialProductListModel
+import com.virtual_market.planetshipmentapp.MyUils.MySharedPreferences
 import com.virtual_market.planetshipmentapp.MyUils.MyUtils
 import com.virtual_market.planetshipmentapp.MyUils.PlanetShippingApplication
 import com.virtual_market.planetshipmentapp.R
@@ -42,11 +43,15 @@ import id.zelory.compressor.Compressor
 import kotlinx.android.synthetic.main.activity_qr_code_with_product.*
 import kotlinx.android.synthetic.main.activity_show_client_address.*
 import kotlinx.android.synthetic.main.no_internet_connection.*
+import net.gotev.uploadservice.UploadServiceConfig
 import net.gotev.uploadservice.data.UploadInfo
+import net.gotev.uploadservice.data.UploadNotificationConfig
+import net.gotev.uploadservice.data.UploadNotificationStatusConfig
 import net.gotev.uploadservice.exceptions.UploadError
 import net.gotev.uploadservice.exceptions.UserCancelledUploadException
 import net.gotev.uploadservice.network.ServerResponse
 import net.gotev.uploadservice.observer.request.RequestObserverDelegate
+import net.gotev.uploadservice.placeholders.Placeholder
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
 import java.io.File
 import java.io.FileNotFoundException
@@ -56,6 +61,8 @@ import kotlin.collections.ArrayList
 
 class QrCodeWithProductActivity : AppCompatActivity() {
 
+    private var fitter: Boolean=false
+    private lateinit var mySharedPreferences: MySharedPreferences
     private var items1 =ArrayList<SerialProductListModel>()
     private val REQUEST_CODE_CHOOSE: Int = 1001
     private lateinit var responseUserLogin: ResponseUserLogin
@@ -85,6 +92,8 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qr_code_with_product)
 
+        mySharedPreferences = MySharedPreferences.getInstance(applicationContext)
+
         responseUserLogin = (applicationContext as PlanetShippingApplication).responseUserLogin
 
         if (intent != null) {
@@ -111,12 +120,12 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
         }
 
-        if (responseUserLogin.Role!!.equals("Stores", true)) {
+        if (!TextUtils.isEmpty(responseUserLogin.Role) && responseUserLogin.Role!!.equals("Stores", true)) {
 
             button_of_parent!!.visibility = View.VISIBLE
             text_as_button!!.text = "Mark Shipped"
 
-        } else if (responseUserLogin.Role.equals("Fitter", true)) {
+        } else if (!TextUtils.isEmpty(responseUserLogin.Role) && responseUserLogin.Role.equals("Fitter", true)) {
 
             button_of_parent!!.visibility = View.VISIBLE
             text_as_button!!.text = "Mark Delivered"
@@ -171,7 +180,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
                 if(!chekedProduct){
 
-                    MyUtils.createToast(this,"Add all the sub products of a product.")
+                    MyUtils.createToast(this,"Select Product For Delivered")
 
                     return@setOnClickListener
                 }
@@ -203,7 +212,9 @@ class QrCodeWithProductActivity : AppCompatActivity() {
                         hashmap =
                             MyUtils.setHashmap("DeliveryDate", "${year}-${month+1}-${dayOfMonth}")
 
-                        sendDocumentOnServer(hashmap, true)
+                        fitter=true;
+
+                        sendDocumentOnServer(hashmap)
                     }
 
                 })
@@ -214,7 +225,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
                 if(!chekedProduct){
 
-                    MyUtils.createToast(this,"Add all the sub products of a product.")
+                    MyUtils.createToast(this,"Select Product For Shipped")
 
                     return@setOnClickListener
                 }
@@ -236,7 +247,9 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
                 Log.i("TAG", "onCreate: ${year}-${month+1}-${dayOfMonth}")
 
-                sendDocumentOnServer(hashmap, false)
+                fitter=false;
+
+                sendDocumentOnServer(hashmap)
 
             }
 
@@ -273,6 +286,9 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         else
             openQrCode()
 
+        //order dispatch observer  //dispatchOrdersByParts
+        orderDispatchByPartsObserver()
+
     }
 
     private fun isChekedProduct():Boolean {
@@ -290,32 +306,9 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         return true
     }
 
-    private fun sendDocumentOnServer(hashmap: HashMap<String, String>?, fitter: Boolean) {
+    private fun sendDocumentOnServer(hashmap: HashMap<String, String>?) {
 
         viewModel.sendDocumentOnServer(hashmap!!)
-        viewModel.documentOnServer.removeObservers(this)
-        viewModel.documentOnServer.observe(this, {
-
-            if (fitter && it.success!!.equals("success", true)) { // after success open signature pad
-
-                val intent = Intent(this, SignaturePadActivity::class.java)
-                intent.putExtra("ordCode",orderCode)
-                isMarkedClicked=true
-                setupObservers()
-                startActivity(intent)
-
-            } else if(it.success!!.equals("success", true)){
-
-                setupObservers()
-                isMarkedClicked=true
-
-            }
-
-            MyUtils.createToast(applicationContext, it.message)
-
-            progressBar!!.visibility = View.GONE
-
-        })
 
     }
 
@@ -402,6 +395,38 @@ class QrCodeWithProductActivity : AppCompatActivity() {
     }
 
     private fun uploadFileOnServer(files: ArrayList<File>) {
+
+        progressBar!!.visibility = View.VISIBLE
+
+        val uploadNotificationConfig = UploadNotificationConfig(
+            notificationChannelId = UploadServiceConfig.defaultNotificationChannel!!,
+            isRingToneEnabled = false,
+            progress = UploadNotificationStatusConfig(
+                title = "${Placeholder.Progress} Percent",
+                message = "${Placeholder.TotalFiles} Files",
+                clearOnAction = true,
+                autoClear = true
+
+            ),
+            success = UploadNotificationStatusConfig(
+                title = "success",
+                message = "some success message",
+                clearOnAction = true,
+                autoClear = true
+            ),
+            error = UploadNotificationStatusConfig(
+                title = "error",
+                message = "Something Went Wrong",
+                iconResourceID = R.drawable.ic_logo_brown
+            ),
+            cancelled = UploadNotificationStatusConfig(
+                title = "cancelled",
+                message = "some cancelled message",
+                clearOnAction = true,
+                autoClear = true
+            )
+        )
+
         val multipartUploadRequest: MultipartUploadRequest =
             MultipartUploadRequest(
                 this, RetrofitClient.MainServer + "AOM"
@@ -414,6 +439,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
                 .addParameter("EmpId", responseUserLogin.EmpId!!)
                 .setAutoDeleteFilesAfterSuccessfulUpload(false)
                 .setUsesFixedLengthStreamingMode(true)
+                .setNotificationConfig { context, uploadId -> uploadNotificationConfig }
                 .setMaxRetries(5)
                 .setMethod("POST")
         try {
@@ -482,7 +508,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
                 MyUtils.createToast(
                     this@QrCodeWithProductActivity,
-                    serverResponse.bodyString
+                    "Image Upload Successfully"
                 )
 
             }
@@ -519,6 +545,9 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         }
 
 
+        setUpDocumentObserver()
+
+
         viewModel.noInternet.observe(this, {
             if (it) {
                 no_internet_connection.visibility = View.VISIBLE
@@ -542,6 +571,33 @@ class QrCodeWithProductActivity : AppCompatActivity() {
                 noDataFound!!.visibility = View.GONE
                 no_internet_connection.visibility = View.GONE
             }
+        })
+
+    }
+
+    private fun setUpDocumentObserver() {
+
+        viewModel.documentOnServer.observe(this, {
+
+            if (fitter && it.success!!.equals("success", true)) { // after success open signature pad
+
+                val intent = Intent(this, SignaturePadActivity::class.java)
+                intent.putExtra("ordCode",orderCode)
+                isMarkedClicked=true
+                setupObservers()
+                startActivity(intent)
+
+            } else if(it.success!!.equals("success", true)){
+
+                setupObservers()
+                isMarkedClicked=true
+
+            }
+
+            MyUtils.createToast(applicationContext, it.message)
+
+            progressBar!!.visibility = View.GONE
+
         })
 
     }
@@ -620,11 +676,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
     }
 
-    private fun setupObservers() {
-
-        viewModel.dispatchOrdersByParts(orderCode!!)
-
-        viewModel.orderDispatchByParts.removeObservers(this)
+    private fun orderDispatchByPartsObserver() {
 
         viewModel.orderDispatchByParts.observe(this, {
 
@@ -671,6 +723,12 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
     }
 
+    private fun setupObservers() {
+
+        viewModel.dispatchOrdersByParts(orderCode!!)
+
+    }
+
     @SuppressLint("SetTextI18n")
     private fun checkedAllProductIsShippedOrNot(items: java.util.ArrayList<SerialProductListModel>?) {
 
@@ -683,7 +741,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
             }
         }
 
-        if (responseUserLogin.Role.equals("Stores") && items.size == i && isMarkedClicked) {
+        if (responseUserLogin.Role.equals("Stores") && isMarkedClicked) {
             callUpdateUoApi("Shipped")
         }
 
@@ -696,7 +754,10 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
         MyUtils.clearAllMap()
         MyUtils.setHashmap("OrdStatus", s)
+        MyUtils.setHashmap("Remarks", s)
         val hashmap = MyUtils.setHashmap("OrdCode", orderCode)
+
+        mySharedPreferences.setStringKey(MySharedPreferences.shippedOrDelivered,s)
 
         viewModel.callUpdateOrdersFromScanPage(hashmap)
         viewModel.updateOrderModel.removeObservers(this)

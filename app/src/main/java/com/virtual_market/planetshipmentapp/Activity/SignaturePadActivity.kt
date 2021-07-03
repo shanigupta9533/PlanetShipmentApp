@@ -2,8 +2,11 @@ package com.virtual_market.planetshipmentapp.Activity
 
 import android.Manifest
 import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.PaintFlagsDrawFilter
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -31,10 +34,7 @@ import net.gotev.uploadservice.network.ServerResponse
 import net.gotev.uploadservice.observer.request.RequestObserverDelegate
 import net.gotev.uploadservice.placeholders.Placeholder
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
+import java.io.*
 import java.util.*
 
 
@@ -175,7 +175,7 @@ class SignaturePadActivity : AppCompatActivity() {
 
                 listing_logo = UUID.randomUUID().toString().replace("-".toRegex(), "")
                 multipartUploadRequest.addFileToUpload(
-                    bitmapToFile(this,signature_pad!!.signatureBitmap,"Signature")!!.path,
+                    bitmapToFile(signature_pad!!.signatureBitmap).toString(),
                     "Image[]",
                     "$listing_logo.jpg",
                     "UTF-8"
@@ -197,6 +197,12 @@ class SignaturePadActivity : AppCompatActivity() {
 
                 when (exception) {
                     is UserCancelledUploadException -> {
+
+                        MyUtils.createToast(
+                            this@SignaturePadActivity,
+                            "Error, user cancelled upload: $uploadInfo"
+                        )
+
                         Log.e("RECEIVER", "Error, user cancelled upload: $uploadInfo")
                     }
 
@@ -210,6 +216,12 @@ class SignaturePadActivity : AppCompatActivity() {
                     }
 
                     else -> {
+
+                        MyUtils.createToast(
+                            this@SignaturePadActivity,
+                            "Error: $uploadInfo$exception"
+                        )
+
                         Log.e("RECEIVER", "Error: $uploadInfo", exception)
                     }
                 }
@@ -235,7 +247,7 @@ class SignaturePadActivity : AppCompatActivity() {
 
                 MyUtils.createToast(
                     this@SignaturePadActivity,
-                    serverResponse.bodyString
+                    "Image Upload Successfully"
                 )
 
             }
@@ -244,35 +256,38 @@ class SignaturePadActivity : AppCompatActivity() {
         multipartUploadRequest.startUpload()
     }
 
-    fun bitmapToFile(
-        context: Context,
-        bitmap: Bitmap,
-        fileNameToSave: String
-    ): File? { // File name like "image.png"
-        //create a file to write bitmap data
-        var file: File? = null
-        return try {
-            file = File(
-                Environment.getExternalStorageDirectory()
-                    .toString() + File.separator + fileNameToSave
-            )
-            file.createNewFile()
-
-            //Convert bitmap to byte array
-            val bos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
-            val bitmapdata: ByteArray = bos.toByteArray()
-
-            //write the bytes in file
-            val fos = FileOutputStream(file)
-            fos.write(bitmapdata)
-            fos.flush()
-            fos.close()
-            file
-        } catch (e: Exception) {
+    // Method to get a bitmap from assets
+    private fun assetsToBitmap(fileName:String):Bitmap?{
+        return try{
+            val stream = assets.open(fileName)
+            BitmapFactory.decodeStream(stream)
+        }catch (e:IOException){
             e.printStackTrace()
-            file // it will return null
+            null
         }
+    }
+
+    // Method to save an bitmap to a file
+    private fun bitmapToFile(bitmap:Bitmap): Uri {
+        // Get the context wrapper
+        val wrapper = ContextWrapper(applicationContext)
+
+        // Initialize a new file instance to save bitmap object
+        var file = wrapper.getDir("Images",Context.MODE_PRIVATE)
+        file = File(file,"${UUID.randomUUID()}.jpg")
+
+        try{
+            // Compress the bitmap and save in jpg format
+            val stream: OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream)
+            stream.flush()
+            stream.close()
+        }catch (e: IOException){
+            e.printStackTrace()
+        }
+
+        // Return the saved bitmap uri
+        return Uri.parse(file.absolutePath)
     }
 
 }

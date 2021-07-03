@@ -20,9 +20,13 @@ class OrdJson() : Parcelable {
     private var coupons: Coupons? = null
 
     constructor(parcel: Parcel) : this() {
+        address = parcel.readParcelable(Address::class.java.classLoader)
+        customers = parcel.readParcelable(Customers::class.java.classLoader)
+    }
 
-        this.address=parcel.readParcelable(Address::class.java.getClassLoader())
-
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeParcelable(address, flags)
+        parcel.writeParcelable(customers, flags)
     }
 
     fun setAddress(address: Address?) {
@@ -57,24 +61,16 @@ class OrdJson() : Parcelable {
         return coupons
     }
 
-    override fun toString(): String {
-        return "OrdJson{" +
-                "address = '" + address + '\'' +
-                ",customers = '" + customers + '\'' +
-                ",product = '" + product + '\'' +
-                ",coupons = '" + coupons + '\'' +
-                "}"
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-
-        parcel.writeParcelable(this.address, flags)
-
-    }
-
     override fun describeContents(): Int {
         return 0
     }
+
+
+
+    override fun toString(): String {
+        return "OrdJson(address=$address, customers=$customers, product=$product, coupons=$coupons)"
+    }
+
 
     companion object CREATOR : Parcelable.Creator<OrdJson> {
         override fun createFromParcel(parcel: Parcel): OrdJson {
@@ -85,5 +81,6 @@ class OrdJson() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
 
 }

@@ -15,10 +15,10 @@ object RetrofitClient {
 
 
 //    const val MainServer = "http://122.169.115.179/PlanetAPI/Web/"
-    const val MainServer = "http://planetfurniture.in/PlanetAPI_test/Web/"
+    const val MainServer = "http://planetfurniture.in/PlanetAPITest/Web/"
+//    const val MainServer = "http://planetfurniture.in/PlanetAPI_test/Web/"
 //    const val MainServer = "http://planetfurniture.in:8080/PlanetAPI_test/Web/"
     private val loggingInterceptor = HttpLoggingInterceptor()
-
 
     val retrofitClient: Retrofit.Builder by lazy {
 

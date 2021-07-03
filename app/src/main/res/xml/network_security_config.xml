@@ -3,5 +3,7 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">122.169.115.179</domain>
         <domain includeSubdomains="true">planetfurniture.in</domain>
+        <domain includeSubdomains="true">google.com</domain>
+        <domain includeSubdomains="true">maps.googleapis.com</domain>
     </domain-config>
 </network-security-config>

@@ -23,7 +23,7 @@ class InstallationsAdapter(private val context: Context,
 
     interface OnClickListener {
 
-        fun onClick(image: String?)
+        fun onClick(image: String?, imageId: String?)
 
     }
 
@@ -41,7 +41,7 @@ class InstallationsAdapter(private val context: Context,
 
         holder.itemView.setOnClickListener {
 
-            onClickListener.onClick(installationListModel.Image)
+            onClickListener.onClick(installationListModel.Image,installationListModel.InstImagesId)
 
         }
 

@@ -74,6 +74,11 @@ interface ApiInterface {
     @POST("IM")
     suspend fun installationImages(@Field("OrdCode") code:String): Response<InstallationModel>
 
+    //delete Images
+    @FormUrlEncoded
+    @POST("IMD")
+    suspend fun deleteImage(@Field("InstImagesId") image_id:String): Response<SuccessModel>
+
     //feedback details
     @FormUrlEncoded
     @POST("FDL")

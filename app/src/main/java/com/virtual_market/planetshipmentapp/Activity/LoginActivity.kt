@@ -60,6 +60,36 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+        viewModel!!.user.observe(this, {
+
+            if (it.success.equals("failure")) {
+
+                MyUtils.createToast(this, it.message)
+
+                return@observe
+
+            } else {
+
+                progressbar.visibility = View.GONE
+
+                (application as PlanetShippingApplication).responseUserLogin = it
+
+                if(!it.Role.equals("Sales Employee")) {
+
+                    mySharedPreferences!!.setStringKey(MySharedPreferences.user_id, it.EmpId)
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finishAffinity()
+
+                } else{
+
+                    MyUtils.createToast(applicationContext,"Sales Employee restrict from planet shipment app");
+
+                }
+
+            }
+
+        })
+
         activity.loginButton.setOnClickListener {
 
             if (TextUtils.isEmpty(activity.mobileNumber.text.toString())) {
@@ -152,32 +182,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         val hashmap = MyUtils.setHashmap("password", activity.password.text.toString().trim())
+
         viewModel!!.loginUserWithEmail(hashmap)
-
-        viewModel!!.user.removeObservers(this)
-
-        viewModel!!.user.observe(this, {
-
-            if (it.success.equals("failure")) {
-
-                MyUtils.createToast(this, it.message)
-
-                return@observe
-
-            } else {
-
-                progressbar.visibility = View.GONE
-
-                (application as PlanetShippingApplication).responseUserLogin = it
-
-                mySharedPreferences!!.setStringKey(MySharedPreferences.user_id, it.EmpId)
-
-                startActivity(Intent(this, MainActivity::class.java))
-                finishAffinity()
-
-            }
-
-        })
 
     }
 

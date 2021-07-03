@@ -53,6 +53,10 @@ class OrdersRepository(private val apiClient: ApiInterface) : SafeApiRequest {
         return safeApiCall { apiClient.installationImages(code) }
     }
 
+    suspend fun deleteImages(image_id:String): Result<SuccessModel> {
+        return safeApiCall { apiClient.deleteImage(image_id) }
+    }
+
     suspend fun feedbackDetails(code:String): Result<FeedbackLoadModels> {
         return safeApiCall { apiClient.feedbackDetails(code) }
     }

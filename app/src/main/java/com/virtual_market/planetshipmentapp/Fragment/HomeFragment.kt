@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 
-
 class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private var uridate: String? = null
@@ -70,6 +70,8 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         mySharedPreferences = MySharedPreferences.getInstance(fragmentactivity.applicationContext)
+
+        mySharedPreferences!!.setBooleanKey(MySharedPreferences.isUpdate, false)
 
         root = binding.root
 
@@ -181,8 +183,15 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         MyUtils.clearAllMap()
         hashmap = MyUtils.setHashmap("Date", "${dayOfMonth}-${month + 1}-${year}")
-
         onDispatchOrders(hashmap!!)
+
+        binding.clearFilter.setOnClickListener {
+
+            uridate=""
+            MyUtils.clearAllMap()
+            onDispatchOrders(hashmap!!)
+
+        }
 
         return binding.root
     }
@@ -204,7 +213,7 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         else
             month1 = (month + 1).toString()
 
-        uridate = "${dayOfMonth1}-${month1}-${year}"
+        uridate = "${year}-${month1}-${dayOfMonth1}"
 
         onDispatchOrders(hashmap!!)
 
@@ -275,21 +284,21 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
                 if (responseUserLogin.Role.equals("Fitter")) {
 
-                    val findIdsFromStringFitter = findIdsFromStringFitter(orders!!)
+                    val orderAssignOnFitter = findIdsFromStringFitter(orders!!)
                     showModel.clear()
-                    parseDataEachOrderJson(findIdsFromStringFitter)
+                    parseDataEachOrderJson(orderAssignOnFitter)
 
                 } else if (responseUserLogin.Role.equals("Helper")) {
 
-                    val findIdsFromStringHelper = findIdsFromStringHelper(orders!!)
+                    val orderAssignOnHelper = findIdsFromStringHelper(orders!!)
                     showModel.clear()
-                    parseDataEachOrderJson(findIdsFromStringHelper)
+                    parseDataEachOrderJson(orderAssignOnHelper)
 
                 } else if (!TextUtils.isEmpty(mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id))) {
 
-                    val findIdsFromStringTransporter = findIdsFromStringTransporter(orders!!)
+                    val orderAssignOnTransporter = findIdsFromStringTransporter(orders!!)
                     showModel.clear()
-                    parseDataEachOrderJson(findIdsFromStringTransporter)
+                    parseDataEachOrderJson(orderAssignOnTransporter)
 
                 } else {
 

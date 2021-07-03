@@ -43,6 +43,16 @@
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imagesUpload"
+                android:src="@drawable/ic_baseline_add_circle_24"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_12ssp"
+                />
+
         </RelativeLayout>
 
     </androidx.appcompat.widget.Toolbar>

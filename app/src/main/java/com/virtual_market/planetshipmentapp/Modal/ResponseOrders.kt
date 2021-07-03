@@ -3,9 +3,11 @@ package com.virtual_market.planetshipmentapp.Modal
 import android.os.Parcel
 import android.os.Parcelable
 
-class ResponseOrders() : Parcelable{
+class ResponseOrders() : Parcelable {
 
     var OrdCode:String?=null
+    var Emp_name:String?=null
+    var DeliveryType:String?=null
     var SapOrdCode:String?=null
     var CustomerCode:String?=null
     var OrdStatus:String?=null
@@ -29,8 +31,10 @@ class ResponseOrders() : Parcelable{
     var VehicleIncentives:String?=null
     var HelperIncentives:String?=null
     var Fitters:String?=null
+    var Items:ArrayList<ProductItem>? = null
     var Transporters:String?=null
     var TransportCharges:String?=null
+    var FitterIncentives:String?=null
 
     constructor(parcel: Parcel) : this() {
         OrdCode = parcel.readString()
@@ -60,6 +64,9 @@ class ResponseOrders() : Parcelable{
         Fitters = parcel.readString()
         Transporters = parcel.readString()
         TransportCharges = parcel.readString()
+        FitterIncentives = parcel.readString()
+        DeliveryType = parcel.readString()
+        Emp_name = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -89,6 +96,9 @@ class ResponseOrders() : Parcelable{
         parcel.writeString(Fitters)
         parcel.writeString(Transporters)
         parcel.writeString(TransportCharges)
+        parcel.writeString(FitterIncentives)
+        parcel.writeString(DeliveryType)
+        parcel.writeString(Emp_name)
     }
 
     override fun describeContents(): Int {
@@ -104,6 +114,4 @@ class ResponseOrders() : Parcelable{
             return arrayOfNulls(size)
         }
     }
-
-
 }

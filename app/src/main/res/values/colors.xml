@@ -25,4 +25,5 @@
     <color name="mdtp_accent_color">@color/quantum_pink</color>
     <color name="mdtp_accent_color_dark">@color/quantum_pink</color>
     <color name="colorGreyDark">#3c2209</color>
+
 </resources>

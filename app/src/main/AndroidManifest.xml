@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.virtual_market.planetshipmentapp">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -9,7 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:remove="android:maxSdkVersion"/>
 
     <application
         android:name=".MyUils.PlanetShippingApplication"
@@ -22,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlanetShipmentApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.ImagesBigActivity"></activity>
+        <activity android:name=".Activity.ImagesBigActivity" />
         <activity android:name=".Activity.InstallationImagesActivity" />
         <activity
             android:name=".Activity.AllProductActivity"
@@ -76,10 +77,14 @@
             android:name=".Activity.CreateMenuActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".Activity.SignaturePadActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+
+        </activity>
+
         <activity
             android:name=".Activity.ShowClientAddressActivity"
             android:configChanges="orientation"

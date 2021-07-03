@@ -36,6 +36,11 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
         MutableLiveData<InstallationModel>()
     }
 
+
+    val deleteImages: MutableLiveData<SuccessModel> by lazy {
+        MutableLiveData<SuccessModel>()
+    }
+
     val documentOnServer: MutableLiveData<SuccessModel> by lazy {
         MutableLiveData<SuccessModel>()
     }
@@ -245,6 +250,23 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
             when (result) {
                 is Result.Success -> {
                     installationImages.postValue(result.data)
+                }
+                is Result.Error -> {
+                    errorMessage.postValue(result.exception)
+                    noInternet.postValue(result.noInternet)
+                }
+            }
+        }
+    }
+
+    fun getDeleteImages(code:String) {
+        viewModelScope.launch {
+            loading.postValue(true)
+            val result = OrdersRepository(apiclient).deleteImages(code)
+            loading.postValue(false)
+            when (result) {
+                is Result.Success -> {
+                    deleteImages.postValue(result.data)
                 }
                 is Result.Error -> {
                     errorMessage.postValue(result.exception)

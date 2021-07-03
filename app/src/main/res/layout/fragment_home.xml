@@ -128,6 +128,24 @@
             </com.yalantis.phoenix.PullToRefreshView>
 
             <androidx.cardview.widget.CardView
+                android:layout_above="@+id/parent_of_date"
+                android:layout_width="@dimen/_50ssp"
+                android:id="@+id/clear_filter"
+                android:layout_height="@dimen/_50ssp"
+                android:layout_marginEnd="@dimen/_15ssp"
+                android:layout_alignParentEnd="true"
+                app:cardBackgroundColor="#dcdcdc"
+                app:cardCornerRadius="@dimen/_25ssp">
+
+                <ImageView
+                    android:layout_width="@dimen/_26ssp"
+                    android:layout_height="@dimen/_26ssp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_filter_alt_24" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/parent_of_date"
                 android:layout_width="@dimen/_50ssp"
                 android:layout_height="@dimen/_50ssp"
