@@ -35,11 +35,15 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy
 import id.zelory.compressor.Compressor
 import kotlinx.android.synthetic.main.activity_installation_images.*
 import kotlinx.android.synthetic.main.no_internet_connection.*
+import net.gotev.uploadservice.UploadServiceConfig
 import net.gotev.uploadservice.data.UploadInfo
+import net.gotev.uploadservice.data.UploadNotificationConfig
+import net.gotev.uploadservice.data.UploadNotificationStatusConfig
 import net.gotev.uploadservice.exceptions.UploadError
 import net.gotev.uploadservice.exceptions.UserCancelledUploadException
 import net.gotev.uploadservice.network.ServerResponse
 import net.gotev.uploadservice.observer.request.RequestObserverDelegate
+import net.gotev.uploadservice.placeholders.Placeholder
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
 import java.io.File
 import java.io.FileNotFoundException
@@ -80,7 +84,7 @@ class InstallationImagesActivity : AppCompatActivity() {
 
         }
 
-        if(!TextUtils.isEmpty(delivery_status) && delivery_status.equals("Delivered") && responseUserLogin.Role.equals("Fitter",true)){
+        if(!TextUtils.isEmpty(delivery_status) && delivery_status.equals("Delivered") && (responseUserLogin.Role.equals("Fitter", true) || responseUserLogin.Role.equals("Helper"))){
 
             activity.imagesUpload.visibility=View.VISIBLE
 
@@ -239,6 +243,36 @@ class InstallationImagesActivity : AppCompatActivity() {
     }
 
     private fun uploadFileOnServer(files: ArrayList<File>) {
+
+        val uploadNotificationConfig = UploadNotificationConfig(
+            notificationChannelId = UploadServiceConfig.defaultNotificationChannel!!,
+            isRingToneEnabled = false,
+            progress = UploadNotificationStatusConfig(
+                title = "${Placeholder.Progress} Percent",
+                message = "${Placeholder.TotalFiles} Files",
+                clearOnAction = true,
+                autoClear = true
+
+            ),
+            success = UploadNotificationStatusConfig(
+                title = "success",
+                message = "some success message",
+                clearOnAction = true,
+                autoClear = true
+            ),
+            error = UploadNotificationStatusConfig(
+                title = "error",
+                message = "Something Went Wrong",
+                iconResourceID = R.drawable.ic_logo_brown
+            ),
+            cancelled = UploadNotificationStatusConfig(
+                title = "cancelled",
+                message = "some cancelled message",
+                clearOnAction = true,
+                autoClear = true
+            )
+        )
+
         val multipartUploadRequest: MultipartUploadRequest =
             MultipartUploadRequest(
                 this, RetrofitClient.MainServer + "AOM"
@@ -251,6 +285,7 @@ class InstallationImagesActivity : AppCompatActivity() {
                 .addParameter("EmpId", responseUserLogin.EmpId!!)
                 .setAutoDeleteFilesAfterSuccessfulUpload(false)
                 .setUsesFixedLengthStreamingMode(true)
+                .setNotificationConfig { context, uploadId -> uploadNotificationConfig }
                 .setMaxRetries(5)
                 .setMethod("POST")
         try {
@@ -268,6 +303,7 @@ class InstallationImagesActivity : AppCompatActivity() {
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
+
         multipartUploadRequest.subscribe(this, this, object : RequestObserverDelegate {
             override fun onCompleted(context: Context, uploadInfo: UploadInfo) {
 

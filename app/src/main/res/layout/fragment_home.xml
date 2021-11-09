@@ -5,6 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:background="#eeeeee"
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
@@ -104,11 +105,51 @@
 
         </androidx.appcompat.widget.Toolbar>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:id="@+id/parent_of_search"
+            android:layout_marginTop="@dimen/_8ssp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_43ssp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:background="@color/white"
+                android:drawablePadding="8dp"
+                android:maxLines="1"
+                android:maxLength="40"
+                android:drawableTint="@color/quantum_grey700"
+                android:focusable="true"
+                android:fontFamily="@font/poppins"
+                android:hint="Type here to search"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:layout_width="@dimen/_23ssp"
+                android:layout_height="@dimen/_23ssp"
+                android:id="@+id/cancelIcon"
+                android:visibility="gone"
+                android:src="@drawable/ic_action_cancel"
+                android:layout_marginTop="@dimen/_5ssp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/_20ssp"
+                app:tint="#dcdcdc" />
+
+        </FrameLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#eeeeee"
-            android:layout_below="@+id/toolbar"
+            android:layout_below="@+id/parent_of_search"
+            android:layout_marginTop="@dimen/_8ssp"
             android:orientation="vertical"
             tools:context=".Fragment.HomeFragment">
 

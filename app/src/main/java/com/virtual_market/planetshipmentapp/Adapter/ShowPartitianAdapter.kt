@@ -10,14 +10,16 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.virtual_market.planetshipmentapp.Modal.SerialDetailsModal
+import com.virtual_market.planetshipmentapp.MyUils.MyUtils
 import com.virtual_market.planetshipmentapp.R
-import java.lang.NumberFormatException
 
 class  ShowPartitianAdapter(
     private val context: Context,
     private val responsePost: List<SerialDetailsModal>
 ) : RecyclerView.Adapter<ShowPartitianAdapter.viewholder>() {
 
+    private var isScanning: Boolean=false
+    private var scanning_code: String=""
     private var productIdString: String? = null
     private lateinit var onClickListener: OnClickListener
     private var stringModel: MutableList<String> = ArrayList<String>()
@@ -34,6 +36,7 @@ class  ShowPartitianAdapter(
         fun onClick(serialNumber: SerialDetailsModal)
         fun deleteOnClick(serialNumber: SerialDetailsModal)
         fun greenAllProduct(boolean: Boolean)
+        fun onScanning(serialNumber: SerialDetailsModal)
 
     }
 
@@ -67,12 +70,20 @@ class  ShowPartitianAdapter(
             holder.no_of_items.text=responseOrders.AllocQty!!
         }
 
+        // after click
         holder.itemView.setOnClickListener {
 
-            if (stringModel.contains(responseOrders.SerialNumber))
+            if (stringModel.contains(responseOrders.SerialNumber)) {
                 onClickListener.deleteOnClick(responseOrders)
-            else
+            }else {
                 onClickListener.onClick(responseOrders)
+            }
+
+        }
+
+        if(isScanning && scanning_code.equals(responseOrders.SerialNumber,true)){
+
+           onClickListener.onScanning(responseOrders)
 
         }
 
@@ -81,6 +92,7 @@ class  ShowPartitianAdapter(
             if (responseOrders.SerialNumber.equals(it, true)) {
                 holder.parent_of_card.setCardBackgroundColor(Color.parseColor("#00ff00"))
                 i++
+
             }
 
         }
@@ -97,6 +109,15 @@ class  ShowPartitianAdapter(
 
     }
 
+    private fun removeAllExpectOne(scanningCode: String, stringModel: MutableList<String>): List<String> {
+
+        val listToSet: HashSet<String> = HashSet<String>(stringModel)
+        val listWithoutDuplicates: List<String> = ArrayList(listToSet)
+
+        return listWithoutDuplicates
+
+    }
+
     override fun getItemCount(): Int {
         return responsePost.size
     }
@@ -105,6 +126,13 @@ class  ShowPartitianAdapter(
 
         stringModel.clear()
         stringModel.addAll(productId)
+
+    }
+
+    fun setScanning(scanning: Boolean, scanningCode: String) {
+
+        isScanning=scanning
+        scanning_code=scanningCode
 
     }
 

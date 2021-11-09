@@ -7,25 +7,36 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.text.Html
 import android.text.TextUtils
 import android.util.Log
+import android.view.SurfaceHolder
+import android.view.SurfaceView
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.util.isNotEmpty
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieAnimationView
 import com.budiyev.android.codescanner.*
+import com.google.android.gms.vision.CameraSource
+import com.google.android.gms.vision.Detector
+import com.google.android.gms.vision.barcode.Barcode
+import com.google.android.gms.vision.barcode.BarcodeDetector
+import com.google.android.material.snackbar.Snackbar
 import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
 import com.virtual_market.planetshipmentapp.Adapter.NestedProductAndPartsAdapter
 import com.virtual_market.planetshipmentapp.Fragment.ConfirmationDialogFragment
-import com.virtual_market.planetshipmentapp.Fragment.FeedbackDialogFragment
 import com.virtual_market.planetshipmentapp.Modal.ResponseUserLogin
 import com.virtual_market.planetshipmentapp.Modal.SerialProductListModel
 import com.virtual_market.planetshipmentapp.MyUils.MySharedPreferences
@@ -59,11 +70,13 @@ import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
+
 class QrCodeWithProductActivity : AppCompatActivity() {
 
-    private var fitter: Boolean=false
+    private lateinit var parent_of_view: View
+    private var fitter: Boolean = false
     private lateinit var mySharedPreferences: MySharedPreferences
-    private var items1 =ArrayList<SerialProductListModel>()
+    private var items1 = ArrayList<SerialProductListModel>()
     private val REQUEST_CODE_CHOOSE: Int = 1001
     private lateinit var responseUserLogin: ResponseUserLogin
     private var spoCode: String? = null
@@ -79,18 +92,27 @@ class QrCodeWithProductActivity : AppCompatActivity() {
     private var scan_again: RelativeLayout? = null
     private var refreshButton: RelativeLayout? = null
     private var progressBar: RelativeLayout? = null
-    private var isMarkedClicked:Boolean=false
+    private var isMarkedClicked: Boolean = false
     private var feedbackText: RelativeLayout? = null
     private var image_upload: RelativeLayout? = null
     private var button_of_parent: RelativeLayout? = null
     private var parent_of_feedback: LinearLayout? = null
     private lateinit var showModel: ArrayList<SerialProductListModel>
     private var lattie: LottieAnimationView? = null
+    var cameraView: SurfaceView? = null
+    var barcode: BarcodeDetector? = null
+    var scan_button_text:TextView?=null
+    var holder: SurfaceHolder? = null
+    private lateinit var detector: BarcodeDetector
+    private lateinit var cameraSource: CameraSource
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qr_code_with_product)
+
+        detector = BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.QR_CODE).build()
+        detector.setProcessor(processor)
 
         mySharedPreferences = MySharedPreferences.getInstance(applicationContext)
 
@@ -104,15 +126,18 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         }
 
         noDataFound = findViewById(R.id.no_data_found)
+        parent_of_view = findViewById(R.id.parent_of_top)
         noDataFound!!.visibility = View.GONE
 
         progressBar = findViewById(R.id.progress_bar)
+        scan_button_text = findViewById(R.id.scan_button_text)
         text_as_button = findViewById(R.id.text_as_button)
         mark_button = findViewById(R.id.mark_button)
         feedbackText = findViewById(R.id.feedbackText)
         image_upload = findViewById(R.id.image_upload)
         parent_of_feedback = findViewById(R.id.parent_of_feedback)
         button_of_parent = findViewById(R.id.button_of_parent)
+//        cameraView = findViewById(R.id.cameraView)
 
         image_upload!!.setOnClickListener {
 
@@ -120,12 +145,20 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
         }
 
-        if (!TextUtils.isEmpty(responseUserLogin.Role) && responseUserLogin.Role!!.equals("Stores", true)) {
+        if (!TextUtils.isEmpty(responseUserLogin.Role) && responseUserLogin.Role!!.equals(
+                "Stores",
+                true
+            )
+        ) {
 
             button_of_parent!!.visibility = View.VISIBLE
             text_as_button!!.text = "Mark Shipped"
 
-        } else if (!TextUtils.isEmpty(responseUserLogin.Role) && responseUserLogin.Role.equals("Fitter", true)) {
+        } else if (!TextUtils.isEmpty(responseUserLogin.Role) && (responseUserLogin.Role.equals(
+                "Fitter",
+                true
+            ) || responseUserLogin.Role.equals("Helper"))
+        ) {
 
             button_of_parent!!.visibility = View.VISIBLE
             text_as_button!!.text = "Mark Delivered"
@@ -138,29 +171,29 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
         feedbackText!!.setOnClickListener {
 
-            var fitters:String?=null
-            var CustomerCode:String?=null
+            var fitters: String? = null
+            var CustomerCode: String? = null
 
             items1.forEach {
                 fitters = it.fitters
-                if(!TextUtils.isEmpty(fitters))
+                if (!TextUtils.isEmpty(fitters))
                     return@forEach
 
             }
 
             items1.forEach {
 
-                CustomerCode=it.CustomerCode
-                if(!TextUtils.isEmpty(it.CustomerCode))
+                CustomerCode = it.CustomerCode
+                if (!TextUtils.isEmpty(it.CustomerCode))
                     return@forEach
 
             }
 
             val intent = Intent(this, FeedbackActivity::class.java)
-            intent.putExtra("ordCode",orderCode)
-            intent.putExtra("empId",responseUserLogin.EmpId)
-            intent.putExtra("customerCode",CustomerCode)
-            intent.putExtra("fitters",fitters)
+            intent.putExtra("ordCode", orderCode)
+            intent.putExtra("empId", responseUserLogin.EmpId)
+            intent.putExtra("customerCode", CustomerCode)
+            intent.putExtra("fitters", fitters)
             startActivity(intent)
 
         }
@@ -174,22 +207,26 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
             var hashmap: HashMap<String, String>?
 
-            if (responseUserLogin.Role.equals("Fitter")) {
+            if (responseUserLogin.Role.equals(
+                    "Fitter",
+                    true
+                ) || responseUserLogin.Role.equals("Helper")
+            ) {
 
                 val chekedProduct = isChekedProduct()
 
-                if(!chekedProduct){
+                if (!chekedProduct) {
 
-                    MyUtils.createToast(this,"Select Product For Delivered")
+                    MyUtils.createToast(this, "Select Product For Delivered")
 
                     return@setOnClickListener
                 }
 
                 val arrayList = nestedProductAndPartsAdapter.getSerialId()
 
-                if(arrayList.isEmpty()){
+                if (arrayList.isEmpty()) {
 
-                    MyUtils.createToast(this,"Select A Product")
+                    MyUtils.createToast(this, "Select A Product")
                     return@setOnClickListener
 
                 }
@@ -210,9 +247,9 @@ class QrCodeWithProductActivity : AppCompatActivity() {
                         MyUtils.setHashmap("SerialIds", join)
                         MyUtils.setHashmap("DeliveryStatus", "Delivered")
                         hashmap =
-                            MyUtils.setHashmap("DeliveryDate", "${year}-${month+1}-${dayOfMonth}")
+                            MyUtils.setHashmap("DeliveryDate", "${year}-${month + 1}-${dayOfMonth}")
 
-                        fitter=true;
+                        fitter = true;
 
                         sendDocumentOnServer(hashmap)
                     }
@@ -221,20 +258,21 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
             } else if (responseUserLogin.Role.equals("Stores")) {
 
-                val chekedProduct = isChekedProduct()// checked a product all subproduct chcked or not
+                val chekedProduct =
+                    isChekedProduct()// checked a product all subproduct chcked or not
 
-                if(!chekedProduct){
+                if (!chekedProduct) {
 
-                    MyUtils.createToast(this,"Select Product For Shipped")
+                    MyUtils.createToast(this, "Select Product For Shipped")
 
                     return@setOnClickListener
                 }
 
                 val arrayList1 = nestedProductAndPartsAdapter.getSerialId()
 
-                if(arrayList1.isEmpty()){
+                if (arrayList1.isEmpty()) {
 
-                    MyUtils.createToast(this,"Select A Product")
+                    MyUtils.createToast(this, "Select A Product")
                     return@setOnClickListener
 
                 }
@@ -243,11 +281,11 @@ class QrCodeWithProductActivity : AppCompatActivity() {
                 MyUtils.clearAllMap()
                 MyUtils.setHashmap("SerialIds", join)
                 MyUtils.setHashmap("ShipStatus", "Shipped")
-                hashmap = MyUtils.setHashmap("ShipDate", "${year}-${month+1}-${dayOfMonth}")
+                hashmap = MyUtils.setHashmap("ShipDate", "${year}-${month + 1}-${dayOfMonth}")
 
-                Log.i("TAG", "onCreate: ${year}-${month+1}-${dayOfMonth}")
+                Log.i("TAG", "onCreate: ${year}-${month + 1}-${dayOfMonth}")
 
-                fitter=false;
+                fitter = false;
 
                 sendDocumentOnServer(hashmap)
 
@@ -263,6 +301,19 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         recyclerView.layoutManager = linearLayoutManager
         nestedProductAndPartsAdapter = NestedProductAndPartsAdapter(this, showModel)
         recyclerView.adapter = nestedProductAndPartsAdapter
+
+        nestedProductAndPartsAdapter.setOnClickListener(object :
+            NestedProductAndPartsAdapter.OnClickListener {
+
+            override fun onClick(isChecked: Boolean, position: Int) {
+
+                if (isChecked) {
+                    recyclerView.smoothScrollToPosition(position)
+                }
+
+            }
+
+        })
 
         setupViewModel()
 
@@ -291,14 +342,33 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
     }
 
-    private fun isChekedProduct():Boolean {
+    private val processor = object : Detector.Processor<Barcode> {
+        override fun release() {
+        }
+
+        override fun receiveDetections(detections: Detector.Detections<Barcode>?) {
+            if (detections != null && detections.detectedItems.isNotEmpty()) {
+                val barcode = detections?.detectedItems
+                if (barcode?.size() ?: 0 > 0) {
+                    // show barcode content value
+                    Toast.makeText(
+                        this@QrCodeWithProductActivity,
+                        barcode?.valueAt(0)?.displayValue ?: "",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun isChekedProduct(): Boolean {
         val checkedArrayList = nestedProductAndPartsAdapter.getCheckedArrayList()
 
-        if(checkedArrayList.isEmpty())
+        if (checkedArrayList.isEmpty())
             return false
 
         checkedArrayList.forEach {
-            if(!it.isProduct || !it.isSubProduct){
+            if (!it.isProduct || !it.isSubProduct) {
                 return false
             }
         }
@@ -348,7 +418,10 @@ class QrCodeWithProductActivity : AppCompatActivity() {
             .maxSelectable(10)
             .capture(true)
             .captureStrategy(
-                CaptureStrategy(true, com.virtual_market.planetshipmentapp.BuildConfig.APPLICATION_ID + ".provider")
+                CaptureStrategy(
+                    true,
+                    BuildConfig.APPLICATION_ID + ".provider"
+                )
             )
             .gridExpectedSize(
                 resources.getDimensionPixelSize(R.dimen._100ssp)
@@ -457,6 +530,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
+
         multipartUploadRequest.subscribe(this, this, object : RequestObserverDelegate {
             override fun onCompleted(context: Context, uploadInfo: UploadInfo) {
 
@@ -493,7 +567,6 @@ class QrCodeWithProductActivity : AppCompatActivity() {
             override fun onProgress(context: Context, uploadInfo: UploadInfo) {
 
 
-
             }
 
             override fun onSuccess(
@@ -504,7 +577,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
                 progressBar!!.visibility = View.GONE
 
-                Log.e("RECEIVER", "Error: "+serverResponse.bodyString)
+                Log.e("RECEIVER", "Error: " + serverResponse.bodyString)
 
                 MyUtils.createToast(
                     this@QrCodeWithProductActivity,
@@ -514,6 +587,7 @@ class QrCodeWithProductActivity : AppCompatActivity() {
             }
 
         })
+
         multipartUploadRequest.startUpload()
     }
 
@@ -579,18 +653,22 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
         viewModel.documentOnServer.observe(this, {
 
-            if (fitter && it.success!!.equals("success", true)) { // after success open signature pad
+            if (fitter && it.success!!.equals(
+                    "success",
+                    true
+                )
+            ) { // after success open signature pad
 
                 val intent = Intent(this, SignaturePadActivity::class.java)
-                intent.putExtra("ordCode",orderCode)
-                isMarkedClicked=true
+                intent.putExtra("ordCode", orderCode)
+                isMarkedClicked = true
                 setupObservers()
                 startActivity(intent)
 
-            } else if(it.success!!.equals("success", true)){
+            } else if (it.success!!.equals("success", true)) {
 
                 setupObservers()
-                isMarkedClicked=true
+                isMarkedClicked = true
 
             }
 
@@ -629,6 +707,113 @@ class QrCodeWithProductActivity : AppCompatActivity() {
             })
     }
 
+//    private fun openQrCode() {
+//
+//        holder = cameraView!!.holder
+//        barcode = BarcodeDetector.Builder(this)
+//            .setBarcodeFormats(Barcode.CODE_128)
+//            .build()
+//        if (!barcode!!.isOperational) {
+//            Toast.makeText(
+//                applicationContext,
+//                "Sorry, Couldn't setup the detector",
+//                Toast.LENGTH_LONG
+//            ).show()
+//        }
+//        cameraSource = CameraSource.Builder(this, barcode)
+//            .setFacing(CameraSource.CAMERA_FACING_BACK)
+//            .setRequestedFps(200f)
+//            .setAutoFocusEnabled(true)
+//            .setRequestedPreviewSize(1924, 100)
+//            .build()
+//        cameraView!!.holder.addCallback(object : SurfaceHolder.Callback {
+//            @SuppressLint("MissingPermission")
+//            override fun surfaceCreated(holder: SurfaceHolder) {
+//                try {
+//                    cameraSource!!.start(cameraView!!.holder)
+//                } catch (e: IOException) {
+//                    e.printStackTrace()
+//                }
+//            }
+//
+//            override fun surfaceChanged(
+//                holder: SurfaceHolder,
+//                format: Int,
+//                width: Int,
+//                height: Int
+//            ) {
+//            }
+//
+//            override fun surfaceDestroyed(holder: SurfaceHolder) {}
+//        })
+//        barcode!!.setProcessor(object : Detector.Processor<Barcode?> {
+//            override fun release() {
+//            }
+//
+//            override fun receiveDetections(detections: Detector.Detections<Barcode?>) {
+//                val barcodes: SparseArray<Barcode?>? = detections.detectedItems
+//                if (barcodes!!.size() > 0) {
+//                    runOnUiThread {
+//                        Toast.makeText(
+//                            this@QrCodeWithProductActivity,
+//                            "Scan result: ${barcodes.valueAt(0)!!.displayValue}",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//
+//                        parent_of_lottie!!.visibility = View.VISIBLE
+//                        lattie!!.playAnimation()
+//
+//                        distnumber.addAll(nestedProductAndPartsAdapter.getArrayList())
+//                        distnumber.add(barcodes.valueAt(0)!!.displayValue)
+//                        nestedProductAndPartsAdapter.setProductId(distnumber)
+//                        nestedProductAndPartsAdapter.setScanningStart(
+//                            true,
+//                            barcodes.valueAt(0)!!.displayValue
+//                        );
+//                        nestedProductAndPartsAdapter.notifyDataSetChanged()
+//
+//                        val mp: MediaPlayer =
+//                            MediaPlayer.create(applicationContext, R.raw.sucess_sound)
+//
+//                        mp.start()
+//
+//                    }
+//                }
+//            }
+//
+//        })
+//
+//    }
+
+    private val surfaceCallBack = object : SurfaceHolder.Callback {
+
+        override fun surfaceCreated(holder: SurfaceHolder) {
+            if (ActivityCompat.checkSelfPermission(
+                    this@QrCodeWithProductActivity,
+                    Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return
+            }
+            cameraSource.start(holder)
+        }
+
+        override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
+        }
+
+        override fun surfaceDestroyed(holder: SurfaceHolder) {
+            cameraSource.stop()
+        }
+
+    }
+
     private fun openQrCode() {
 
         val scannerView = findViewById<CodeScannerView>(R.id.scanner_view)
@@ -637,27 +822,80 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
         // Parameters (default values)
         scanner!!.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
-        scanner!!.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
+        scanner!!.formats = CodeScanner.TWO_DIMENSIONAL_FORMATS // list of type BarcodeFormat,
         // ex. listOf(BarcodeFormat.QR_CODE)
         scanner!!.autoFocusMode = AutoFocusMode.SAFE // or CONTINUOUS
         scanner!!.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
-        scanner!!.isAutoFocusEnabled = true // Whether to enable auto focus or not
+        scanner!!.isAutoFocusEnabled = false // Whether to enable auto focus or not
         scanner!!.isFlashEnabled = false // Whether to enable flash or not
+        scanner!!.isTouchFocusEnabled = true
 
         scanner!!.startPreview()
 
         // Callbacks
         scanner!!.decodeCallback = DecodeCallback {
-            runOnUiThread {
-                Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
 
+            if (nestedProductAndPartsAdapter == null || nestedProductAndPartsAdapter.getArrayList() == null)
+                return@DecodeCallback
+
+            runOnUiThread {
+
+                val serialNumberIsPresentOrNOT:Boolean = serialNumberIsPreseNTOrNOT(showModel, it.text)
+
+                Log.i("TAG", "openQrCode: $showModel")
+
+                if(!serialNumberIsPresentOrNOT) {
+
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Alert!")
+                    builder.setMessage("This product is not available in this list.")
+
+                    builder.setPositiveButton(Html.fromHtml("<b>OK<b>")) { _, _ ->
+                        scanner!!.startPreview()
+                    }
+
+                    builder.show()
+
+                    return@runOnUiThread
+                }
+
+                val filter = nestedProductAndPartsAdapter.getArrayList().filter { scanning ->
+                    scanning.equals(it.text, true)
+                }
+
+                if (filter.isNotEmpty()) {
+
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Alert!")
+                    builder.setMessage("This is already scanned product.")
+
+                    builder.setPositiveButton(Html.fromHtml("<b>OK<b>")) { _, _ ->
+                        scanner!!.startPreview()
+                    }
+
+                    builder.show()
+
+
+                    return@runOnUiThread
+
+                }
+
+                scan_button_text!!.text="Next Scan"
+                Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
                 parent_of_lottie!!.visibility = View.VISIBLE
                 lattie!!.playAnimation()
 
+                distnumber.clear()
                 distnumber.addAll(nestedProductAndPartsAdapter.getArrayList())
                 distnumber.add(it.text)
                 nestedProductAndPartsAdapter.setProductId(distnumber)
+                nestedProductAndPartsAdapter.setScanningStart(true, it.text);
                 nestedProductAndPartsAdapter.notifyDataSetChanged()
+
+                recyclerView.postDelayed({
+                    recyclerView.scrollToPosition(0)
+                    recyclerView.smoothScrollToPosition(showModel.size - 1)
+                }, 500)
 
                 val mp: MediaPlayer = MediaPlayer.create(applicationContext, R.raw.sucess_sound)
                 mp.start()
@@ -674,6 +912,43 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun serialNumberIsPreseNTOrNOT(
+        showModel: ArrayList<SerialProductListModel>,
+        text: String
+    ): Boolean {
+
+        showModel.forEach {
+
+            if (it.Details != null) {
+                it.Details!!.forEach {serialModels->
+                    if(serialModels.SerialNumber.equals(text,true)){
+                        return true
+                    }
+                }
+            }
+
+        }
+
+        return false
+
+    }
+
+    fun onSNACK(view: View, s: String) {
+        //Snackbar(view)
+        val snackbar = Snackbar.make(
+            view, ""+s,
+            Snackbar.LENGTH_LONG
+        )
+        snackbar.setActionTextColor(Color.WHITE)
+        val snackbarView = snackbar.view
+        snackbarView.setBackgroundColor(Color.BLACK)
+        val textView =
+            snackbarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+        textView.setTextColor(Color.WHITE)
+        textView.textSize = 12f
+        snackbar.show()
     }
 
     private fun orderDispatchByPartsObserver() {
@@ -745,8 +1020,8 @@ class QrCodeWithProductActivity : AppCompatActivity() {
             callUpdateUoApi("Shipped")
         }
 
-        if(responseUserLogin.Role.equals("Stores") && items.size == i)
-            text_as_button!!.text="Already Shipped"
+        if (responseUserLogin.Role.equals("Stores") && items.size == i)
+            text_as_button!!.text = "Already Shipped"
 
     }
 
@@ -757,19 +1032,19 @@ class QrCodeWithProductActivity : AppCompatActivity() {
         MyUtils.setHashmap("Remarks", s)
         val hashmap = MyUtils.setHashmap("OrdCode", orderCode)
 
-        mySharedPreferences.setStringKey(MySharedPreferences.shippedOrDelivered,s)
+        mySharedPreferences.setStringKey(MySharedPreferences.shippedOrDelivered, s)
 
         viewModel.callUpdateOrdersFromScanPage(hashmap)
         viewModel.updateOrderModel.removeObservers(this)
-        viewModel.updateOrderModel.observe(this,{
+        viewModel.updateOrderModel.observe(this, {
 
-            MyUtils.createToast(this,it.message)
-            progressBar!!.visibility=View.GONE
-            isMarkedClicked=false
+            MyUtils.createToast(this, it.message)
+            progressBar!!.visibility = View.GONE
+            isMarkedClicked = false
 
         })
 
-        progressBar!!.visibility=View.GONE
+        progressBar!!.visibility = View.GONE
 
     }
 
@@ -779,24 +1054,40 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
         items!!.forEach {
 
-            if (responseUserLogin.Role.equals("Fitter") && it.DeliveryStatus.equals("Delivered")) {
+            if ((responseUserLogin.Role.equals(
+                    "Fitter",
+                    true
+                ) || responseUserLogin.Role.equals("Helper")) && it.DeliveryStatus.equals("Delivered")
+            ) {
                 i++
             }
         }
 
-        if (responseUserLogin.Role.equals("Fitter") && items.size == i) {
+        if ((responseUserLogin.Role.equals(
+                "Fitter",
+                true
+            ) || responseUserLogin.Role.equals("Helper")) && items.size == i
+        ) {
 
             mark_button!!.visibility = View.GONE
             parent_of_feedback!!.visibility = View.VISIBLE
 
-        } else if (responseUserLogin.Role.equals("Fitter")) {
+        } else if ((responseUserLogin.Role.equals(
+                "Fitter",
+                true
+            ) || responseUserLogin.Role.equals("Helper"))
+        ) {
 
-            mark_button!!.visibility=View.VISIBLE
-            parent_of_feedback!!.visibility=View.GONE
+            mark_button!!.visibility = View.VISIBLE
+            parent_of_feedback!!.visibility = View.GONE
 
         }
 
-        if(responseUserLogin.Role.equals("Fitter") && items.size == i && isMarkedClicked){
+        if ((responseUserLogin.Role.equals(
+                "Fitter",
+                true
+            ) || responseUserLogin.Role.equals("Helper")) && items.size == i && isMarkedClicked
+        ) {
 
             callUpdateUoApi("Delivered")
 
@@ -807,13 +1098,17 @@ class QrCodeWithProductActivity : AppCompatActivity() {
 
     private fun showOnlyShippedProduct(items: java.util.ArrayList<SerialProductListModel>?) {
 
-        if(responseUserLogin.Role!!.equals("Fitter",true)){ // fitter jiska shippped status shipped hai,wahi sirf show karo
+        if ((responseUserLogin.Role.equals(
+                "Fitter",
+                true
+            ) || responseUserLogin.Role.equals("Helper"))
+        ) { // fitter jiska shippped status shipped hai,wahi sirf show karo
 
             showModel.clear()
 
             items!!.forEach {
 
-                if(it.ShipStatus!!.equals("Shipped",true)){
+                if (it.ShipStatus!!.equals("Shipped", true)) {
 
                     showModel.add(it)
 

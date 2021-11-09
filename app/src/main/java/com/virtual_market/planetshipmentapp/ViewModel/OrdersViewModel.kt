@@ -96,11 +96,11 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
 
     }
 
-    fun getEmployeeDetails() {
+    fun getEmployeeDetails(hashmap: HashMap<String, String>) {
 
         viewModelScope.launch {
             loading.postValue(true)
-            val result = OrdersRepository(apiclient).getEmployeeDetailsFromparts()
+            val result = OrdersRepository(apiclient).getEmployeeDetailsFromparts(hashmap)
             loading.postValue(false)
             when (result) {
                 is Result.Success -> {

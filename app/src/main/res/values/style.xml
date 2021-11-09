@@ -14,4 +14,15 @@
         <item name="tabIndicatorHeight">2dp</item>
     </style>
 
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@font/poppins</item>
+    </style>
+
+
+    <style name="RepeatButtonStyle">
+        <item name="android:textColor">@color/no_pagination_error_background</item>
+        <item name="android:text">@string/no_pagination_network_error_button</item>
+    </style>
+
 </resources>

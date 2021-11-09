@@ -38,8 +38,9 @@ interface ApiInterface {
     suspend fun updateOrdersUpdateStatus(@FieldMap hashmap: HashMap<String, String>): Response<UpdateOrderModel>
 
     //employees details
-    @GET("AE")
-    suspend fun employeesDetails(): Response<EmployeeDetailsModal>
+    @FormUrlEncoded
+    @POST("AE")
+    suspend fun employeesDetails(@FieldMap hashmap: HashMap<String, String>): Response<EmployeeDetailsModal>
 
     //get All Questions
     @GET("FQ")

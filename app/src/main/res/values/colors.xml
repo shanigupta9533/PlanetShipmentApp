@@ -26,4 +26,13 @@
     <color name="mdtp_accent_color_dark">@color/quantum_pink</color>
     <color name="colorGreyDark">#3c2209</color>
 
+    <!--    paginate-->
+    <color name="no_pagination_color_button_repeat">#2196F3</color>
+    <color name="no_pagination_color_button_repeat_selected">#90CAF9</color>
+    <color name="no_pagination_error_background">#fff</color>
+    <color name="no_pagination_error_color_separate_line">#E0E0E0</color>
+    <color name="colorBlue">#1B44D8</color>
+
+    <color name="quantum_yellow800">#f9a825</color>
+
 </resources>

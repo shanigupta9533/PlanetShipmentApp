@@ -8,7 +8,10 @@ import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -38,7 +41,9 @@ import com.virtual_market.virtualmarket.api.RetrofitClient
 import kotlinx.android.synthetic.main.activity_create_menu.view.*
 import kotlinx.android.synthetic.main.activity_order_details.*
 import kotlinx.android.synthetic.main.activity_qr_code_with_product.*
+import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.android.synthetic.main.no_internet_connection.*
+import kotlinx.android.synthetic.main.no_internet_connection.no_internet_connection
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -58,9 +63,9 @@ import kotlin.properties.Delegates
 
 class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
-    private var distanceGlobal: String="0.0"
-    private var isHelperAssign: Boolean=false
-    private var isFitterAssign: Boolean=false
+    private var distanceGlobal: String = "0.0"
+    private var isHelperAssign: Boolean = false
+    private var isFitterAssign: Boolean = false
     private var totalPriceHelper by Delegates.notNull<Double>()
     private var totalPriceFitter by Delegates.notNull<Double>()
     private lateinit var nestedProductAndPartsAdapter: NestedProductAndPartsAdapter
@@ -155,7 +160,7 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
             setUpLocationData()
 
-        },200);
+        }, 200);
 
     }
 
@@ -210,18 +215,18 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
             if (distance > 0 && distance <= 60) {
 
-                totalPriceFitter += it.indoorFitter!!.toDouble()*it.qty
-                totalPriceHelper += it.indoorHelper!!.toDouble()*it.qty
+                totalPriceFitter += it.indoorFitter!!.toDouble() * it.qty
+                totalPriceHelper += it.indoorHelper!!.toDouble() * it.qty
 
             } else if (distance > 60 && distance <= 150) {
 
-                totalPriceFitter += it.outdoorFitter!!.toDouble()*it.qty
-                totalPriceHelper += it.outdoorHelper!!.toDouble()*it.qty
+                totalPriceFitter += it.outdoorFitter!!.toDouble() * it.qty
+                totalPriceHelper += it.outdoorHelper!!.toDouble() * it.qty
 
             } else {
 
-                totalPriceFitter += it.dbOutDoorFitter!!.toDouble()*it.qty
-                totalPriceHelper += it.dbOutDoorHelper!!.toDouble()*it.qty
+                totalPriceFitter += it.dbOutDoorFitter!!.toDouble() * it.qty
+                totalPriceHelper += it.dbOutDoorHelper!!.toDouble() * it.qty
 
             }
 
@@ -255,6 +260,7 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     }
 
     private fun getLocationFromAddress(context: Context?, strAddress: String?): LatLng {
+
         val coder = Geocoder(context)
         var address: List<Address>? = null
         val p1: LatLng?
@@ -268,9 +274,6 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         } catch (e: IOException) {
             e.printStackTrace()
 
-            if (!TextUtils.isEmpty(addressOfShipping))
-                getDistanceViaLatLong(addressOfShipping!!)
-
         }
         if (address != null && address.isNotEmpty()) {
             val location = address[0]
@@ -279,6 +282,23 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             p1 = LatLng(0.0, 0.0)
         }
         return p1
+    }
+
+    fun isNetworkAvailable(context: Context): Boolean {
+        var isOnline = false
+        val manager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        try {
+            isOnline = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val capabilities = manager.getNetworkCapabilities(manager.activeNetwork)
+                capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+            } else {
+                val activeNetworkInfo = manager.activeNetworkInfo
+                activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return isOnline
     }
 
     private fun getIdsWithComma(spinner: SingleSpinnerSearch): String {
@@ -300,10 +320,12 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     override fun onResume() {
         super.onResume()
 
-        if(!TextUtils.isEmpty(mySharedPreferences?.getStringkey(MySharedPreferences.shippedOrDelivered))){
+        if (!TextUtils.isEmpty(mySharedPreferences?.getStringkey(MySharedPreferences.shippedOrDelivered))) {
 
-            activity.orderStatus.text=mySharedPreferences?.getStringkey(MySharedPreferences.shippedOrDelivered)
-            responseOrders?.OrdStatus=mySharedPreferences?.getStringkey(MySharedPreferences.shippedOrDelivered)
+            activity.orderStatus.text =
+                mySharedPreferences?.getStringkey(MySharedPreferences.shippedOrDelivered)
+            responseOrders?.OrdStatus =
+                mySharedPreferences?.getStringkey(MySharedPreferences.shippedOrDelivered)
 
             mySharedPreferences!!.setBooleanKey(MySharedPreferences.isUpdate, true)
 
@@ -313,17 +335,18 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
     }
 
-    fun getDistance(pincode1:String, pincode2:String): String? {
+    fun getDistance(pincode1: String, pincode2: String): String? {
 
         progressBar?.visibility = View.VISIBLE
 
         var parsedDistance: String = "";
         var response: String
-        val thread = Thread {
+        Thread {
             try {
                 val url =
                     URL("https://maps.googleapis.com/maps/api/distancematrix/json?destinations=$pincode1&origins=$pincode2&units=imperial&key=AIzaSyAQkGs-Bxr1PEfpsq7G8XhAOYsoi6NRKao")
                 val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+                conn.connectTimeout=5000
                 conn.requestMethod = "POST"
                 val `in`: InputStream = BufferedInputStream(conn.inputStream)
 
@@ -336,48 +359,48 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
                 val jsonObject = JSONObject(response)
                 val rows: JSONArray = jsonObject.getJSONArray("rows")
 
-                    val elements: JSONObject = rows.getJSONObject(0)
+                val elements: JSONObject = rows.getJSONObject(0)
 
-                    if(elements.length()>0){
-                        val elementsArray: JSONArray = elements.getJSONArray("elements")
-                        val distanceObject: JSONObject = elementsArray.getJSONObject(0)
-                        val distance:JSONObject=distanceObject.getJSONObject("distance")
+                if (elements.length() > 0) {
+                    val elementsArray: JSONArray = elements.getJSONArray("elements")
+                    val distanceObject: JSONObject = elementsArray.getJSONObject(0)
+                    val distance: JSONObject = distanceObject.getJSONObject("distance")
 
-                        if(!distance.isNull("value")){
+                    if (!distance.isNull("value")) {
 
-                            runOnUiThread {
+                        runOnUiThread {
 
-                                val kilometerInLong:Long=distance.getString("value").toLong()/1000 + 1
-                                activity.shippingDistance.text = "Distance to Address : $kilometerInLong K.M"
-                                distanceGlobal=kilometerInLong.toString()
+                            val kilometerInLong: Long =
+                                distance.getString("value").toLong() / 1000 + 1
+                            activity.shippingDistance.text =
+                                "Distance to Address : $kilometerInLong K.M"
+                            distanceGlobal = kilometerInLong.toString()
 
-                                if (!TextUtils.isEmpty(distanceGlobal) &&
-                                    !TextUtils.isEmpty(responseOrders?.FitterIncentives) &&
-                                    !TextUtils.isEmpty(responseOrders?.HelperIncentives) &&
-                                    !TextUtils.isEmpty(responseOrders?.TransportCharges) &&
-                                    responseOrders?.FitterIncentives?.toFloat() == 0f &&
-                                    responseOrders?.HelperIncentives?.toFloat() == 0f &&
-                                    responseOrders?.TransportCharges?.toFloat() == 0f
-                                ) {
+                            if (!TextUtils.isEmpty(distanceGlobal) &&
+                                !TextUtils.isEmpty(responseOrders?.FitterIncentives) &&
+                                !TextUtils.isEmpty(responseOrders?.HelperIncentives) &&
+                                !TextUtils.isEmpty(responseOrders?.TransportCharges) &&
+                                responseOrders?.FitterIncentives?.toFloat() == 0f &&
+                                responseOrders?.HelperIncentives?.toFloat() == 0f &&
+                                responseOrders?.TransportCharges?.toFloat() == 0f
+                            ) {
 
-                                    calculateFromDistance(itemsCodeProduct, distanceGlobal.toFloat())
-                                    callTranporterApi(distanceGlobal.toFloat())
+                                calculateFromDistance(itemsCodeProduct, distanceGlobal.toFloat())
+                                callTranporterApi(distanceGlobal.toFloat())
 
-                                } else if (!TextUtils.isEmpty(responseOrders?.FitterIncentives) &&
-                                    !TextUtils.isEmpty(responseOrders?.HelperIncentives) &&
-                                    !TextUtils.isEmpty(responseOrders?.TransportCharges)
-                                ) {
+                            } else if (!TextUtils.isEmpty(responseOrders?.FitterIncentives) &&
+                                !TextUtils.isEmpty(responseOrders?.HelperIncentives) &&
+                                !TextUtils.isEmpty(responseOrders?.TransportCharges)
+                            ) {
 
-                                    activity.fitterIncentives.setText(responseOrders?.FitterIncentives)
-                                    activity.helperIncentives.setText(responseOrders?.HelperIncentives)
-                                    activity.transportCharges.setText(responseOrders?.TransportCharges)
+                                activity.fitterIncentives.setText(responseOrders?.FitterIncentives)
+                                activity.helperIncentives.setText(responseOrders?.HelperIncentives)
+                                activity.transportCharges.setText(responseOrders?.TransportCharges)
 
-                                    isFitterAssign=true
-                                    isHelperAssign=true
+                                isFitterAssign = true
+                                isHelperAssign = true
 
-                                    callTranporterApi(distanceGlobal.toFloat())
-
-                                }
+                                callTranporterApi(distanceGlobal.toFloat())
 
                             }
 
@@ -385,11 +408,7 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
                     }
 
-//                runOnUiThread {
-//
-//                    activity.shippingDistance.text = "Distance to Address : $parsedDistance K.M"
-//
-//                }
+                }
 
             } catch (e: ProtocolException) {
                 e.printStackTrace()
@@ -397,16 +416,17 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
                 e.printStackTrace()
             } catch (e: IOException) {
                 e.printStackTrace()
+
+                runOnUiThread {
+
+                    progressBar!!.visibility=View.GONE
+
+                }
+
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
-        }
-        thread.start()
-        try {
-            thread.join()
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
+        }.start()
         return parsedDistance
     }
 
@@ -422,23 +442,23 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         activity.noOfItems.text = responseOrders.ItemCount
 //    todo    activity.address.text = address!!.getShippingAddress()!!.addType
 
-        var landmark:String?=""
-        var line2:String?=""
+        var landmark: String? = ""
+        var line2: String? = ""
 
-       if(!TextUtils.isEmpty(address?.getShippingAddress()!!.addLandmark)){
-           landmark="\n"+address.getShippingAddress()!!.addLandmark
-       }
+        if (!TextUtils.isEmpty(address?.getShippingAddress()!!.addLandmark)) {
+            landmark = "\n" + address.getShippingAddress()!!.addLandmark
+        }
 
-        if(!TextUtils.isEmpty(address.getShippingAddress()!!.addLine2)){
-            line2="\n"+address.getShippingAddress()!!.addLine2
+        if (!TextUtils.isEmpty(address.getShippingAddress()!!.addLine2)) {
+            line2 = "\n" + address.getShippingAddress()!!.addLine2
         }
 
         activity.address2.text =
-            "${address.getShippingAddress()!!.addType} : "+address.getShippingAddress()!!.addLine1 + "$landmark " +"$line2 " + address.getShippingAddress()!!.addCity + "\n" + address.getShippingAddress()!!.addPinCode + " " + address.getShippingAddress()!!.addState
+            "${address.getShippingAddress()!!.addType} : " + address.getShippingAddress()!!.addLine1 + "$landmark " + "$line2 " + address.getShippingAddress()!!.addCity + "\n" + address.getShippingAddress()!!.addPinCode + " " + address.getShippingAddress()!!.addState
 //   todo     activity.address3.text =
 //            address.getShippingAddress()!!.addLine2 + " " + address.getShippingAddress()!!.addFullName + " " + address.getShippingAddress()!!.companyName + " " + address.getShippingAddress()!!.addMobNo
 
-        activity.customerName.text = customer_details!!.customerName
+        activity.customerName.text = customer_details!!.firstName
         activity.phoneNumber.text = customer_details!!.mobNo
 
         if (!TextUtils.isEmpty(responseOrders.OrdStatus) && !responseOrders.OrdStatus!!.equals(
@@ -459,7 +479,7 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             activity.fitterSpinner.isEnabled = false
             activity.helperSpinner.isEnabled = false
             activity.transportSpinner.isEnabled = false
-            activity.dateOfDelivery.isEnabled=false
+            activity.dateOfDelivery.isEnabled = false
         }
 
         activity.parentOfPhone.setOnClickListener {
@@ -486,6 +506,7 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             MyUtils.setHashmap("DeliveryDate", dateOfDelivery.text.toString())
             MyUtils.setHashmap("OrdCode", responseOrders.OrdCode)
             val hashmap = MyUtils.setHashmap("OrdStatus", responseOrders.OrdStatus)
+
             sendDataOnServer(hashmap)
 
         }
@@ -568,6 +589,10 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             activity.helperIncentives.isEnabled = false
             activity.parentOfButton.visibility = View.GONE
 
+        } else if (responseUserLogin.Role.equals("Dispatch")) {
+
+            activity.scanProduct.visibility=View.GONE
+
         }
 
         activity.scanProduct.setOnClickListener {
@@ -599,6 +624,8 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         refreshButton!!.setOnClickListener {
 
             setupObservers()
+
+            setUpLocationData()
 
         }
 
@@ -635,7 +662,10 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
     private fun setupObservers() {
 
-        viewModel.getEmployeeDetails()
+        MyUtils.clearAllMap()
+        val hashmap = MyUtils.setHashmap("Location", responseUserLogin.Location)
+
+        viewModel.getEmployeeDetails(hashmap)
 
         viewModel.employeeDetailsModal.removeObservers(this)
 
@@ -837,12 +867,12 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         spinner.setItems(fitterArrayList) {
 
             val totalPriceFitter2 = if (it.isEmpty()) {
-                    1 * getFitterCalculatedValue(itemsCodeProduct,distanceGlobal.toFloat())
-                } else {
-                    it.size * getFitterCalculatedValue(itemsCodeProduct,distanceGlobal.toFloat())
-                }
+                1 * getFitterCalculatedValue(itemsCodeProduct, distanceGlobal.toFloat())
+            } else {
+                it.size * getFitterCalculatedValue(itemsCodeProduct, distanceGlobal.toFloat())
+            }
 
-                activity.fitterIncentives.setText(totalPriceFitter2.toString())
+            activity.fitterIncentives.setText(totalPriceFitter2.toString())
 
 
         }
@@ -854,21 +884,21 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         distance: Float
     ): Double {
 
-        var totalPriceFitter:Double=0.0
+        var totalPriceFitter: Double = 0.0
 
         itemsCodeProduct.forEach {
 
             totalPriceFitter += if (distance > 0 && distance <= 60) {
 
-                it.indoorFitter!!.toDouble()*it.qty
+                it.indoorFitter!!.toDouble() * it.qty
 
             } else if (distance > 60 && distance <= 150) {
 
-                it.outdoorFitter!!.toDouble()*it.qty
+                it.outdoorFitter!!.toDouble() * it.qty
 
             } else {
 
-                it.dbOutDoorFitter!!.toDouble()*it.qty
+                it.dbOutDoorFitter!!.toDouble() * it.qty
 
             }
 
@@ -883,21 +913,21 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         distance: Float
     ): Double {
 
-        var totalPriceHelper:Double=0.0
+        var totalPriceHelper: Double = 0.0
 
         itemsCodeProduct.forEach {
 
             totalPriceHelper += if (distance > 0 && distance <= 60) {
 
-                it.indoorHelper!!.toDouble()*it.qty
+                it.indoorHelper!!.toDouble() * it.qty
 
             } else if (distance > 60 && distance <= 150) {
 
-                it.outdoorHelper!!.toDouble()*it.qty
+                it.outdoorHelper!!.toDouble() * it.qty
 
             } else {
 
-                it.dbOutDoorHelper!!.toDouble()*it.qty
+                it.dbOutDoorHelper!!.toDouble() * it.qty
 
             }
 
@@ -929,7 +959,7 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
                     val kmRate: Float = responseTransporter.KmRate?.toFloat()!!
 
-                    val calculate:String = if(kmRate<10)
+                    val calculate: String = if (kmRate < 10)
                         (10 * distance).toString()
                     else
                         (kmRate * distance).toString()
@@ -961,12 +991,12 @@ class OrderDetailsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         spinner.setItems(helperArrayList) {
 
             val totalPriceHelper2 = if (it.isEmpty()) {
-                    1 * getHelperCalculatedValue(itemsCodeProduct,distanceGlobal.toFloat())
-                } else {
-                    it.size * getHelperCalculatedValue(itemsCodeProduct,distanceGlobal.toFloat())
-                }
+                1 * getHelperCalculatedValue(itemsCodeProduct, distanceGlobal.toFloat())
+            } else {
+                it.size * getHelperCalculatedValue(itemsCodeProduct, distanceGlobal.toFloat())
+            }
 
-                activity.helperIncentives.setText(totalPriceHelper2.toString())
+            activity.helperIncentives.setText(totalPriceHelper2.toString())
 
         }
     }

@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable-anydpi/ic_icon_password_lock.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/back_ground_gradiend.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/design_as_edittext.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/design_as_edittext_gradient.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/design_as_edittext_gradient_green.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/design_as_outlined_button.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/ic_logo_brown.xml" value="0.22205128205128205" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/no_pagination_button_ripple.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/round_as_button_yellow.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/round_dialog_background_sharp.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/round_dialog_min.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/show_password_selector.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/white_btn_gradient.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/activity_login.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/activity_order_details.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/activity_qr_code_with_product.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/all_product_adapter.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/fragment_feedback_dialog.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/fragment_home.xml" value="0.20948410630536737" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/fragment_logout_dialog.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/item_error.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/item_loading.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/no_data_found.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/no_internet_connection.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/show_adapter_layout.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/show_nested_product_parts_adapter.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/show_partitian_adapter_layout.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/transparent_progress_bar_layout.xml" value="0.209375" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.22552083333333334" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

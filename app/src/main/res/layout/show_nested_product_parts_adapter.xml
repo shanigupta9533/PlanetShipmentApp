@@ -71,12 +71,12 @@
                 <ImageView
                     android:id="@+id/image_icon"
                     android:layout_width="130dp"
-                    android:layout_height="@dimen/_100ssp"
-                    android:layout_marginEnd="@dimen/_8ssp"
-                    android:layout_gravity="start"
-                    android:layout_marginTop="@dimen/_8ssp"
+                    android:layout_height="@dimen/_80ssp"
                     android:layout_alignParentEnd="true"
+                    android:layout_gravity="start"
                     android:layout_marginStart="@dimen/_12ssp"
+                    android:layout_marginTop="@dimen/_8ssp"
+                    android:layout_marginEnd="@dimen/_8ssp"
                     android:adjustViewBounds="true"
                     android:src="@drawable/after_delete"
                     android:visibility="visible" />

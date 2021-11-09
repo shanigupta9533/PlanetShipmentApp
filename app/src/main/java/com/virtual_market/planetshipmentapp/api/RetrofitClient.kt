@@ -14,8 +14,10 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
 
 
-//    const val MainServer = "http://122.169.115.179/PlanetAPI/Web/"
-    const val MainServer = "http://planetfurniture.in/PlanetAPITest/Web/"
+    //    const val MainServer = "http://122.169.115.179/PlanetAPI/Web/"
+        const val MainServer = "http://planetfurniture.in/PlanetAPITest/Web/"
+//        const val MainServer = "http://planetfurniture.in/PlanetAPITest/Web/"
+//        const val MainServer = "http://planetfurniture.in/PlanetAPILive/Web/"
 //    const val MainServer = "http://planetfurniture.in/PlanetAPI_test/Web/"
 //    const val MainServer = "http://planetfurniture.in:8080/PlanetAPI_test/Web/"
     private val loggingInterceptor = HttpLoggingInterceptor()
@@ -23,7 +25,7 @@ object RetrofitClient {
     val retrofitClient: Retrofit.Builder by lazy {
 
         //if there is no instance available... create new one
-        val httpClientBuilder =  OkHttpClient.Builder().retryOnConnectionFailure(true)
+        val httpClientBuilder = OkHttpClient.Builder().retryOnConnectionFailure(true)
         httpClientBuilder.addInterceptor(object : Interceptor {
             @Throws(IOException::class)
             override fun intercept(chain: Interceptor.Chain): Response {
@@ -52,9 +54,6 @@ object RetrofitClient {
             .build()
             .create(ApiInterface::class.java)
     }
-
-
-
 
 
 }

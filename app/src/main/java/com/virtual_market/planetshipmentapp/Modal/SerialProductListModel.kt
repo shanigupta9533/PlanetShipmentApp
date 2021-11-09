@@ -16,6 +16,9 @@ class SerialProductListModel() :Parcelable {
     @ColumnInfo(name = "serial_id")
     var SerialId:String?=null
 
+    @ColumnInfo(name = "MainImage")
+    var MainImage:String?=null
+
     @ColumnInfo(name = "order_code")
     var OrdCode:String?=null
 
@@ -106,8 +109,14 @@ class SerialProductListModel() :Parcelable {
         parcel.writeString(CustomerCode)
     }
 
+
+
     override fun describeContents(): Int {
         return 0
+    }
+
+    override fun toString(): String {
+        return "SerialProductListModel(id=$id, SerialId=$SerialId, MainImage=$MainImage, OrdCode=$OrdCode, SapOrderCode=$SapOrderCode, ItemCode=$ItemCode, Warehouse=$Warehouse, SerialNumber=$SerialNumber, DeliveryDate=$DeliveryDate, AllocQty=$AllocQty, ShipStatus=$ShipStatus, DeliveryStatus=$DeliveryStatus, ShipDate=$ShipDate, DetailName=$DetailName, ForeignName=$ForeignName, DelliveryDate=$DelliveryDate, helpers=$helpers, fitters=$fitters, CustomerCode=$CustomerCode, Transporters=$Transporters, Details=$Details)"
     }
 
     companion object CREATOR : Parcelable.Creator<SerialProductListModel> {

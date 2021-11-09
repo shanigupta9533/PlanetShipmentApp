@@ -5,19 +5,24 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.virtual_market.planetshipmentapp.Activity.OrderDetailsActivity
 import com.virtual_market.planetshipmentapp.Modal.ResponseOrders
 import com.virtual_market.planetshipmentapp.R
+import java.util.*
 
 class ShowProductAdapter(
     private val context: Context,
     private val responsePost: List<ResponseOrders>
-) : RecyclerView.Adapter<ShowProductAdapter.viewholder>() {
+) : RecyclerView.Adapter<ShowProductAdapter.viewholder>(),Filterable {
+
+    private var listFilter: List<ResponseOrders>? = null
+
+    init {
+        this.listFilter = responsePost
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewholder {
         val layoutInflater = LayoutInflater.from(context)
@@ -27,7 +32,7 @@ class ShowProductAdapter(
 
     override fun onBindViewHolder(holder: viewholder, position: Int) {
 
-        val responseOrders = responsePost[position]
+        val responseOrders = listFilter!![position]
 
         val customers = responseOrders.ordJsonList!!.getCustomers()
 
@@ -42,6 +47,8 @@ class ShowProductAdapter(
         holder.customer_name.text = customers!!.customerName
 
         holder.order_date.text = responseOrders.OrdDate!!
+
+        holder.order_status.text = responseOrders.OrdStatus
 
         holder.details_button.setOnClickListener {
 
@@ -83,7 +90,7 @@ class ShowProductAdapter(
     }
 
     override fun getItemCount(): Int {
-        return responsePost.size
+        return listFilter!!.size
     }
 
     inner class viewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -95,7 +102,35 @@ class ShowProductAdapter(
         val no_of_items: TextView = itemView.findViewById(R.id.no_of_items)
         val details_button: RelativeLayout = itemView.findViewById(R.id.details_button)
         val order_date: TextView = itemView.findViewById(R.id.order_date)
+        val order_status: TextView = itemView.findViewById(R.id.order_status)
 
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(charSequence: CharSequence): FilterResults {
+                val charString = charSequence.toString()
+                listFilter = if (charString.isEmpty()) {
+                    responsePost
+                } else {
+                    val filteredList: ArrayList<ResponseOrders> = ArrayList<ResponseOrders>()
+                    for (row in responsePost) {
+                        if (row.OrdCode!!.contains(charString.toLowerCase()) || row.OrdStatus!!.toLowerCase().contains(charString.toLowerCase())  || row.ordJsonList!!.getCustomers()!!.customerName!!.toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row)
+                        }
+                    }
+                    filteredList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = listFilter
+                return filterResults
+            }
+
+            override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
+                listFilter = filterResults.values as List<ResponseOrders>
+                notifyDataSetChanged()
+            }
+        }
     }
 
 }

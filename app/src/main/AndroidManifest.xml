@@ -105,6 +105,7 @@
         <activity
             android:name=".Activity.MainActivity"
             android:configChanges="orientation"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
 
         <provider

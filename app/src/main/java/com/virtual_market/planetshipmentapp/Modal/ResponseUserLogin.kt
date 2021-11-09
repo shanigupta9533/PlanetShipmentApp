@@ -13,5 +13,7 @@ class ResponseUserLogin {
     val Status:String?=null
     val success:String?=null
     val message:String?=null
+    var Location:String=""
+    var DriverLocation:String=""
 
 }

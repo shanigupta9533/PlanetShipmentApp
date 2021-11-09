@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
@@ -60,6 +61,12 @@ class ImagesBigActivity : AppCompatActivity() {
         }
 
         Glide.with(this).load(image).placeholder(R.drawable.ic_logo_brown).error(R.drawable.ic_logo_brown).into(imageView!!)
+
+        findViewById<ImageView>(R.id.back_button).setOnClickListener {
+
+            onBackPressed()
+
+        }
 
         setupViewModel()
 

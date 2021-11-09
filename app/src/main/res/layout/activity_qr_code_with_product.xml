@@ -3,158 +3,158 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:background="#eeeeee"
-    tools:context=".Activity.QrCodeWithProductActivity">
-
-    <com.budiyev.android.codescanner.CodeScannerView
-        android:id="@+id/scanner_view"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:autoFocusButtonColor="@android:color/white"
-        app:autoFocusButtonVisible="true"
-        app:flashButtonColor="@android:color/white"
-        app:flashButtonVisible="true"
-        app:frameColor="@android:color/white"
-        app:frameCornersSize="50dp"
-        app:frameCornersRadius="0dp"
-        app:frameAspectRatioWidth="3"
-        app:frameAspectRatioHeight="1"
-        app:frameSize="0.75"
-        app:frameThickness="2dp"
-        app:maskColor="#77000000"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/button_of_parent"
-        android:nestedScrollingEnabled="false"
-        android:layout_below="@+id/scanner_view"
-        android:id="@+id/recyclerView"
-        />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
-        android:id="@+id/parent_of_lottie"
-        android:layout_height="wrap_content">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationView"
-            android:layout_width="@dimen/_150ssp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:layout_height="@dimen/_150ssp"
-            app:lottie_rawRes="@raw/sucess_check"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="false"/>
-
-        <RelativeLayout
-            android:id="@+id/scan_again"
-            android:layout_width="@dimen/_150ssp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/design_as_edittext_gradient_green"
-            android:elevation="6dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:fontFamily="@font/poppinsmedium"
-                android:text="Next Scan"
-                android:textColor="@color/white"
-                android:textSize="14dp" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:visibility="visible"
-        android:id="@+id/button_of_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="#eeeeee"
+        android:id="@+id/parent_of_top"
+        android:orientation="vertical"
+        tools:context=".Activity.QrCodeWithProductActivity">
 
-        <RelativeLayout
-            android:id="@+id/mark_button"
+        <com.budiyev.android.codescanner.CodeScannerView
+            android:id="@+id/scanner_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_42ssp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="@dimen/_10ssp"
-            android:background="@drawable/design_as_outlined_button"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground">
+            android:layout_height="200dp"
+            app:autoFocusButtonColor="@android:color/white"
+            app:autoFocusButtonVisible="true"
+            app:flashButtonColor="@android:color/white"
+            app:flashButtonVisible="true"
+            app:frameColor="@android:color/white"
+            app:frameCornersSize="50dp"
+            app:frameCornersRadius="0dp"
+            app:frameAspectRatioWidth="5"
+            app:frameAspectRatioHeight="3"
+            app:frameSize="0.75"
+            app:frameThickness="2dp"
+            app:maskColor="#77000000"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:id="@+id/text_as_button"
-                android:fontFamily="@font/poppins"
-                android:text="Mark Shipped"
-                android:textColor="@color/quantum_pink"
-                android:textSize="14dp" />
-
-        </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/button_of_parent"
+            android:layout_below="@+id/scanner_view"
+            android:nestedScrollingEnabled="false" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginStart="@dimen/_8ssp"
-            android:layout_marginEnd="@dimen/_8ssp"
-            android:id="@+id/parent_of_feedback"
-            android:layout_marginTop="@dimen/_8ssp"
-            android:visibility="gone"
-            android:layout_marginBottom="@dimen/_12ssp"
-            android:layout_height="wrap_content">
+            android:id="@+id/parent_of_lottie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationView"
+                android:layout_width="@dimen/_150ssp"
+                android:layout_height="@dimen/_150ssp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false"
+                app:lottie_rawRes="@raw/sucess_check" />
 
             <RelativeLayout
-                android:id="@+id/image_upload"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:layout_marginStart="@dimen/_12ssp"
-                android:layout_weight="1"
-                android:layout_marginTop="3dp"
-                android:background="@drawable/design_as_outlined_button"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                android:id="@+id/scan_again"
+                android:layout_width="@dimen/_150ssp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/design_as_edittext_gradient_green"
+                android:elevation="6dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:fontFamily="@font/poppins"
-                    android:text="Image"
-                    android:enabled="false"
-                    android:textColor="@color/quantum_pink"
-                    android:textSize="13dp" />
+                    android:fontFamily="@font/poppinsmedium"
+                    android:text="Next Scan"
+                    android:id="@+id/scan_button_text"
+                    android:textColor="@color/white"
+                    android:textSize="14dp" />
 
             </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/button_of_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:id="@+id/mark_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_42ssp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="@dimen/_10ssp"
+                android:background="@drawable/design_as_outlined_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/text_as_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/poppins"
+                    android:text="Mark Shipped"
+                    android:textColor="@color/quantum_pink"
+                    android:textSize="14dp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/parent_of_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8ssp"
+                android:layout_marginTop="@dimen/_8ssp"
+                android:layout_marginEnd="@dimen/_8ssp"
+                android:layout_marginBottom="@dimen/_12ssp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/image_upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="@dimen/_12ssp"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/design_as_outlined_button"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:enabled="false"
+                        android:fontFamily="@font/poppins"
+                        android:text="Image"
+                        android:textColor="@color/quantum_pink"
+                        android:textSize="13dp" />
+
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/feedbackText"
                     android:layout_width="match_parent"
-                    android:layout_marginStart="@dimen/_12ssp"
                     android:layout_height="40dp"
+                    android:layout_marginStart="@dimen/_12ssp"
                     android:layout_weight="1"
-                    android:background="@drawable/design_as_edittext_gradient"
-                    >
+                    android:background="@drawable/design_as_edittext_gradient">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -167,16 +167,16 @@
 
                 </RelativeLayout>
 
-        </LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <include layout="@layout/no_data_found" />
+
+        <include layout="@layout/no_internet_connection" />
+
+        <include layout="@layout/progress_bar_layout" />
 
     </RelativeLayout>
-
-    <include layout="@layout/no_data_found"/>
-
-    <include layout="@layout/no_internet_connection"/>
-
-    <include layout="@layout/progress_bar_layout"/>
-
-</RelativeLayout>
 
 </layout>

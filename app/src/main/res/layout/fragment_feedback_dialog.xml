@@ -39,7 +39,7 @@
             android:alpha="0.9"
             android:fontFamily="@font/poppinsmedium"
             android:letterSpacing="0.03"
-            android:text="Write Feedback"
+            android:text="Edit Serial Number"
             android:textColor="@color/quantum_googgreen900"
             android:textSize="15sp"
             tools:ignore="RelativeOverlap" />
@@ -61,18 +61,18 @@
         android:layout_height="wrap_content">
 
         <EditText
+            android:id="@+id/note_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:maxLines="8"
             android:background="@color/white"
-            android:minLines="4"
-            android:gravity="top"
-            android:textSize="15sp"
-            android:id="@+id/note_text"
             android:fontFamily="@font/open_sans"
+            android:gravity="top"
+            android:hint="Enter Serial number"
+            android:maxLines="8"
+            android:minLines="4"
+            android:padding="8dp"
             android:textColor="@android:color/black"
-            android:hint="Feedback" />
+            android:textSize="15sp" />
 
     </RelativeLayout>
 

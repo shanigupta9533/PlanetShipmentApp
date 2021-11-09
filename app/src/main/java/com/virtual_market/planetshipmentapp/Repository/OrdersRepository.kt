@@ -25,8 +25,8 @@ class OrdersRepository(private val apiClient: ApiInterface) : SafeApiRequest {
         return safeApiCall { apiClient.updateOrdersUpdateStatus(hashmap) }
     }
 
-    suspend fun getEmployeeDetailsFromparts(): Result<EmployeeDetailsModal> {
-        return safeApiCall { apiClient.employeesDetails() }
+    suspend fun getEmployeeDetailsFromparts(hashmap: HashMap<String, String>): Result<EmployeeDetailsModal> {
+        return safeApiCall { apiClient.employeesDetails(hashmap) }
     }
 
     suspend fun sendIdsOnServer(hashmap:HashMap<String,String>): Result<UpdateOrderModel> {

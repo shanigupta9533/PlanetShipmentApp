@@ -19,7 +19,7 @@
         <com.luseen.spacenavigation.SpaceNavigationView
             android:id="@+id/bottom_space"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/_40ssp"
             app:active_centre_button_background_color="@color/quantum_pink"
             app:active_centre_button_icon_color="@color/white"
             app:active_item_color="@color/quantum_pink"

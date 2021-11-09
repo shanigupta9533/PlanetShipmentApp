@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--    paginate-->
+    <dimen name="activity_middle_margin">8dp</dimen>
+
     <dimen name="_100ssp">100sp</dimen>
     <dimen name="_150ssp">150sp</dimen>
     <dimen name="_10ssp">10sp</dimen>

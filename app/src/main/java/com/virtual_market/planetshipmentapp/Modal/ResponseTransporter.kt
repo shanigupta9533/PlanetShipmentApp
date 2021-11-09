@@ -14,5 +14,6 @@ class ResponseTransporter {
     var DriverPassword:String?=null
     var success:String?=null
     var message:String?=null
+    var DriverLocation:String?=null
 
 }
