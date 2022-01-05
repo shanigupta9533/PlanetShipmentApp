@@ -55,15 +55,14 @@
     </LinearLayout>
 
     <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:id="@+id/progressBar"
-        android:layout_marginBottom="@dimen/_50ssp"
         android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/_50ssp"
         android:indeterminateTint="@color/quantum_yellow"
-        android:progressTintMode="multiply"
-        />
+        android:progressTintMode="multiply" />
 
     <LinearLayout
         android:layout_width="wrap_content"

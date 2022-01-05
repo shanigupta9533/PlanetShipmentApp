@@ -14,6 +14,7 @@ public class MySharedPreferences {
     public static final String token="token";
     public static final String name="name";
     public static final String email="email";
+    public static final String mapsKey="mapsKey";
     public static final String myLatitude="Mylatitude";
     public static final String myLongitude="Mylongitude";
     public static final String uid="uid";

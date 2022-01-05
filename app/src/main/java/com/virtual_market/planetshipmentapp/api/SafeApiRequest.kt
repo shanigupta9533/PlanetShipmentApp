@@ -10,11 +10,11 @@ interface SafeApiRequest {
 
     suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): Result<T> {
         return try {
+
             val myResp = call.invoke()
             if (myResp.isSuccessful) {
                 return Result.Success(myResp.body()!!)
             } else {
-
                 return Result.Error(myResp.errorBody()?.string() ?: "Something goes wrong",false)
             }
 

@@ -81,8 +81,6 @@ class AnswerOfQuestionAdapter(
 
                 if(optionids!=null) {
 
-
-
                     optionids!!.split(",").forEach { optionIds ->
 
                         if (optionIds.toString().equals(it.OptionId!!, true)) {

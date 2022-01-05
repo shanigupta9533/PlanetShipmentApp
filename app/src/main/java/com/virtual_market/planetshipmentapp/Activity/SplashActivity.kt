@@ -83,9 +83,7 @@ class SplashActivity : AppCompatActivity() {
                 activity.noInternetConnection.visibility= View.VISIBLE
                 MyUtils.createToast(this, "No Internet Connection!")
             } else{
-
                 activity.noInternetConnection.visibility= View.GONE
-
             }
         })
 

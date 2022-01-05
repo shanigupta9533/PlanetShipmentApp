@@ -29,6 +29,11 @@ interface ApiInterface {
 
     //orderDispatchByParts
     @FormUrlEncoded
+    @POST("SVAL")
+    suspend fun getMapsKey(@Field("Title") title:String): Response<SuccessModel>
+
+    //orderDispatchByParts
+    @FormUrlEncoded
     @POST("CD2")
     suspend fun hiddingCD2(@Field("Code") id:String): Response<CD2Modal>
 

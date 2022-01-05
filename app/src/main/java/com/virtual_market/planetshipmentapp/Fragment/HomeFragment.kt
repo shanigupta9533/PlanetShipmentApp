@@ -48,7 +48,7 @@ import kotlin.concurrent.thread
 
 class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
-    private var isSearchApply: Boolean=false
+    private var isSearchApply: Boolean = false
     private var uridate: String? = null
     private var hashmap: HashMap<String, String>? = null
     private var mySharedPreferences: MySharedPreferences? = null
@@ -75,12 +75,7 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
+    @SuppressLint("NotifyDataSetChanged") override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View { // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         mySharedPreferences = MySharedPreferences.getInstance(fragmentactivity.applicationContext)
@@ -91,8 +86,7 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         handler = Handler(Looper.myLooper()!!)
 
-        responseUserLogin =
-            (fragmentactivity.application as PlanetShippingApplication).responseUserLogin
+        responseUserLogin = (fragmentactivity.application as PlanetShippingApplication).responseUserLogin
 
         noDataFound = root.findViewById(R.id.no_data_found)
         noDataFound.visibility = View.GONE
@@ -141,13 +135,7 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.parentOfDate.setOnClickListener {
 
             val now: Calendar = Calendar.getInstance()
-            val datePickerDialog = DatePickerDialog(
-                context!!,
-                this,
-                now.get(Calendar.YEAR),
-                now.get(Calendar.MONTH),
-                now.get(Calendar.DAY_OF_MONTH)
-            )
+            val datePickerDialog = DatePickerDialog(context!!, this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
 
             datePickerDialog.show()
 
@@ -175,17 +163,11 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         val spanCount = 1 // colums
         val spacing = 15 // spaces
         val includeEdge = true
-        binding.recyclerView.addItemDecoration(
-            GridSpacingItemDecoration(
-                spanCount,
-                spacing,
-                includeEdge
-            )
-        )
+        binding.recyclerView.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
 
         binding.cancelIcon.setOnClickListener {
 
-            isSearchApply=false
+            isSearchApply = false
             binding.searchView.setText("")
             DoStuff()
 
@@ -195,9 +177,9 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
 
-                if(charSequence.isNotEmpty()){
+                if (charSequence.isNotEmpty()) {
                     binding.cancelIcon.visibility = View.VISIBLE
-                } else{
+                } else {
                     binding.cancelIcon.visibility = View.GONE
                 }
 
@@ -228,9 +210,7 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         hashmap = HashMap()
 
         noPaginate = NoPaginate.with(binding.recyclerView) // pagination of api
-            .setLoadingTriggerThreshold(0)
-            .setCustomErrorItem(CustomErrorItem())
-            .setOnLoadMoreListener {
+            .setLoadingTriggerThreshold(0).setCustomErrorItem(CustomErrorItem()).setOnLoadMoreListener {
 
                 noPaginate.showLoading(true)
                 noPaginate.showError(false)
@@ -258,16 +238,14 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private val input_finish_checker = Runnable {
-        if (System.currentTimeMillis() > last_text_edit + delay - 500) {
-            // TODO: do what you need here
+        if (System.currentTimeMillis() > last_text_edit + delay - 500) { // TODO: do what you need here
             // ............
             // ............
             DoStuff()
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun DoStuff() {
+    @SuppressLint("NotifyDataSetChanged") private fun DoStuff() {
 
         page = 0
         showModel.clear()
@@ -290,20 +268,29 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         hashmap["offset"] = (page * 10).toString()
         hashmap["limit"] = "10"
 
-        if(TextUtils.isEmpty(mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id)))
-            hashmap["Location"] = responseUserLogin.Location
+        if (TextUtils.isEmpty(mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id))) {
 
-        else {
+            responseUserLogin.let {
 
-            val responseUserTransporter =
-                (fragmentactivity.application as PlanetShippingApplication).responseUserTransporter
+                hashmap["Location"] = it.Location
+                hashmap["EmpId"] = it.EmpId!!
 
-            hashmap["Location"] = responseUserTransporter.let { it.DriverLocation }.toString()
+            }
+
+        } else {
+
+            val responseUserTransporter = (fragmentactivity.application as PlanetShippingApplication).responseUserTransporter
+
+            responseUserTransporter.let {
+
+                hashmap["Location"] = it.DriverLocation!!
+                hashmap["EmpId"] = it.DriverId!!
+
+            }
 
         }
 
-        if (!TextUtils.isEmpty(binding.searchView.text.toString()))
-            hashmap["Date"] = binding.searchView.text.toString()
+        if (!TextUtils.isEmpty(binding.searchView.text.toString())) hashmap["Date"] = binding.searchView.text.toString()
         else {
             hashmap["Date"] = ""
             uridate = ""
@@ -325,25 +312,18 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         var dayOfMonth1 = ""
         var month1 = ""
-        dayOfMonth1 = if (dayOfMonth < 10)
-            "0${dayOfMonth}"
-        else
-            dayOfMonth.toString()
+        dayOfMonth1 = if (dayOfMonth < 10) "0${dayOfMonth}"
+        else dayOfMonth.toString()
 
-        if (month + 1 < 10)
-            month1 = "0${month + 1}"
-        else
-            month1 = (month + 1).toString()
+        if (month + 1 < 10) month1 = "0${month + 1}"
+        else month1 = (month + 1).toString()
 
         uridate = "${year}-${month1}-${dayOfMonth1}"
 
     }
 
     private fun setupViewModel() {
-        viewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(RetrofitClient.apiInterface)
-        ).get(OrdersViewModel::class.java)
+        viewModel = ViewModelProvider(this, ViewModelFactory(RetrofitClient.apiInterface)).get(OrdersViewModel::class.java)
 
         setupObservers()
 
@@ -415,26 +395,7 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 binding.pullToRefresh.setRefreshing(false)
                 val orders = it.Orders
 
-                if (responseUserLogin.Role.equals("Fitter")) {
-
-                    val orderAssignOnFitter = findIdsFromStringFitter(orders!!)
-                    parseDataEachOrderJson(orderAssignOnFitter)
-
-                } else if (responseUserLogin.Role.equals("Helper")) {
-
-                    val orderAssignOnHelper = findIdsFromStringHelper(orders!!)
-                    parseDataEachOrderJson(orderAssignOnHelper)
-
-                } else if (!TextUtils.isEmpty(mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id))) {
-
-                    val orderAssignOnTransporter = findIdsFromStringTransporter(orders!!)
-                    parseDataEachOrderJson(orderAssignOnTransporter)
-
-                } else {
-
-                    parseDataEachOrderJson(orders)
-
-                }
+                parseDataEachOrderJson(orders)
 
             }
 
@@ -458,9 +419,7 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
                 split.forEach {
 
-                    if (mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id)
-                            .equals(it, true)
-                    ) {
+                    if (mySharedPreferences!!.getStringkey(MySharedPreferences.driver_id).equals(it, true)) {
 
                         responseOrdersArray.add(responseOrders)
                         return@forEach
@@ -565,9 +524,7 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     }
 
-    private fun parseDataEachOrderJson(
-        ordJsonString: ArrayList<ResponseOrders>?
-    ) {
+    private fun parseDataEachOrderJson(ordJsonString: ArrayList<ResponseOrders>?) {
 
         thread {
 
@@ -691,11 +648,8 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
                     ordJsonString.forEach { // syncronized by datewise android
 
-                        if (!TextUtils.isEmpty(it.DeliveryDate) && it.DeliveryDate.equals( // todo check delivery date
-                                uridate,
-                                true
-                            )
-                        ) {
+                        // todo check delivery date
+                        if (!TextUtils.isEmpty(it.DeliveryDate) && it.DeliveryDate.equals(uridate, true)) {
 
                             showModel.add(it)
 
@@ -705,7 +659,7 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
                 }
 
-                showProductAdapter.notifyItemRangeChanged(ordJsonString.size-1,showModel.size-1)
+                showProductAdapter.notifyItemRangeInserted(ordJsonString.size, showModel.size)
 
                 when {
                     showModel.size > 0 -> {
@@ -715,21 +669,15 @@ class HomeFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                         noPaginate.showError(false)
                         noDataFound.visibility = View.GONE
 
-                        Log.i("TAG", "parseDataEachOrderJson: 1")
-
                     }
                     page == 0 && showModel.isEmpty() -> {
 
-                        noDataFound.visibility = View.VISIBLE
-
-                        Log.i("TAG", "parseDataEachOrderJson: 2")
+                        //noDataFound.visibility = View.VISIBLE
 
                     }
                     else -> {
 
                         noPaginate.setNoMoreItems(true)
-
-                        Log.i("TAG", "parseDataEachOrderJson: 3")
 
                     }
                 }

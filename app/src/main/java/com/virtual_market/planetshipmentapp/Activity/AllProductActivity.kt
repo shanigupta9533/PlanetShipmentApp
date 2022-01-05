@@ -56,6 +56,7 @@ class AllProductActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
 
         responseUserLogin =
             (application as PlanetShippingApplication).responseUserLogin
+
         scanDatabase = ScanDatabase.getInstance(applicationContext)
 
         noDataFound = findViewById(R.id.no_data_found)

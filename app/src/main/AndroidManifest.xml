@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:remove="android:maxSdkVersion"/>
 
     <application
         android:name=".MyUils.PlanetShippingApplication"
@@ -23,25 +22,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlanetShipmentApp"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".Activity.ImagesBigActivity" />
         <activity android:name=".Activity.InstallationImagesActivity" />
         <activity
             android:name=".Activity.AllProductActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".Activity.QrCodeWithProductActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".Activity.OrderDetailsActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
 
         <activity
             android:name=".Activity.SplashActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait">
+            android:screenOrientation="nosensor"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,59 +55,59 @@
         <activity
             android:name=".Activity.FeedbackActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait">
+            android:screenOrientation="nosensor">
 
         </activity>
         <activity
             android:name=".Activity.ChangePasswordActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".Activity.CustomerSupportActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".Activity.ScannedProductActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".Activity.SearchActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".Activity.CreateMenuActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
 
         <activity
             android:name=".Activity.SignaturePadActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="nosensor" >
 
         </activity>
 
         <activity
             android:name=".Activity.ShowClientAddressActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".Activity.ReadyForDeliveredProductActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".Activity.ShowPartitionProductActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".Activity.QrCodeScannerActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
         <activity android:name=".Activity.LoginActivity" />
         <activity
             android:name=".Activity.MainActivity"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="nosensor" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

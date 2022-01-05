@@ -20,6 +20,14 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
         MutableLiveData<SerialProductModel>()
     }
 
+    val getMapsKey: MutableLiveData<SuccessModel> by lazy {
+        MutableLiveData<SuccessModel>()
+    }
+
+    val onErrorMaps: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+
     val updateOrderModel: MutableLiveData<UpdateOrderModel> by lazy {
         MutableLiveData<UpdateOrderModel>()
     }
@@ -89,6 +97,25 @@ class OrdersViewModel(private var apiclient: ApiInterface) : ViewModel() {
                 }
                 is Result.Error -> {
                     errorMessage.postValue(result.exception)
+                    noInternet.postValue(result.noInternet)
+                }
+            }
+        }
+
+    }
+
+    fun getMapsKey(mapsKey: String) {
+
+        viewModelScope.launch {
+            loading.postValue(true)
+            val result = OrdersRepository(apiclient).getMapsKey(mapsKey)
+            loading.postValue(false)
+            when (result) {
+                is Result.Success -> {
+                    getMapsKey.postValue(result.data)
+                }
+                is Result.Error -> {
+                    onErrorMaps.postValue(result.exception)
                     noInternet.postValue(result.noInternet)
                 }
             }

@@ -17,6 +17,10 @@ class OrdersRepository(private val apiClient: ApiInterface) : SafeApiRequest {
         return safeApiCall { apiClient.orderDispatchByParts(orderCode) }
     }
 
+    suspend fun getMapsKey(orderCode:String): Result<SuccessModel> {
+        return safeApiCall { apiClient.getMapsKey(orderCode) }
+    }
+
     suspend fun hittingAp2(orderCode:String): Result<CD2Modal> {
         return safeApiCall { apiClient.hiddingCD2(orderCode) }
     }

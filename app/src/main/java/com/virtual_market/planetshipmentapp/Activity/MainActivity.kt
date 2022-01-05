@@ -220,9 +220,7 @@ class MainActivity : AppCompatActivity() {
         builder.setAlwaysShow(true)
         mLocationSettingsRequest = builder.build()
         mSettingsClient = LocationServices.getSettingsClient(this)
-        mSettingsClient!!.checkLocationSettings(mLocationSettingsRequest)
-            .addOnSuccessListener { doLocationWork() }
-            .addOnFailureListener { e ->
+        mSettingsClient?.checkLocationSettings(mLocationSettingsRequest)?.addOnSuccessListener { doLocationWork() }?.addOnFailureListener { e ->
                 when ((e as ApiException).statusCode) {
                     LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
                         val rae: ResolvableApiException = e as ResolvableApiException
@@ -238,8 +236,7 @@ class MainActivity : AppCompatActivity() {
                         "Location settings are inadequate, and cannot be fixed here. Fix in Settings."
                     )
                 }
-            }
-            .addOnCanceledListener { Log.e("GPS", "checkLocationSettings -> onCanceled") }
+            }?.addOnCanceledListener { Log.e("GPS", "checkLocationSettings -> onCanceled") }
     }
 
 
@@ -312,17 +309,17 @@ class MainActivity : AppCompatActivity() {
         }
         if (locationRequest == null) {
             locationRequest = LocationRequest.create()
-            locationRequest!!.interval = 1000 // two minute interval
-            locationRequest!!.fastestInterval = 1000
-            locationRequest!!.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-            mLocationClient!!.requestLocationUpdates(locationRequest!!, mLocationCallBack!!, null)
+            locationRequest?.interval = 1000 // two minute interval
+            locationRequest?.fastestInterval = 1000
+            locationRequest?.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+            mLocationClient?.requestLocationUpdates(locationRequest!!, mLocationCallBack!!, null)
 
             if(TextUtils.isEmpty(mySharedPreferences!!.getStringkey(MySharedPreferences.myLongitude)) && TextUtils.isEmpty(mySharedPreferences!!.getStringkey(MySharedPreferences.myLatitude))) {
 
                 pd = ProgressDialog(this@MainActivity)
-                pd!!.setMessage("Fetching Your Location..")
-                pd!!.setCanceledOnTouchOutside(false)
-                pd!!.show()
+                pd?.setMessage("Fetching Your Location..")
+                pd?.setCanceledOnTouchOutside(false)
+                pd?.show()
 
             }
 

@@ -32,10 +32,37 @@
         <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/show_partitian_adapter_layout.xml" value="0.209375" />
         <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/transparent_progress_bar_layout.xml" value="0.209375" />
         <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/button_background_orange.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/change_background.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/design_as_edittext.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/design_as_edittext_gradient.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/design_as_outlined_button.xml" value="0.29814814814814816" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/ic_product_icon.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/ic_settings_icon.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/round_as_button_as_beautify.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/round_dialog_background.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/round_dialog_background_sharp.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/round_login_design.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/select_color_bottom_nav.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/show_password_selector.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/drawable/white_btn_gradient.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/activity_login.xml" value="0.3625" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/activity_main.xml" value="0.3625" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/activity_order_details.xml" value="0.3625" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/activity_qr_code_scanner.xml" value="0.3625" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/activity_qr_code_with_product.xml" value="0.3625" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/activity_splash.xml" value="0.3625" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/fragment_enter_distance_dialog.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/fragment_home.xml" value="0.3625" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/fragment_progress_bar_dialog.xml" value="0.3625" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/fragment_setting.xml" value="0.3625" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/single_line.xml" value="0.3625" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/layout/transparent_progress_bar_layout.xml" value="0.3625" />
+        <entry key="..\:/Users/shani/AndroidStudioProjects/PlanetShipmentApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.21875" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

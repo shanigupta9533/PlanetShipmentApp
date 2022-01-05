@@ -49,6 +49,8 @@ class NestedProductAndPartsAdapter(
     interface OnClickListener {
 
         fun onClick(isChecked: Boolean, position: Int)
+        fun onHideDialog()
+        fun onShowDialog()
 
     }
 
@@ -225,13 +227,12 @@ class NestedProductAndPartsAdapter(
 
                     override fun onClick(responseOrders: SerialDetailsModal) {
 
-                        Log.i("TAG", "onScanningClick: $position")
-
                         showPartitianAdapter.setScanning(false, "")
                         isScanning = false
 
                         if (!isOrderDetails) {
 
+                            onClickListener?.onShowDialog()
                             productId.add(responseOrders.SerialNumber!!)
                             serialIds.add(responseOrders.SerialId!!)
                             showPartitianAdapter.productId(productId)
@@ -255,6 +256,7 @@ class NestedProductAndPartsAdapter(
 
                         if (!isOrderDetails) {
 
+                            onClickListener?.onShowDialog()
                             productId.remove(responseOrders.SerialNumber!!)
                             serialIds.remove(responseOrders.SerialId!!)
                             showPartitianAdapter.productId(productId)
@@ -300,7 +302,10 @@ class NestedProductAndPartsAdapter(
 
                             }
 
+                            onClickListener?.onHideDialog()
+
                         }
+
                     }
 
                     override fun onScanning(responseOrders: SerialDetailsModal) {
